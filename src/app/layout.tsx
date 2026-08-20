@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Unbounded, Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider, THEME_NO_FLASH_SCRIPT } from "@/lib/theme";
 import { LocaleProvider } from "@/lib/locale";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
   subsets: ["cyrillic", "latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["cyrillic", "latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -30,7 +30,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="mn"
-      className={`${playfair.variable} ${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${unbounded.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-surface text-fg">
         <Script id="theme-no-flash" strategy="beforeInteractive">

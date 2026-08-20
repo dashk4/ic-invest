@@ -34,8 +34,12 @@ export function FundsGrid({ funds }: { funds: FundCardData[] }) {
               href={f.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="card-lift group flex h-full flex-col justify-between rounded-2xl border border-line-strong bg-white/[0.03] p-8 hover:border-bronze/50 hover:bg-white/[0.06]"
+              className="card-lift glow-ring group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-line-strong bg-white/[0.03] p-8"
             >
+              <div
+                className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-30"
+                style={{ background: "var(--c-mesh-1)" }}
+              />
               <div>
                 <div className="flex items-center justify-between">
                   <span className="eyebrow rounded-full border border-line-strong px-3 py-1 text-bronze-light">

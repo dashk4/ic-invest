@@ -2,6 +2,7 @@ import { excerpt, FUNDS, getFundFacts, getObjective } from "@/lib/api";
 import { FUND_EXCERPT_EN, FUND_LABEL_EN } from "@/lib/fundI18n";
 import { FundsGrid, type FundCardData } from "./FundsGrid";
 import { FundsHeading } from "./FundsHeading";
+import { Marquee } from "./ui/Marquee";
 
 export async function Funds() {
   const funds: FundCardData[] = await Promise.all(
@@ -23,10 +24,15 @@ export async function Funds() {
     })
   );
 
+  const tickerItems = funds.map((f) => `${f.code} · ${f.name}`);
+
   return (
     <section id="funds" className="theme-fade bg-surface-strong py-24 text-on-strong md:py-32">
       <div className="container-page">
         <FundsHeading />
+      </div>
+      <Marquee items={tickerItems} />
+      <div className="container-page">
         <FundsGrid funds={funds} />
       </div>
     </section>

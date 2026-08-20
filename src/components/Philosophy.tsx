@@ -61,17 +61,18 @@ export function Philosophy() {
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border hairline bg-line md:grid-cols-3">
+        <RevealGroup className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-3">
           {PILLARS.map((p) => (
             <RevealItem
               key={p.n}
-              className="card-lift group relative bg-surface p-9 hover:bg-surface-strong"
+              className="card-lift glow-ring group relative overflow-hidden rounded-3xl border hairline bg-surface-alt/50 p-9"
             >
+              <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/0 blur-2xl transition-colors duration-700 group-hover:bg-accent/25" />
               <span className="font-display text-sm text-accent">{p.n}</span>
-              <h3 className="font-display mt-5 text-2xl font-medium text-fg transition-colors duration-500 group-hover:text-on-strong">
+              <h3 className="font-display mt-5 text-2xl font-medium text-fg">
                 {pick(locale, p.mnTitle, p.enTitle)}
               </h3>
-              <p className="mt-4 text-base leading-relaxed text-fg-muted transition-colors duration-500 group-hover:text-on-strong-muted">
+              <p className="mt-4 text-base leading-relaxed text-fg-muted">
                 {pick(locale, p.mnText, p.enText)}
               </p>
             </RevealItem>

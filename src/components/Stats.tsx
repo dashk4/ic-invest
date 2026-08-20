@@ -26,12 +26,15 @@ export function Stats() {
   const { locale } = useLocale();
 
   return (
-    <section className="theme-fade border-b hairline bg-surface">
-      <div className="container-page py-16 md:py-20">
-        <RevealGroup className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
+    <section className="theme-fade bg-surface py-16 md:py-20">
+      <div className="container-page">
+        <RevealGroup className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {STATS.map((s) => (
-            <RevealItem key={s.mn} className="border-l hairline pl-6">
-              <div className="font-display text-5xl font-medium text-fg md:text-6xl">
+            <RevealItem
+              key={s.mn}
+              className="card-lift glow-ring rounded-3xl border hairline bg-surface-alt/60 p-8"
+            >
+              <div className="font-display bg-gradient-to-br from-fg to-fg/60 bg-clip-text text-5xl font-semibold text-transparent md:text-6xl">
                 <Counter value={s.value} />
               </div>
               <p className="mt-3 max-w-[240px] text-base leading-relaxed text-fg-muted">
@@ -40,7 +43,7 @@ export function Stats() {
             </RevealItem>
           ))}
         </RevealGroup>
-        <Reveal delay={0.15} className="mt-10 border-t hairline pt-6">
+        <Reveal delay={0.15} className="mt-6 rounded-2xl border hairline bg-surface-alt/40 px-6 py-4">
           <p className="text-sm leading-relaxed text-fg-subtle">
             {pick(
               locale,

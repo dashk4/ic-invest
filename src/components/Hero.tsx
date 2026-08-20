@@ -3,10 +3,14 @@
 import { motion } from "framer-motion";
 import { Button } from "./ui/Button";
 import { SplitReveal } from "./ui/SplitReveal";
-import { BuildingArt } from "./ui/BuildingArt";
+import { HeroCard } from "./ui/HeroCard";
 import { useLocale, pick } from "@/lib/locale";
 
-export function Hero() {
+export function Hero({
+  heroFund,
+}: {
+  heroFund: { name: string; nav: number | null; units: number | null };
+}) {
   const { locale } = useLocale();
 
   return (
@@ -14,70 +18,71 @@ export function Hero() {
       id="top"
       className="theme-fade relative flex min-h-screen items-center overflow-hidden bg-surface-strong pt-28 pb-20 text-on-strong"
     >
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 right-[-10%] h-[560px] w-[560px] rounded-full bg-bronze/10 blur-3xl" />
-        <div className="absolute bottom-[-20%] left-[-10%] h-[480px] w-[480px] rounded-full bg-forest/20 blur-3xl" />
-        <HeroLines />
-      </div>
+      <AuroraMesh />
 
-      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] lg:block">
-        <BuildingArt />
-      </div>
+      <div className="container-page relative z-10 grid grid-cols-1 items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]">
+        <div>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="glass eyebrow inline-flex items-center gap-2 rounded-full px-4 py-2 text-accent-light"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            Инвескор Ассет Менежмент ҮЦК
+          </motion.p>
 
-      <div className="container-page relative z-10">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="eyebrow text-bronze-light"
-        >
-          Инвескор Ассет Менежмент ҮЦК
-        </motion.p>
+          <h1
+            key={locale + "-h1"}
+            className="font-display mt-7 max-w-2xl text-balance text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl"
+          >
+            <SplitReveal
+              trigger="mount"
+              delay={0.1}
+              text={pick(locale, "Хөрөнгө оруулалтын", "Your journey,")}
+            />
+            <br />
+            <span className="bg-gradient-to-r from-accent-light via-accent to-forest bg-clip-text text-transparent">
+              <SplitReveal
+                trigger="mount"
+                delay={0.32}
+                text={pick(locale, "мэргэшсэн удирдлага", "our expertise")}
+              />
+            </span>
+          </h1>
 
-        <h1
-          key={locale + "-h1"}
-          className="font-display mt-7 max-w-4xl text-balance text-5xl font-medium leading-[1.08] md:text-7xl"
-        >
-          <SplitReveal
-            trigger="mount"
-            delay={0.1}
-            text={pick(locale, "Хөрөнгө оруулалтын", "Your journey,")}
-          />
-          <br />
-          <SplitReveal
-            trigger="mount"
-            delay={0.32}
-            text={pick(locale, "мэргэшсэн удирдлага", "our expertise")}
-          />
-        </h1>
+          <motion.p
+            key={locale + "-p"}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 max-w-xl text-lg leading-relaxed text-on-strong-muted"
+          >
+            {pick(
+              locale,
+              "Монголын хөрөнгийн зах зээлд шилдэг туршлага нэвтрүүлж, харилцагчдадаа үр өгөөж авчрахын төлөө өдөр бүр мэдлэг, чадвар, туршлагаа хурцалсаар байх мэргэжлийн баг.",
+              "We are a team of professionals applying our passion and expertise to solve the needs of our clients and introduce best practices into the Mongolian capital market."
+            )}
+          </motion.p>
 
-        <motion.p
-          key={locale + "-p"}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-8 max-w-xl text-lg leading-relaxed text-on-strong-muted"
-        >
-          {pick(
-            locale,
-            "Монголын хөрөнгийн зах зээлд шилдэг туршлага нэвтрүүлж, харилцагчдадаа үр өгөөж авчрахын төлөө өдөр бүр мэдлэг, чадвар, туршлагаа хурцалсаар байх мэргэжлийн баг.",
-            "We are a team of professionals applying our passion and expertise to solve the needs of our clients and introduce best practices into the Mongolian capital market."
-          )}
-        </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-11 flex flex-wrap items-center gap-4"
+          >
+            <Button href="#funds">
+              {pick(locale, "Хөрөнгө оруулалтын сангууд", "Investment Funds")}
+            </Button>
+            <Button href="#philosophy" variant="outline">
+              {pick(locale, "Бидний арга барил", "Our Approach")}
+            </Button>
+          </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-11 flex flex-wrap items-center gap-4"
-        >
-          <Button href="#funds">
-            {pick(locale, "Хөрөнгө оруулалтын сангууд", "Investment Funds")}
-          </Button>
-          <Button href="#philosophy" variant="outline">
-            {pick(locale, "Бидний арга барил", "Our Approach")}
-          </Button>
-        </motion.div>
+        <div className="hidden justify-self-center lg:flex lg:justify-self-end">
+          <HeroCard name={heroFund.name} nav={heroFund.nav} units={heroFund.units} />
+        </div>
       </div>
 
       <motion.div
@@ -97,30 +102,23 @@ export function Hero() {
   );
 }
 
-function HeroLines() {
+function AuroraMesh() {
   return (
-    <svg
-      className="absolute inset-0 h-full w-full opacity-[0.18]"
-      viewBox="0 0 1200 800"
-      preserveAspectRatio="none"
-      fill="none"
-    >
-      <motion.path
-        d="M0 620 C 180 560, 260 520, 380 540 S 560 460, 680 420 S 880 320, 1000 300 S 1140 260, 1200 220"
-        stroke="#ddc79a"
-        strokeWidth="1.5"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2.6, ease: [0.16, 1, 0.3, 1] }}
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div
+        className="mesh-blob absolute -top-32 left-[8%] h-[520px] w-[520px] rounded-full opacity-40 blur-[110px]"
+        style={{ background: "var(--c-mesh-1)" }}
       />
-      <motion.path
-        d="M0 700 C 200 680, 320 640, 440 660 S 640 600, 760 560 S 960 480, 1080 470 S 1180 440, 1200 430"
-        stroke="#f6f3ec"
-        strokeWidth="1"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      <div
+        className="mesh-blob-slow absolute top-[20%] right-[4%] h-[460px] w-[460px] rounded-full opacity-35 blur-[110px]"
+        style={{ background: "var(--c-mesh-2)" }}
       />
-    </svg>
+      <div
+        className="mesh-blob absolute bottom-[-10%] left-[30%] h-[420px] w-[420px] rounded-full opacity-25 blur-[110px]"
+        style={{ background: "var(--c-mesh-3)" }}
+      />
+      <div className="grain absolute inset-0" />
+      <div className="absolute inset-0 bg-surface-strong/35" />
+    </div>
   );
 }

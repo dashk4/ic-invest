@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --navy: #0a1a2b;
-  --navy-deep: #060f1a;
-  --navy-soft: #13273d;
-  --ivory: #f6f3ec;
-  --ivory-dim: #eeeadf;
-  --charcoal: #17212b;
-  --bronze: #b6996a;
-  --bronze-light: #ddc79a;
-  --forest: #1e3a34;
+  /* phase2 — modern aurora palette (mapped onto the phase1 primitive names) */
+  --navy: #110c22;
+  --navy-deep: #07050f;
+  --navy-soft: #1c1533;
+  --ivory: #f6f4f1;
+  --ivory-dim: #ece9e4;
+  --charcoal: #14121c;
+  --bronze: #7c5cff;
+  --bronze-light: #b6a6ff;
+  --forest: #35d9c3;
+  --line: rgba(20, 18, 28, 0.1);
+  --line-dark: rgba(246, 244, 241, 0.14);
 
   /* semantic tokens — light mode (default) */
   --c-surface: var(--ivory);
@@ -17,36 +20,42 @@
   --c-surface-strong: var(--navy);
   --c-surface-deep: var(--navy-deep);
   --c-fg: var(--charcoal);
-  --c-fg-muted: rgba(23, 33, 43, 0.62);
-  --c-fg-subtle: rgba(23, 33, 43, 0.42);
+  --c-fg-muted: rgba(20, 18, 28, 0.62);
+  --c-fg-subtle: rgba(20, 18, 28, 0.42);
   --c-on-strong: var(--ivory);
-  --c-on-strong-muted: rgba(246, 243, 236, 0.62);
-  --c-on-strong-subtle: rgba(246, 243, 236, 0.42);
-  --c-line: rgba(23, 33, 43, 0.1);
-  --c-line-strong: rgba(246, 243, 236, 0.14);
+  --c-on-strong-muted: rgba(246, 244, 241, 0.64);
+  --c-on-strong-subtle: rgba(246, 244, 241, 0.42);
+  --c-line: rgba(20, 18, 28, 0.1);
+  --c-line-strong: rgba(246, 244, 241, 0.14);
   --c-accent: var(--bronze);
   --c-accent-light: var(--bronze-light);
-  --c-accent-contrast: var(--navy-deep);
+  --c-accent-contrast: #fbfaf9;
   --c-card: rgba(255, 255, 255, 0.55);
+  --c-mesh-1: #7c5cff;
+  --c-mesh-2: #35d9c3;
+  --c-mesh-3: #ff6b9d;
 }
 
 :root[data-theme="dark"] {
-  --c-surface: #0c141e;
-  --c-surface-alt: #111a26;
-  --c-surface-strong: #060c15;
-  --c-surface-deep: #030509;
-  --c-fg: #ece7dc;
-  --c-fg-muted: rgba(236, 231, 220, 0.62);
-  --c-fg-subtle: rgba(236, 231, 220, 0.42);
-  --c-on-strong: #f6f3ec;
-  --c-on-strong-muted: rgba(246, 243, 236, 0.6);
-  --c-on-strong-subtle: rgba(246, 243, 236, 0.4);
-  --c-line: rgba(236, 231, 220, 0.12);
-  --c-line-strong: rgba(246, 243, 236, 0.12);
-  --c-accent: #c9ab7c;
-  --c-accent-light: #e4d3ab;
-  --c-accent-contrast: #060c15;
-  --c-card: rgba(255, 255, 255, 0.04);
+  --c-surface: #0a0910;
+  --c-surface-alt: #131120;
+  --c-surface-strong: #060509;
+  --c-surface-deep: #030308;
+  --c-fg: #f2f0ec;
+  --c-fg-muted: rgba(242, 240, 236, 0.62);
+  --c-fg-subtle: rgba(242, 240, 236, 0.42);
+  --c-on-strong: #f6f4f1;
+  --c-on-strong-muted: rgba(246, 244, 241, 0.6);
+  --c-on-strong-subtle: rgba(246, 244, 241, 0.4);
+  --c-line: rgba(242, 240, 236, 0.12);
+  --c-line-strong: rgba(246, 244, 241, 0.12);
+  --c-accent: #8f7bff;
+  --c-accent-light: #c1b4ff;
+  --c-accent-contrast: #0a0910;
+  --c-card: rgba(255, 255, 255, 0.045);
+  --c-mesh-1: #8f7bff;
+  --c-mesh-2: #35d9c3;
+  --c-mesh-3: #ff6b9d;
 }
 
 @theme inline {
@@ -76,8 +85,8 @@
   --color-accent-contrast: var(--c-accent-contrast);
   --color-card: var(--c-card);
 
-  --font-display: var(--font-playfair);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-unbounded);
+  --font-sans: var(--font-manrope);
 }
 
 html {
@@ -134,8 +143,8 @@ body {
 .eyebrow {
   font-family: var(--font-sans);
   font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
@@ -144,6 +153,42 @@ body {
     background-color 0.5s ease,
     border-color 0.5s ease,
     color 0.5s ease;
+}
+
+.glass {
+  background: var(--c-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--c-line-strong);
+}
+
+.glow-ring {
+  transition: box-shadow 0.5s ease, border-color 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-ring:hover {
+  box-shadow: 0 0 0 1px var(--c-accent), 0 24px 60px -20px color-mix(in srgb, var(--c-accent) 55%, transparent);
+}
+
+@keyframes mesh-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+  66% {
+    transform: translate(-5%, 4%) scale(0.96);
+  }
+}
+
+.mesh-blob {
+  animation: mesh-drift 18s ease-in-out infinite;
+}
+
+.mesh-blob-slow {
+  animation: mesh-drift 26s ease-in-out infinite reverse;
 }
 
 @keyframes marquee {
