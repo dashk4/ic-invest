@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { useLocale, pick } from "@/lib/locale";
+import { RollText } from "./ui/RollText";
 
 const LINKS = [
   { mn: "Бидний тухай", en: "About us", href: "#about" },
-  { mn: "Хөрөнгө оруулалтын сан", en: "Investment Funds", href: "#funds" },
+  { mn: "Хөрөнгө оруулалтын сан", en: "Our funds", href: "#funds" },
   { mn: "Судалгаа", en: "Insights", href: "#insights" },
-  { mn: "Хамт олон", en: "Our Team", href: "#team" },
+  { mn: "Хамт олон", en: "Our team", href: "#team" },
   { mn: "Холбоо барих", en: "Contact", href: "#contact" },
 ];
 
@@ -20,10 +21,10 @@ export function Footer() {
   const { locale } = useLocale();
 
   return (
-    <footer className="theme-fade bg-surface-deep py-16 text-on-strong">
+    <footer className="theme-fade bg-surface-deep pt-20 pb-10 text-on-strong">
       <div className="container-page">
-        <div className="flex flex-col gap-12 border-b border-line-strong pb-12 md:flex-row md:justify-between">
-          <div>
+        <div className="grid grid-cols-1 gap-12 border-b border-[color:var(--c-line-strong)] pb-14 lg:grid-cols-12">
+          <div className="lg:col-span-5">
             <Image
               src="/brand/white-logo_mn.svg"
               alt="IC Asset Management"
@@ -31,50 +32,62 @@ export function Footer() {
               height={41}
               className="h-8 w-auto"
             />
-            <p className="mt-5 max-w-xs text-base leading-relaxed text-on-strong-muted">
+            <p className="t-body mt-6 max-w-xs text-pretty text-on-strong-muted">
               {pick(
                 locale,
-                'Таны итгэмжит хамтрагч "Инвескор Ассет Менежмент ҮЦК" ХХК.',
-                'Your trusted partner "Invescore Asset Management SC" LLC.'
+                "Таны итгэмжит хамтрагч — “Инвескор Ассет Менежмент ҮЦК” ХХК.",
+                "Your trusted partner — Invescore Asset Management SC LLC."
               )}
             </p>
-            <div className="mt-6 flex gap-4">
-              {SOCIAL.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="eyebrow text-on-strong-muted hover:text-bronze-light"
-                >
-                  {s.label}
-                </a>
-              ))}
-            </div>
           </div>
 
-          <nav className="grid grid-cols-2 gap-x-10 gap-y-3 sm:grid-cols-3">
-            {LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="text-base text-on-strong-muted hover:text-bronze-light"
-              >
-                {pick(locale, l.mn, l.en)}
-              </a>
-            ))}
-            <a
-              href="https://system.ic-invest.mn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base text-on-strong-muted hover:text-bronze-light"
-            >
-              {pick(locale, "Нэвтрэх", "Login")}
-            </a>
+          <nav className="lg:col-span-4">
+            <p className="eyebrow text-on-strong-subtle">{pick(locale, "Хуудсууд", "Pages")}</p>
+            <ul className="mt-6 space-y-3">
+              {LINKS.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href} className="group inline-flex t-small text-on-strong-muted">
+                    <RollText hoverClassName="text-accent-on-dark">
+                      {pick(locale, l.mn, l.en)}
+                    </RollText>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </nav>
+
+          <div className="lg:col-span-3">
+            <p className="eyebrow text-on-strong-subtle">{pick(locale, "Холбоос", "Elsewhere")}</p>
+            <ul className="mt-6 space-y-3">
+              {SOCIAL.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex t-small text-on-strong-muted"
+                  >
+                    <RollText hoverClassName="text-accent-on-dark">{s.label}</RollText>
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a
+                  href="https://system.ic-invest.mn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex t-small text-on-strong-muted"
+                >
+                  <RollText hoverClassName="text-accent-on-dark">
+                    {pick(locale, "Нэвтрэх", "Login")}
+                  </RollText>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 text-sm text-on-strong-subtle sm:flex-row sm:justify-between">
+        <div className="mt-8 flex flex-col gap-3 text-[0.8rem] text-on-strong-subtle sm:flex-row sm:justify-between">
           <p>
             © {new Date().getFullYear()}{" "}
             {pick(locale, "Зохиогчийн эрх хуулиар хамгаалагдсан.", "All rights reserved.")}
@@ -82,8 +95,8 @@ export function Footer() {
           <p>
             {pick(
               locale,
-              "Улаанбаатар хот, Сүхбаатар дүүрэг, Парисийн гудамж 42, Ай Си Тауэр",
-              "Parisian street 42, IC Tower, Sukhbaatar district, Ulaanbaatar, Mongolia"
+              "Улаанбаатар, Сүхбаатар дүүрэг, Парисийн гудамж 42, Ай Си Тауэр",
+              "Parisian street 42, IC Tower, Sukhbaatar district, Ulaanbaatar"
             )}
           </p>
         </div>

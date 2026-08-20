@@ -11,10 +11,10 @@ export function ThemeToggle({ light = false }: { light?: boolean }) {
     <button
       onClick={toggle}
       aria-label="Өнгө солих"
-      className={`relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border transition-colors ${
+      className={`relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border transition-colors duration-500 ${
         light
-          ? "border-ivory/30 text-ivory hover:border-bronze-light"
-          : "border-line text-fg hover:border-accent"
+          ? "border-[color:var(--c-line-strong)] text-on-strong hover:border-accent-on-dark hover:text-accent-on-dark"
+          : "hairline text-fg hover:border-accent hover:text-accent"
       }`}
     >
       <AnimatePresence mode="wait" initial={false}>

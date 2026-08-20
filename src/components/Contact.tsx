@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Reveal } from "./ui/Reveal";
-import { RollText } from "./ui/RollText";
 import { SplitReveal } from "./ui/SplitReveal";
 import { useLocale, pick } from "@/lib/locale";
 
@@ -19,89 +18,114 @@ export function Contact() {
       label: pick(locale, "Хаяг", "Address"),
       value: pick(
         locale,
-        "Монгол улс, Улаанбаатар хот 14230, Сүхбаатар дүүрэг, 1-р хороо, Парисийн гудамж 42, Ай Си Тауэр, 15 давхар",
-        "Sukhbaatar district-1, Parisian street 42, IC Tower, 15th floor, Ulaanbaatar 14230, Mongolia"
+        "Улаанбаатар 14230, Сүхбаатар дүүрэг, 1-р хороо, Парисийн гудамж 42, Ай Си Тауэр, 15 давхар",
+        "Parisian street 42, IC Tower, 15th floor, Sukhbaatar district-1, Ulaanbaatar 14230, Mongolia"
       ),
       href: undefined,
     },
   ];
 
   const mailtoHref = `mailto:info@ic-invest.mn?subject=${encodeURIComponent(
-    (locale === "en" ? "Message from " : "Санал хүсэлт — ") + (name || (locale === "en" ? "Website visitor" : "Хэрэглэгч"))
+    (locale === "en" ? "Message from " : "Санал хүсэлт — ") +
+      (name || (locale === "en" ? "Website visitor" : "Хэрэглэгч"))
   )}&body=${encodeURIComponent(
     `${pick(locale, "Овог нэр", "Name")}: ${name}\n${pick(locale, "Утас", "Phone")}: ${phone}\n\n${message}`
   )}`;
 
+  const fieldClass =
+    "mt-2 w-full border-b hairline bg-transparent py-2.5 text-fg outline-none transition-colors duration-500 placeholder:text-fg-subtle focus:border-accent";
+  const labelClass = "eyebrow text-fg-subtle";
+
   return (
-    <section id="contact" className="theme-fade bg-surface py-24 md:py-32">
-      <div className="container-page grid grid-cols-1 gap-16 md:grid-cols-2">
-        <div>
+    <section id="contact" className="theme-fade section-y bg-surface-alt">
+      <div className="container-page grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-12">
+        <div className="lg:col-span-6">
           <Reveal>
             <p className="eyebrow text-accent">{pick(locale, "Холбоо барих", "Contact")}</p>
           </Reveal>
-          <h2 className="font-display mt-4 max-w-md text-balance text-4xl font-medium leading-tight text-fg md:text-5xl">
-            <SplitReveal text={pick(locale, "Хамтран ажиллахад бэлэн үү", "Ready to work together")} />
+          <h2 className="t-h2 mt-6 max-w-[13ch] text-balance text-fg">
+            <SplitReveal
+              text={pick(locale, "Хамтран ажиллахад бэлэн үү", "Ready to work together")}
+            />
           </h2>
 
-          <Reveal delay={0.12} className="mt-12 space-y-7">
-            {DETAILS.map((d) => (
-              <div key={d.label} className="border-t hairline pt-5">
-                <p className="eyebrow text-fg-subtle">{d.label}</p>
-                {d.href ? (
-                  <a href={d.href} className="mt-2 block text-lg text-fg hover:text-accent">
-                    {d.value}
-                  </a>
-                ) : (
-                  <p className="mt-2 max-w-sm text-lg leading-snug text-fg">{d.value}</p>
-                )}
-              </div>
-            ))}
+          <Reveal delay={0.12}>
+            <dl className="mt-12 space-y-8">
+              {DETAILS.map((d) => (
+                <div key={d.label} className="border-t hairline pt-5">
+                  <dt className={labelClass}>{d.label}</dt>
+                  <dd className="mt-3">
+                    {d.href ? (
+                      <a
+                        href={d.href}
+                        className="link-underline t-lead text-fg transition-colors duration-500 hover:text-accent"
+                      >
+                        {d.value}
+                      </a>
+                    ) : (
+                      <p className="t-lead max-w-sm text-pretty text-fg">{d.value}</p>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </Reveal>
         </div>
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.2} className="lg:col-span-6">
           <div className="rounded-2xl border hairline bg-card p-8 md:p-10">
-            <p className="eyebrow text-fg-subtle">{pick(locale, "Санал хүсэлт", "Send a message")}</p>
-            <div className="mt-6 space-y-5">
+            <p className={labelClass}>{pick(locale, "Санал хүсэлт", "Send a message")}</p>
+
+            <div className="mt-8 space-y-6">
               <div>
-                <label className="text-sm uppercase tracking-wide text-fg-muted">
+                <label className={labelClass} htmlFor="c-name">
                   {pick(locale, "Овог нэр", "Full name")}
                 </label>
                 <input
+                  id="c-name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="mt-2 w-full border-b hairline bg-transparent py-2 text-fg outline-none focus:border-accent"
+                  className={fieldClass}
                   placeholder={pick(locale, "Таны нэр", "Your name")}
                 />
               </div>
               <div>
-                <label className="text-sm uppercase tracking-wide text-fg-muted">
+                <label className={labelClass} htmlFor="c-phone">
                   {pick(locale, "Утас", "Phone")}
                 </label>
                 <input
+                  id="c-phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="mt-2 w-full border-b hairline bg-transparent py-2 text-fg outline-none focus:border-accent"
+                  className={fieldClass}
                   placeholder="99XX XXXX"
                 />
               </div>
               <div>
-                <label className="text-sm uppercase tracking-wide text-fg-muted">
+                <label className={labelClass} htmlFor="c-msg">
                   {pick(locale, "Санал хүсэлт", "Message")}
                 </label>
                 <textarea
+                  id="c-msg"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={3}
-                  className="mt-2 w-full resize-none border-b hairline bg-transparent py-2 text-fg outline-none focus:border-accent"
+                  className={`${fieldClass} resize-none`}
                   placeholder={pick(locale, "Бидэнд юугаар туслах вэ?", "How can we help?")}
                 />
               </div>
+
               <a
                 href={mailtoHref}
-                className="group eyebrow mt-2 inline-flex w-fit items-center gap-2 overflow-hidden rounded-full bg-surface-strong px-7 py-3.5 text-on-strong transition-transform duration-400 ease-out hover:scale-[1.03] active:scale-[0.98]"
+                className="group mt-2 inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-[0.95rem] font-medium text-accent-contrast transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:brightness-110"
               >
-                <RollText hoverClassName="text-bronze-light">{pick(locale, "Илгээх", "Submit")}</RollText>
+                {pick(locale, "Илгээх", "Submit")}
+                <span
+                  aria-hidden
+                  className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+                >
+                  →
+                </span>
               </a>
             </div>
           </div>

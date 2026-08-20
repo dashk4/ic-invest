@@ -8,7 +8,7 @@ const PILLARS = [
   {
     n: "01",
     mnTitle: "Чадварлаг баг",
-    enTitle: "Dedicated team",
+    enTitle: "A dedicated team",
     mnText:
       "Монголын хөрөнгийн зах зээлд шилдэг туршлага нэвтрүүлж, харилцагчдадаа үр өгөөж авчрахын төлөө мэдлэг, чадвар, туршлагаа хурцалж байх мэргэжлийн баг.",
     enText:
@@ -21,7 +21,7 @@ const PILLARS = [
     mnText:
       "Инвескорын үндсэн үзэл баримтлалын дагуу харилцагч, хамтрагч нартаа ил тод, шударга, урт хугацааны итгэлцлийг бий болгоно.",
     enText:
-      "Embodying the values and principles of The InvesCore Financial Group, with a focus on transparency, fairness, and building enduring trust with clients.",
+      "Embodying the values and principles of the InvesCore Financial Group, with a focus on transparency, fairness, and building enduring trust with clients.",
   },
   {
     n: "03",
@@ -37,47 +37,47 @@ export function Philosophy() {
   const { locale } = useLocale();
 
   return (
-    <section id="philosophy" className="theme-fade bg-surface py-24 md:py-32">
+    <section id="philosophy" className="theme-fade section-y bg-surface-alt">
       <div className="container-page">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <Reveal>
-              <p className="eyebrow text-accent">
-                {pick(locale, "Бидний үнэт зүйл", "Our Values")}
-              </p>
-            </Reveal>
-            <h2 className="font-display mt-4 max-w-lg text-balance text-4xl font-medium leading-tight text-fg md:text-5xl">
-              <SplitReveal text={pick(locale, "Бид хэрхэн ажилладаг вэ", "How we work")} />
-            </h2>
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-12">
+          {/* sticky editorial column */}
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-32">
+              <Reveal>
+                <p className="eyebrow text-accent">{pick(locale, "Бидний үнэт зүйл", "Our values")}</p>
+              </Reveal>
+              <h2 className="t-h2 mt-6 max-w-[12ch] text-balance text-fg">
+                <SplitReveal text={pick(locale, "Бид хэрхэн ажилладаг вэ", "How we work")} />
+              </h2>
+              <Reveal delay={0.15}>
+                <p className="t-body mt-8 max-w-sm text-pretty text-fg-muted">
+                  {pick(
+                    locale,
+                    "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурласан, инновац шингээсэн үйлчилгээг хүргэж, зах зээлийг тэргүүлэгч байх нь бидний алсын хараа.",
+                    "Lead the market by delivering innovative investment solutions aligned with each investor's financial goals."
+                  )}
+                </p>
+              </Reveal>
+            </div>
           </div>
-          <Reveal delay={0.1}>
-            <p className="max-w-sm text-base leading-relaxed text-fg-muted">
-              {pick(
-                locale,
-                "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурлсан, инновац шингээсэн үйлчилгээг хүргэж, зах зээлийг тэргүүлэгч байх нь бидний алсын хараа.",
-                "Lead the market by delivering innovative investment solutions aligned with investor's financial goals."
-              )}
-            </p>
-          </Reveal>
-        </div>
 
-        <RevealGroup className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-3">
-          {PILLARS.map((p) => (
-            <RevealItem
-              key={p.n}
-              className="card-lift glow-ring group relative overflow-hidden rounded-3xl border hairline bg-surface-alt/50 p-9"
-            >
-              <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/0 blur-2xl transition-colors duration-700 group-hover:bg-accent/25" />
-              <span className="font-display text-sm text-accent">{p.n}</span>
-              <h3 className="font-display mt-5 text-2xl font-medium text-fg">
-                {pick(locale, p.mnTitle, p.enTitle)}
-              </h3>
-              <p className="mt-4 text-base leading-relaxed text-fg-muted">
-                {pick(locale, p.mnText, p.enText)}
-              </p>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+          {/* scrolling list */}
+          <RevealGroup className="lg:col-span-7" stagger={0.12}>
+            {PILLARS.map((p) => (
+              <RevealItem key={p.n}>
+                <article className="group grid grid-cols-[auto_1fr] gap-6 border-t hairline py-10 first:border-t-0 first:pt-0 md:gap-10">
+                  <span className="t-numeral pt-1 text-sm text-accent">{p.n}</span>
+                  <div>
+                    <h3 className="t-h3 text-fg">{pick(locale, p.mnTitle, p.enTitle)}</h3>
+                    <p className="t-body mt-4 max-w-prose text-pretty text-fg-muted">
+                      {pick(locale, p.mnText, p.enText)}
+                    </p>
+                  </div>
+                </article>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
       </div>
     </section>
   );

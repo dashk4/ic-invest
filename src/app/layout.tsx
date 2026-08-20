@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { Unbounded, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider, THEME_NO_FLASH_SCRIPT } from "@/lib/theme";
 import { LocaleProvider } from "@/lib/locale";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
-const unbounded = Unbounded({
-  variable: "--font-unbounded",
+const display = Cormorant_Garamond({
+  variable: "--font-display-src",
   subsets: ["cyrillic", "latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const sans = Inter({
+  variable: "--font-sans-src",
   subsets: ["cyrillic", "latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="mn"
       suppressHydrationWarning
-      className={`${unbounded.variable} ${manrope.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-surface text-fg">
         <Script id="theme-no-flash" strategy="beforeInteractive">

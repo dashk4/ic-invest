@@ -10,34 +10,40 @@ export function VisionBanner() {
   return (
     <section
       id="about"
-      className="theme-fade relative overflow-hidden bg-surface-deep py-28 text-on-strong md:py-36"
+      className="theme-fade section-y relative overflow-hidden bg-surface-deep text-on-strong"
     >
-      <div className="pointer-events-none absolute inset-0">
+      <div className="grain pointer-events-none absolute inset-0">
         <div
-          className="mesh-blob absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-[130px]"
-          style={{ background: "var(--c-mesh-1)" }}
-        />
-        <div
-          className="mesh-blob-slow absolute right-[10%] top-[10%] h-[360px] w-[360px] rounded-full opacity-20 blur-[110px]"
-          style={{ background: "var(--c-mesh-2)" }}
+          className="drift absolute left-1/2 top-1/2 h-[60vh] w-[60vh] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.13] blur-[140px]"
+          style={{ background: "var(--jade-400)" }}
         />
       </div>
-      <div className="container-page relative text-center">
+
+      <div className="container-page relative">
         <Reveal>
-          <p className="eyebrow text-bronze-light">
-            {pick(locale, "Алсын хараа", "Vision")}
-          </p>
+          <p className="eyebrow text-accent-on-dark">{pick(locale, "Алсын хараа", "Vision")}</p>
         </Reveal>
-        <p className="font-display mx-auto mt-8 max-w-4xl text-balance text-3xl font-semibold leading-[1.35] md:text-5xl">
+
+        <blockquote className="t-h2 mt-10 max-w-[20ch] text-balance">
           <SplitReveal
-            delay={0.1}
+            delay={0.08}
             text={pick(
               locale,
-              "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурласан, инновац шингээсэн үйлчилгээг хүргэж, зах зээлийг тэргүүлэгч.",
-              "Lead the market by delivering innovative investment solutions aligned with investor's financial goals."
+              "Зах зээлийг тэргүүлэгч, инновацлаг хөрөнгө оруулалтын шийдэл.",
+              "Leading the market with innovative investment solutions."
             )}
           />
-        </p>
+        </blockquote>
+
+        <Reveal delay={0.25}>
+          <p className="t-lead mt-10 max-w-xl text-pretty text-on-strong-muted">
+            {pick(
+              locale,
+              "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурласан, инновац шингээсэн үйлчилгээг хүргэж, Монголын хөрөнгийн зах зээлийг тэргүүлэгч байна.",
+              "Delivering innovative services built around our investors' financial goals, and leading Mongolia's capital market."
+            )}
+          </p>
+        </Reveal>
       </div>
     </section>
   );

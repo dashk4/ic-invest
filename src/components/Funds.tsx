@@ -1,8 +1,7 @@
 import { excerpt, FUNDS, getFundFacts, getObjective } from "@/lib/api";
 import { FUND_EXCERPT_EN, FUND_LABEL_EN } from "@/lib/fundI18n";
-import { FundsGrid, type FundCardData } from "./FundsGrid";
+import { FundsList, type FundCardData } from "./FundsList";
 import { FundsHeading } from "./FundsHeading";
-import { Marquee } from "./ui/Marquee";
 
 export async function Funds() {
   const funds: FundCardData[] = await Promise.all(
@@ -17,23 +16,28 @@ export async function Funds() {
         name: objective?.name ?? f.label,
         labelMn: f.label,
         labelEn: FUND_LABEL_EN[f.sid] ?? f.label,
-        excerptMn: objective?.text ? excerpt(objective.text, 150) : "",
+        excerptMn: objective?.text ? excerpt(objective.text, 135) : "",
         excerptEn: FUND_EXCERPT_EN[f.sid] ?? "",
         nav: navFact ? Number(navFact.last_text) : null,
       };
     })
   );
 
-  const tickerItems = funds.map((f) => `${f.code} · ${f.name}`);
-
   return (
-    <section id="funds" className="theme-fade bg-surface-strong py-24 text-on-strong md:py-32">
-      <div className="container-page">
-        <FundsHeading />
+    <section
+      id="funds"
+      className="theme-fade section-y relative overflow-hidden bg-surface-strong text-on-strong"
+    >
+      <div className="grain pointer-events-none absolute inset-0">
+        <div
+          className="drift-slow absolute right-[-10%] top-[10%] h-[55vh] w-[55vh] rounded-full opacity-[0.10] blur-[140px]"
+          style={{ background: "var(--jade-500)" }}
+        />
       </div>
-      <Marquee items={tickerItems} />
-      <div className="container-page">
-        <FundsGrid funds={funds} />
+
+      <div className="container-page relative">
+        <FundsHeading />
+        <FundsList funds={funds} />
       </div>
     </section>
   );
