@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocale, pick } from "@/lib/locale";
-import { useTheme } from "@/lib/theme";
 import { ThemeToggle } from "./ui/ThemeToggle";
 import { LocaleToggle } from "./ui/LocaleToggle";
 import { RollText } from "./ui/RollText";
@@ -23,7 +22,6 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { locale } = useLocale();
-  const { theme } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -32,21 +30,20 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Unscrolled the header floats over the dark hero; scrolled it sits on the
-  // page surface, which is only light in the light theme.
-  const onDark = !scrolled || theme === "dark";
+  // The nav chrome is dark in both themes, so its contents are always the
+  // light-on-dark treatment regardless of scroll position or theme.
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-5">
       <div
-        className={`glass-panel mx-auto max-w-[1320px] overflow-hidden rounded-[1.25rem] border transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          onDark ? "glass-on-dark" : "glass-on-light"
-        } ${scrolled ? "glass-raised" : ""} ${open ? "glass-opaque" : ""}`}
+        className={`glass-panel glass-nav mx-auto max-w-[1320px] overflow-hidden rounded-[1.25rem] border transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          scrolled ? "is-scrolled glass-raised" : ""
+        } ${open ? "glass-opaque" : ""}`}
       >
         <div className="relative flex h-[3.75rem] items-center justify-between gap-6 px-4 md:h-16 md:px-6">
         <Link href="#top" className="shrink-0">
           <Image
-            src={onDark ? "/brand/white-logo_mn.svg" : "/brand/logo_mn.svg"}
+            src="/brand/white-logo_mn.svg"
             alt="IC Asset Management"
             width={132}
             height={41}
@@ -60,11 +57,9 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              className={`group eyebrow whitespace-nowrap transition-colors duration-500 ${
-                onDark ? "text-on-strong-muted" : "text-fg-muted"
-              }`}
+              className="group eyebrow whitespace-nowrap text-on-strong-muted transition-colors duration-500"
             >
-              <RollText hoverClassName={onDark ? "text-accent-on-dark" : "text-accent"}>
+              <RollText hoverClassName="text-accent-on-dark">
                 {pick(locale, item.mn, item.en)}
               </RollText>
             </a>
@@ -72,27 +67,23 @@ export function Header() {
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2.5 lg:flex">
-          <LocaleToggle light={onDark} />
-          <ThemeToggle light={onDark} />
+          <LocaleToggle light />
+          <ThemeToggle light />
           <a
             href="https://system.ic-invest.mn"
             target="_blank"
             rel="noopener noreferrer"
-            className={`group eyebrow overflow-hidden whitespace-nowrap rounded-full border px-5 py-2.5 transition-colors duration-500 ${
-              onDark
-                ? "border-[color:var(--c-line-strong)] text-on-strong hover:border-accent-on-dark"
-                : "hairline text-fg hover:border-accent"
-            }`}
+            className="group eyebrow overflow-hidden whitespace-nowrap rounded-full border border-[color:var(--c-line-strong)] px-5 py-2.5 text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
           >
-            <RollText hoverClassName={onDark ? "text-accent-on-dark" : "text-accent"}>
+            <RollText hoverClassName="text-accent-on-dark">
               {pick(locale, "Нэвтрэх", "Login")}
             </RollText>
           </a>
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <LocaleToggle light={onDark} />
-          <ThemeToggle light={onDark} />
+          <LocaleToggle light />
+          <ThemeToggle light />
           <button
             onClick={() => setOpen((v) => !v)}
             className="flex h-9 w-9 flex-col items-center justify-center gap-[5px]"
@@ -100,10 +91,10 @@ export function Header() {
             aria-expanded={open}
           >
             <span
-              className={`h-px w-5 transition-all duration-500 ${onDark ? "bg-on-strong" : "bg-fg"} ${open ? "translate-y-[3px] rotate-45" : ""}`}
+              className={`h-px w-5 transition-all duration-500 bg-on-strong ${open ? "translate-y-[3px] rotate-45" : ""}`}
             />
             <span
-              className={`h-px w-5 transition-all duration-500 ${onDark ? "bg-on-strong" : "bg-fg"} ${open ? "-translate-y-[3px] -rotate-45" : ""}`}
+              className={`h-px w-5 transition-all duration-500 bg-on-strong ${open ? "-translate-y-[3px] -rotate-45" : ""}`}
             />
           </button>
         </div>
@@ -119,9 +110,7 @@ export function Header() {
               className="relative overflow-hidden lg:hidden"
             >
               <div
-                className={`flex flex-col px-4 pb-5 md:px-6 ${
-                  onDark ? "text-on-strong" : "text-fg"
-                }`}
+                className="flex flex-col px-4 pb-5 text-on-strong md:px-6"
               >
                 {NAV.map((item, i) => (
                   <motion.a
@@ -135,11 +124,7 @@ export function Header() {
                       delay: 0.06 + i * 0.045,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className={`font-display border-t py-3.5 text-2xl ${
-                      onDark
-                        ? "border-[color:var(--c-line-strong)]"
-                        : "border-[color:var(--c-line)]"
-                    }`}
+                    className="font-display border-t border-[color:var(--c-line-strong)] py-3.5 text-2xl"
                   >
                     {pick(locale, item.mn, item.en)}
                   </motion.a>
