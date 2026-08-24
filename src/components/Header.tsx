@@ -5,18 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocale, pick } from "@/lib/locale";
+import { NAV } from "@/lib/nav";
 import { ThemeToggle } from "./ui/ThemeToggle";
 import { LocaleToggle } from "./ui/LocaleToggle";
+import { NavMenu } from "./ui/NavMenu";
 import { RollText } from "./ui/RollText";
-
-const NAV = [
-  { mn: "Арга барил", en: "Approach", href: "#philosophy" },
-  { mn: "Сангууд", en: "Funds", href: "#funds" },
-  { mn: "Судалгаа", en: "Insights", href: "#insights" },
-  { mn: "Хамт олон", en: "Team", href: "#team" },
-  { mn: "Бидний тухай", en: "About", href: "#about" },
-  { mn: "Холбоо барих", en: "Contact", href: "#contact" },
-];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,69 +28,61 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-5">
+      {/*
+        No overflow-hidden here: the desktop dropdowns hang below the capsule
+        and would be clipped. The mobile panel clips its own corners instead.
+      */}
       <div
-        className={`glass-panel glass-nav mx-auto max-w-[1320px] overflow-hidden rounded-[1.25rem] border transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`glass-panel glass-nav mx-auto max-w-[1320px] rounded-[1.25rem] border transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           scrolled ? "is-scrolled glass-raised" : ""
         } ${open ? "glass-opaque" : ""}`}
       >
         <div className="relative flex h-[3.75rem] items-center justify-between gap-6 px-4 md:h-16 md:px-6">
-        <Link href="#top" className="shrink-0">
-          <Image
-            src="/brand/white-logo_mn.svg"
-            alt="IC Asset Management"
-            width={132}
-            height={41}
-            className="h-7 w-auto transition-opacity duration-700 md:h-[1.9rem]"
-            priority
-          />
-        </Link>
+          <Link href="#top" className="shrink-0">
+            <Image
+              src="/brand/white-logo_mn.svg"
+              alt="IC Asset Management"
+              width={132}
+              height={41}
+              className="h-7 w-auto transition-opacity duration-700 md:h-[1.9rem]"
+              priority
+            />
+          </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex xl:gap-9">
-          {NAV.map((item) => (
+          <NavMenu locale={locale} />
+
+          <div className="hidden shrink-0 items-center gap-2.5 lg:flex">
+            <LocaleToggle light />
+            <ThemeToggle light />
             <a
-              key={item.href}
-              href={item.href}
-              className="group eyebrow whitespace-nowrap text-on-strong-muted transition-colors duration-500"
+              href="https://system.ic-invest.mn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group eyebrow overflow-hidden whitespace-nowrap rounded-full border border-[color:var(--c-line-strong)] px-5 py-2.5 text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
             >
               <RollText hoverClassName="text-accent-on-dark">
-                {pick(locale, item.mn, item.en)}
+                {pick(locale, "Нэвтрэх", "Login")}
               </RollText>
             </a>
-          ))}
-        </nav>
+          </div>
 
-        <div className="hidden shrink-0 items-center gap-2.5 lg:flex">
-          <LocaleToggle light />
-          <ThemeToggle light />
-          <a
-            href="https://system.ic-invest.mn"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group eyebrow overflow-hidden whitespace-nowrap rounded-full border border-[color:var(--c-line-strong)] px-5 py-2.5 text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
-          >
-            <RollText hoverClassName="text-accent-on-dark">
-              {pick(locale, "Нэвтрэх", "Login")}
-            </RollText>
-          </a>
-        </div>
-
-        <div className="flex items-center gap-2 lg:hidden">
-          <LocaleToggle light />
-          <ThemeToggle light />
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="flex h-9 w-9 flex-col items-center justify-center gap-[5px]"
-            aria-label="Цэс"
-            aria-expanded={open}
-          >
-            <span
-              className={`h-px w-5 transition-all duration-500 bg-on-strong ${open ? "translate-y-[3px] rotate-45" : ""}`}
-            />
-            <span
-              className={`h-px w-5 transition-all duration-500 bg-on-strong ${open ? "-translate-y-[3px] -rotate-45" : ""}`}
-            />
-          </button>
-        </div>
+          <div className="flex items-center gap-2 lg:hidden">
+            <LocaleToggle light />
+            <ThemeToggle light />
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className="flex h-9 w-9 flex-col items-center justify-center gap-[5px]"
+              aria-label="Цэс"
+              aria-expanded={open}
+            >
+              <span
+                className={`h-px w-5 bg-on-strong transition-all duration-500 ${open ? "translate-y-[3px] rotate-45" : ""}`}
+              />
+              <span
+                className={`h-px w-5 bg-on-strong transition-all duration-500 ${open ? "-translate-y-[3px] -rotate-45" : ""}`}
+              />
+            </button>
+          </div>
         </div>
 
         <AnimatePresence initial={false}>
@@ -107,28 +92,49 @@ export function Header() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative overflow-hidden lg:hidden"
+              className="relative overflow-hidden rounded-b-[1.25rem] lg:hidden"
             >
-              <div
-                className="flex flex-col px-4 pb-5 text-on-strong md:px-6"
-              >
-                {NAV.map((item, i) => (
-                  <motion.a
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
+              <div className="flex flex-col px-4 pb-5 text-on-strong md:px-6">
+                {NAV.map((entry, i) => (
+                  <motion.div
+                    key={entry.key}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
                       duration: 0.5,
-                      delay: 0.06 + i * 0.045,
+                      delay: 0.06 + i * 0.05,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="font-display border-t border-[color:var(--c-line-strong)] py-3.5 text-2xl"
+                    className="border-t border-[color:var(--c-line-strong)] py-3.5"
                   >
-                    {pick(locale, item.mn, item.en)}
-                  </motion.a>
+                    <a
+                      href={entry.href}
+                      onClick={() => setOpen(false)}
+                      className="font-display block text-2xl"
+                    >
+                      {pick(locale, entry.mn, entry.en)}
+                    </a>
+
+                    {entry.children && (
+                      <ul className="mt-2 space-y-1 pl-4">
+                        {entry.children.map((child) => (
+                          <li key={child.mn}>
+                            <a
+                              href={child.href}
+                              target={child.external ? "_blank" : undefined}
+                              rel={child.external ? "noopener noreferrer" : undefined}
+                              onClick={() => setOpen(false)}
+                              className="block py-1.5 text-[0.95rem] text-on-strong-muted"
+                            >
+                              {pick(locale, child.mn, child.en)}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </motion.div>
                 ))}
+
                 <a
                   href="https://system.ic-invest.mn"
                   target="_blank"
