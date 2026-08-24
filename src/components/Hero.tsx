@@ -62,22 +62,30 @@ export function Hero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-4 lg:self-end lg:pb-3"
+            className="lg:col-span-4 lg:self-start lg:pt-1"
           >
             {/*
               The brand's own checkmark swash (the "V" in InVesCore), isolated
               from the logo file and rendered as a particle field that gathers
               in on mount — same particle engine as reactbits' ParticleText,
               forked to sample a filled SVG path instead of fillText. Stands in
-              for the lead paragraph as the hero's visual anchor.
+              for the lead paragraph as the hero's visual anchor, top-aligned
+              with the eyebrow/headline on the left instead of floating in the
+              empty space above the buttons.
+
+              trigger="mount": the initial gather always runs regardless of
+              this prop, but "hover" additionally restarts the full
+              scatter-to-gather animation on every pointerenter, which read as
+              the mark "resetting" each time the cursor crossed it. Pointer
+              repel still works either way — that logic isn't gated by trigger.
             */}
-            <div className="h-[clamp(6rem,11vw,9.5rem)] w-[clamp(6rem,11vw,9.5rem)]">
+            <div className="h-[clamp(6.5rem,11vw,10rem)] w-[clamp(6.5rem,11vw,10rem)]">
               <ParticleShape
                 path={BRAND_CHECKMARK_PATH}
                 viewBox={BRAND_CHECKMARK_VIEWBOX}
                 color={BRAND_RED}
                 highlightColor="#ff8a7a"
-                trigger="hover"
+                trigger="mount"
                 particleSize={2.4}
                 density={2}
                 scatter={170}
@@ -91,7 +99,7 @@ export function Hero({
               />
             </div>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
+            <div className="mt-10 flex flex-wrap items-center gap-3">
               <Button href="#funds" onDark>
                 {pick(locale, "Сангуудыг үзэх", "Explore funds")}
               </Button>
