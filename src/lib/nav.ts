@@ -1,3 +1,14 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  Briefcase,
+  Eye,
+  Gem,
+  Megaphone,
+  MessageSquare,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+
 /**
  * Mirrors the live ic-invest.mn menu tree (labels and grouping taken from the
  * MN and EN navs on the real site). Targets are remapped onto this one-page
@@ -7,6 +18,7 @@ export type NavChild = {
   mn: string;
   en: string;
   href: string;
+  icon: LucideIcon;
   external?: boolean;
 };
 
@@ -25,9 +37,9 @@ export const NAV: NavEntry[] = [
     en: "About us",
     href: "#about",
     children: [
-      { mn: "Алсын хараа", en: "Vision", href: "#about" },
-      { mn: "Үнэт зүйл", en: "Values", href: "#philosophy" },
-      { mn: "Хамт олон", en: "Our Team", href: "#team" },
+      { mn: "Алсын хараа", en: "Vision", href: "#about", icon: Eye },
+      { mn: "Үнэт зүйл", en: "Values", href: "#philosophy", icon: Gem },
+      { mn: "Хамт олон", en: "Our Team", href: "#team", icon: Users },
     ],
   },
   {
@@ -42,8 +54,8 @@ export const NAV: NavEntry[] = [
     en: "Investor relations",
     href: "#insights",
     children: [
-      { mn: "Мэдээлэл", en: "Announcement", href: "#insights" },
-      { mn: "Судалгаа", en: "Market outlook", href: "#insights" },
+      { mn: "Мэдээлэл", en: "Announcement", href: "#insights", icon: Megaphone },
+      { mn: "Судалгаа", en: "Market outlook", href: "#insights", icon: TrendingUp },
     ],
   },
   {
@@ -52,11 +64,12 @@ export const NAV: NavEntry[] = [
     en: "Contact us",
     href: "#contact",
     children: [
-      { mn: "Санал хүсэлт", en: "Request", href: "#contact" },
+      { mn: "Санал хүсэлт", en: "Request", href: "#contact", icon: MessageSquare },
       {
         mn: "Ажлын байр",
         en: "Job offer",
         href: "https://ic-invest.mn/mn/contact-us#workplace",
+        icon: Briefcase,
         external: true,
       },
     ],

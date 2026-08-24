@@ -116,20 +116,26 @@ export function Header() {
                     </a>
 
                     {entry.children && (
-                      <ul className="mt-2 space-y-1 pl-4">
-                        {entry.children.map((child) => (
-                          <li key={child.mn}>
-                            <a
-                              href={child.href}
-                              target={child.external ? "_blank" : undefined}
-                              rel={child.external ? "noopener noreferrer" : undefined}
-                              onClick={() => setOpen(false)}
-                              className="block py-1.5 text-[0.95rem] text-on-strong-muted"
-                            >
-                              {pick(locale, child.mn, child.en)}
-                            </a>
-                          </li>
-                        ))}
+                      <ul className="mt-3 space-y-3">
+                        {entry.children.map((child) => {
+                          const Icon = child.icon;
+                          return (
+                            <li key={child.mn}>
+                              <a
+                                href={child.href}
+                                target={child.external ? "_blank" : undefined}
+                                rel={child.external ? "noopener noreferrer" : undefined}
+                                onClick={() => setOpen(false)}
+                                className="flex items-center gap-3 text-[0.95rem] text-on-strong-muted"
+                              >
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[color:var(--c-line-strong)] bg-white/[0.04]">
+                                  <Icon className="h-[15px] w-[15px]" strokeWidth={1.6} />
+                                </span>
+                                {pick(locale, child.mn, child.en)}
+                              </a>
+                            </li>
+                          );
+                        })}
                       </ul>
                     )}
                   </motion.div>
