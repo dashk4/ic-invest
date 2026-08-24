@@ -6,11 +6,50 @@ import { Button } from "./ui/Button";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
 import ParticleShape from "./ui/ParticleShape";
-import { BRAND_CHECKMARK_PATH, BRAND_CHECKMARK_VIEWBOX, BRAND_RED } from "@/lib/brandMark";
+import { FlipWords } from "./ui/FlipWords";
+import {
+  BRAND_CHECKMARK_PATH,
+  BRAND_CHECKMARK_VIEWBOX,
+  BRAND_RED,
+} from "@/lib/brandMark";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
 function formatInt(n: number) {
   return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+const MN_FLIP_WORDS = [
+  "мэргэшсэн",
+  "туршлагатай",
+  "хариуцлагатай",
+  "инновацлаг",
+];
+const EN_FLIP_WORDS = ["expertise", "experience", "insight", "discipline"];
+
+/** Small inline instance of the brand checkmark, sized to the headline's own
+ *  em so it scales with the clamp()'d display type automatically. */
+function InlineCheckmark() {
+  return (
+    <span className="relative inline-block h-[0.6em] w-[0.6em] translate-y-[0.08em] align-middle">
+      <ParticleShape
+        path={BRAND_CHECKMARK_PATH}
+        viewBox={BRAND_CHECKMARK_VIEWBOX}
+        color={BRAND_RED}
+        highlightColor="#ff8a7a"
+        trigger="mount"
+        particleSize={1.5}
+        density={1.6}
+        scatter={80}
+        gatherDuration={1300}
+        stagger={260}
+        pointerRepel={22}
+        repelRadius={50}
+        idleDrift={0.35}
+        glow
+        label="IC"
+      />
+    </span>
+  );
 }
 
 export function Hero({
@@ -40,19 +79,34 @@ export function Hero({
               Инвескор Ассет Менежмент ҮЦК
             </motion.p>
 
-            <h1 key={locale + "-h1"} className="t-display mt-8 max-w-[15ch] text-balance">
+            <h1
+              key={locale + "-h1"}
+              className="t-display mt-8 max-w-[15ch] text-balance"
+            >
+              {/*
+                The brand checkmark sits right after the first word — the
+                same device as the logo's "In[✓]esCore", where the mark is
+                punctuation inside the wordmark rather than beside it.
+              */}
               <SplitReveal
                 trigger="mount"
                 delay={0.12}
-                text={pick(locale, "Хөрөнгө оруулалтын", "Your journey,")}
+                text={pick(locale, "Хөрөнгө", "Your")}
+              />{" "}
+              <InlineCheckmark />{" "}
+              <SplitReveal
+                trigger="mount"
+                delay={0.17}
+                text={pick(locale, "оруулалтын", "journey,")}
               />
               <br />
               <span className="italic text-accent-on-dark">
-                <SplitReveal
-                  trigger="mount"
-                  delay={0.3}
-                  text={pick(locale, "мэргэшсэн удирдлага", "our expertise")}
+                {locale === "en" && "our "}
+                <FlipWords
+                  key={locale}
+                  words={pick(locale, MN_FLIP_WORDS, EN_FLIP_WORDS)}
                 />
+                {locale === "mn" && " удирдлага"}
               </span>
             </h1>
           </div>
@@ -80,7 +134,7 @@ export function Hero({
               repel still works either way — that logic isn't gated by trigger.
             */}
             <div className="h-[clamp(6.5rem,11vw,10rem)] w-[clamp(6.5rem,11vw,10rem)]">
-              <ParticleShape
+              {/* <ParticleShape
                 path={BRAND_CHECKMARK_PATH}
                 viewBox={BRAND_CHECKMARK_VIEWBOX}
                 color={BRAND_RED}
@@ -96,10 +150,10 @@ export function Hero({
                 idleDrift={0.5}
                 glow
                 label="IC"
-              />
+              /> */}
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+            <div className="mt-48 flex flex-wrap items-center gap-3">
               <Button href="#funds" onDark>
                 {pick(locale, "Сангуудыг үзэх", "Explore funds")}
               </Button>
@@ -151,7 +205,13 @@ function DataRail({
             </span>
           </RailCell>
 
-          <RailCell label={pick(locale, "Нэгжийн цэвэр үнэ цэн", "Net asset value / unit")}>
+          <RailCell
+            label={pick(
+              locale,
+              "Нэгжийн цэвэр үнэ цэн",
+              "Net asset value / unit",
+            )}
+          >
             <span className="t-numeral text-2xl text-on-strong">
               {nav != null ? <Counter value={nav} decimals={2} /> : "—"}
               <span className="ml-1 text-base text-on-strong-subtle">₮</span>

@@ -14,21 +14,14 @@ import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
  * once and only the mask position tracks the pointer.
  */
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789₮%.+-";
-
-function randomString(length: number) {
-  let out = "";
-  for (let i = 0; i < length; i++) {
-    out += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
-  }
-  return out;
-}
-
 export function EvervaultCard({
   children,
+  backdrop,
   className = "",
 }: {
   children?: ReactNode;
+  /** rendered behind the reveal pattern, e.g. an ambient DotField */
+  backdrop?: ReactNode;
   className?: string;
 }) {
   const mouseX = useMotionValue(0);
@@ -36,7 +29,6 @@ export function EvervaultCard({
   const [field, setField] = useState("");
 
   // client-only: keeps the random field out of the server render
-  useEffect(() => setField(randomString(1800)), []);
 
   function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect();
@@ -47,8 +39,11 @@ export function EvervaultCard({
   return (
     <div
       onMouseMove={onMouseMove}
-      className={`group/card relative flex w-full items-center justify-center overflow-hidden rounded-2xl border hairline bg-surface-sunken/40 ${className}`}
+      className={`group/card relative flex w-full items-center justify-center overflow-hidden rounded-2xl border hairline ${
+        backdrop ? "" : "bg-surface-sunken/40"
+      } ${className}`}
     >
+      {backdrop && <div className="absolute inset-0 z-0">{backdrop}</div>}
       <CardPattern mouseX={mouseX} mouseY={mouseY} field={field} />
       <div className="relative z-10 w-full">{children}</div>
     </div>
@@ -72,15 +67,16 @@ function CardPattern({
       {/* Theme-aware stops. The published card assumes a dark page; forcing a
           dark reveal on the light theme buried the dark body text under it. */}
       <motion.div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+        className="absolute inset-0 opacity-0 transition-opacity duration-500 "
         style={{
           ...style,
-          background: "linear-gradient(120deg, var(--c-vault-a), var(--c-vault-b))",
+          background:
+            "linear-gradient(120deg, var(--c-vault-a), var(--c-vault-b))",
         }}
       />
       {/* no mix-blend-overlay: over a light surface it greyed the characters out */}
       <motion.div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+        className="absolute inset-0 opacity-0 transition-opacity duration-500"
         style={style}
       >
         <p className="h-full break-words whitespace-pre-wrap font-mono text-[0.72rem] leading-[1.35] font-bold text-[color:var(--c-vault-char)]">

@@ -5,6 +5,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { EvervaultCard } from "./ui/EvervaultCard";
+import DotField from "./ui/DotField";
 import { ContactGlobe } from "./ContactGlobe";
 import { useLocale, pick } from "@/lib/locale";
 
@@ -33,7 +34,7 @@ export function Contact() {
       value: pick(
         locale,
         "Улаанбаатар 14230, Сүхбаатар дүүрэг, 1-р хороо, Парисийн гудамж 42, Ай Си Тауэр, 15 давхар",
-        "Parisian street 42, IC Tower, 15th floor, Sukhbaatar district-1, Ulaanbaatar 14230, Mongolia"
+        "Parisian street 42, IC Tower, 15th floor, Sukhbaatar district-1, Ulaanbaatar 14230, Mongolia",
       ),
       href: undefined,
     },
@@ -41,9 +42,9 @@ export function Contact() {
 
   const mailtoHref = `mailto:info@ic-invest.mn?subject=${encodeURIComponent(
     (locale === "en" ? "Message from " : "Санал хүсэлт — ") +
-      (name || (locale === "en" ? "Website visitor" : "Хэрэглэгч"))
+      (name || (locale === "en" ? "Website visitor" : "Хэрэглэгч")),
   )}&body=${encodeURIComponent(
-    `${pick(locale, "Овог нэр", "Name")}: ${name}\n${pick(locale, "Утас", "Phone")}: ${phone}\n\n${message}`
+    `${pick(locale, "Овог нэр", "Name")}: ${name}\n${pick(locale, "Утас", "Phone")}: ${phone}\n\n${message}`,
   )}`;
 
   const fieldClass =
@@ -57,11 +58,17 @@ export function Contact() {
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-6">
             <Reveal>
-              <p className="eyebrow text-accent">{pick(locale, "Холбоо барих", "Contact")}</p>
+              <p className="eyebrow text-accent">
+                {pick(locale, "Холбоо барих", "Contact")}
+              </p>
             </Reveal>
             <h2 className="t-h2 mt-6 max-w-[13ch] text-balance text-fg">
               <SplitReveal
-                text={pick(locale, "Хамтран ажиллахад бэлэн үү", "Ready to work together")}
+                text={pick(
+                  locale,
+                  "Хамтран ажиллахад бэлэн үү",
+                  "Ready to work together",
+                )}
               />
             </h2>
             <Reveal delay={0.12}>
@@ -69,7 +76,7 @@ export function Contact() {
                 {pick(
                   locale,
                   "Улаанбаатараас дэлхийн хөрөнгийн зах зээл рүү — Инвескор Глобал Кью ETF нь Насдак дээр бүртгэлтэй хамгийн том компаниудад хөрөнгө оруулдаг.",
-                  "From Ulaanbaatar to the world's capital markets — the Invescore Global Q ETF invests in the largest companies listed on Nasdaq."
+                  "From Ulaanbaatar to the world's capital markets — the Invescore Global Q ETF invests in the largest companies listed on Nasdaq.",
                 )}
               </p>
             </Reveal>
@@ -86,26 +93,52 @@ export function Contact() {
             const Icon = d.icon;
             const body = (
               <div className="relative flex h-full min-h-[13rem] flex-col justify-between p-6 transition-colors duration-500">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border hairline bg-surface">
-                  <Icon className="h-[18px] w-[18px] text-accent" strokeWidth={1.7} />
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 shadow-[0_0_0_1px_rgba(0,0,0,0)] backdrop-blur-sm transition-colors duration-500 group-hover/card:border-accent/50 group-hover/card:bg-accent/15">
+                  <Icon
+                    className="h-[19px] w-[19px] text-accent"
+                    strokeWidth={1.7}
+                  />
                 </span>
                 <div>
                   <p className={labelClass}>{d.label}</p>
-                  <p className="font-display mt-2 text-pretty text-[1.15rem] leading-snug text-fg">
+                  <p className="font-display mt-2 text-pretty text-[1.2rem] leading-snug text-fg">
                     {d.value}
                   </p>
                 </div>
               </div>
             );
 
+            // ambient dot field behind the card, jade-tinted; the evervault
+            // character reveal layers on top of it on hover
+            const backdrop = (
+              <>
+                <div className="absolute inset-0 bg-surface-sunken/40" />
+                <DotField
+                  dotRadius={1.3}
+                  dotSpacing={15}
+                  cursorRadius={150}
+                  cursorForce={0.08}
+                  bulgeStrength={36}
+                  glowRadius={130}
+                  gradientFrom="rgba(111,191,163,0.4)"
+                  gradientTo="rgba(74,157,129,0.14)"
+                  glowColor="#6fbfa3"
+                />
+              </>
+            );
+
             return (
               <Reveal key={d.label} delay={i * 0.08}>
                 {d.href ? (
                   <a href={d.href} className="block h-full">
-                    <EvervaultCard className="h-full">{body}</EvervaultCard>
+                    <EvervaultCard className="h-full" backdrop={backdrop}>
+                      {body}
+                    </EvervaultCard>
                   </a>
                 ) : (
-                  <EvervaultCard className="h-full">{body}</EvervaultCard>
+                  <EvervaultCard className="h-full" backdrop={backdrop}>
+                    {body}
+                  </EvervaultCard>
                 )}
               </Reveal>
             );
@@ -115,7 +148,9 @@ export function Contact() {
         {/* message form */}
         <Reveal delay={0.15} className="mt-4">
           <div className="rounded-2xl border hairline bg-card p-8 md:p-10">
-            <p className={labelClass}>{pick(locale, "Санал хүсэлт", "Send a message")}</p>
+            <p className={labelClass}>
+              {pick(locale, "Санал хүсэлт", "Send a message")}
+            </p>
 
             <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
               <div>
@@ -151,7 +186,11 @@ export function Contact() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   className={fieldClass}
-                  placeholder={pick(locale, "Бидэнд юугаар туслах вэ?", "How can we help?")}
+                  placeholder={pick(
+                    locale,
+                    "Бидэнд юугаар туслах вэ?",
+                    "How can we help?",
+                  )}
                 />
               </div>
             </div>
