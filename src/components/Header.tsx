@@ -38,7 +38,7 @@ export function Header() {
         } ${open ? "glass-opaque" : ""}`}
       >
         <div className="relative flex h-[3.75rem] items-center justify-between gap-6 px-4 md:h-16 md:px-6">
-          <Link href="#top" className="shrink-0">
+          <Link href="/" className="shrink-0">
             <Image
               src="/brand/white-logo_mn.svg"
               alt="IC Asset Management"

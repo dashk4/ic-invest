@@ -73,7 +73,7 @@ export function Hero({
               <Button href="#funds" onDark>
                 {pick(locale, "Сангуудыг үзэх", "Explore funds")}
               </Button>
-              <Button href="#philosophy" variant="ghost" onDark>
+              <Button href="/about" variant="ghost" onDark>
                 {pick(locale, "Бидний арга барил", "Our approach")}
               </Button>
             </div>

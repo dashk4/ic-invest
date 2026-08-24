@@ -5,11 +5,11 @@ import { useLocale, pick } from "@/lib/locale";
 import { RollText } from "./ui/RollText";
 
 const LINKS = [
-  { mn: "Бидний тухай", en: "About us", href: "#about" },
-  { mn: "Хөрөнгө оруулалтын сан", en: "Our funds", href: "#funds" },
-  { mn: "Судалгаа", en: "Insights", href: "#insights" },
-  { mn: "Хамт олон", en: "Our team", href: "#team" },
-  { mn: "Холбоо барих", en: "Contact", href: "#contact" },
+  { mn: "Бидний тухай", en: "About us", href: "/about" },
+  { mn: "Хөрөнгө оруулалтын сан", en: "Our funds", href: "/#funds" },
+  { mn: "Судалгаа", en: "Insights", href: "/#insights" },
+  { mn: "Хамт олон", en: "Our team", href: "/about#team" },
+  { mn: "Холбоо барих", en: "Contact", href: "/#contact" },
 ];
 
 const SOCIAL = [

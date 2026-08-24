@@ -17,7 +17,7 @@ export function About() {
   const { locale } = useLocale();
 
   return (
-    <section id="about" className="theme-fade section-y bg-surface-alt">
+    <section id="about" className="theme-fade bg-surface-alt pb-[clamp(6rem,12vh,10rem)] pt-36 md:pt-44">
       <div className="container-page">
         <SectionHead
           eyebrow={pick(locale, "Бидний тухай", "About us")}
@@ -37,7 +37,8 @@ export function About() {
           }
         />
 
-        {/* anchor for the "Үнэт зүйл" menu entry */}
+        {/* anchors for the "Бидний тухай" submenu */}
+        <div id="vision" className="scroll-mt-28" />
         <div id="philosophy" className="scroll-mt-28" />
 
         <BentoGrid className="mt-16">
@@ -191,41 +192,45 @@ function VisionHeader({ locale }: { locale: Locale }) {
   );
 }
 
-/** Rows of real portraits that shear apart on hover. */
+/** Overlapping portraits that fan apart on hover — a team, not a conversation. */
 function TeamStackHeader({ locale }: { locale: Locale }) {
-  const rows = [ALL_MEMBERS[3], ALL_MEMBERS[4], ALL_MEMBERS[7]];
-  const shift = {
-    initial: { x: 0 },
-    animate: { x: 10, rotate: 3, transition: { duration: 0.25 } },
-  };
-  const shiftBack = {
-    initial: { x: 0 },
-    animate: { x: -10, rotate: -3, transition: { duration: 0.25 } },
-  };
+  const faces = [ALL_MEMBERS[0], ALL_MEMBERS[3], ALL_MEMBERS[4], ALL_MEMBERS[7], ALL_MEMBERS[9]];
+  const mid = (faces.length - 1) / 2;
 
   return (
     <motion.div
       initial="initial"
       whileHover="animate"
-      className="relative flex h-full min-h-[6rem] w-full flex-1 flex-col justify-center gap-2 overflow-hidden rounded-xl bg-surface-sunken/60 p-3 text-fg-subtle"
+      className="relative flex h-full min-h-[6rem] w-full flex-1 flex-col items-center justify-center gap-5 overflow-hidden rounded-xl bg-surface-sunken/60 p-4 text-fg-subtle"
     >
       <span className="bg-dots pointer-events-none absolute inset-0 opacity-30" />
-      {rows.map((m, i) => (
-        <motion.div
-          key={m.mn}
-          variants={i === 1 ? shiftBack : shift}
-          className={`relative flex items-center gap-2.5 rounded-full border hairline bg-surface p-1.5 ${
-            i === 1 ? "ml-auto w-3/4" : "w-full"
-          }`}
-        >
-          <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full">
-            <Image src={m.photo} alt="" fill sizes="24px" className="object-cover object-top" />
-          </span>
-          <span className="truncate text-[0.7rem] text-fg-muted">
-            {pick(locale, m.mnTitle, m.enTitle)}
-          </span>
-        </motion.div>
-      ))}
+
+      <div className="relative flex -space-x-6">
+        {faces.map((m, i) => (
+          <motion.span
+            key={m.mn}
+            variants={{
+              initial: { x: 0, y: 0 },
+              animate: { x: (i - mid) * 13, y: i % 2 ? 5 : -5 },
+            }}
+            transition={{ duration: 0.55, ease: EASE }}
+            style={{ zIndex: faces.length - i }}
+            className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-[3px] ring-[color:var(--c-surface-alt)]"
+          >
+            <Image
+              src={m.photo}
+              alt=""
+              fill
+              sizes="64px"
+              className="object-cover object-top grayscale transition-all duration-700 group-hover/bento:grayscale-0"
+            />
+          </motion.span>
+        ))}
+      </div>
+
+      <p className="relative eyebrow text-fg-subtle">
+        {pick(locale, "10 мэргэжилтэн", "10 professionals")}
+      </p>
     </motion.div>
   );
 }

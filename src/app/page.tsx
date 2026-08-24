@@ -1,7 +1,6 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Stats } from "@/components/Stats";
-import { About } from "@/components/About";
 import { Funds } from "@/components/Funds";
 import { Insights } from "@/components/Insights";
 import { WhyIC } from "@/components/WhyIC";
@@ -26,7 +25,6 @@ export default async function Home() {
           }}
         />
         <Stats />
-        <About />
         <Funds />
         <Insights />
         <WhyIC />

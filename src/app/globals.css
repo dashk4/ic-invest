@@ -256,13 +256,18 @@ section[id] {
   the dark hero; once scrolled it becomes an ink film so it stays dark even
   against light content.
 */
+/*
+  Always an ink film, never a white one. A white film only reads correctly
+  over the home page's dark hero — on /about, whose first screen is light,
+  it left white nav text on a near-white bar.
+*/
 .glass-nav {
-  background-color: color-mix(in srgb, #ffffff 7%, transparent);
-  border-color: color-mix(in srgb, #ffffff 15%, transparent);
+  background-color: color-mix(in srgb, var(--ink-900) 62%, transparent);
+  border-color: color-mix(in srgb, #ffffff 13%, transparent);
 }
 
 .glass-nav.is-scrolled {
-  background-color: color-mix(in srgb, var(--ink-900) 82%, transparent);
+  background-color: color-mix(in srgb, var(--ink-900) 85%, transparent);
   border-color: color-mix(in srgb, #ffffff 12%, transparent);
 }
 
