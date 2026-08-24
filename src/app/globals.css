@@ -43,6 +43,10 @@
   --c-accent-on-dark: var(--jade-400);
   --c-accent-contrast: var(--bone-100);
   --c-card: color-mix(in srgb, #ffffff 55%, transparent);
+  /* evervault reveal — light here, so the dark body text keeps reading */
+  --c-vault-a: color-mix(in srgb, var(--jade-400) 60%, transparent);
+  --c-vault-b: color-mix(in srgb, var(--jade-500) 32%, transparent);
+  --c-vault-char: color-mix(in srgb, var(--ink-800) 32%, transparent);
 }
 
 :root[data-theme="dark"] {
@@ -68,6 +72,9 @@
   --c-accent-on-dark: var(--jade-400);
   --c-accent-contrast: var(--ink-900);
   --c-card: color-mix(in srgb, #ffffff 4%, transparent);
+  --c-vault-a: var(--ink-800);
+  --c-vault-b: var(--jade-600);
+  --c-vault-char: color-mix(in srgb, var(--jade-400) 45%, transparent);
 }
 
 @theme inline {

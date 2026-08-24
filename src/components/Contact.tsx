@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
+import { EvervaultCard } from "./ui/EvervaultCard";
+import { ContactGlobe } from "./ContactGlobe";
 import { useLocale, pick } from "@/lib/locale";
 
 export function Contact() {
@@ -12,9 +15,20 @@ export function Contact() {
   const [message, setMessage] = useState("");
 
   const DETAILS = [
-    { label: pick(locale, "Утас", "Phone"), value: "7505-1575", href: "tel:75051575" },
-    { label: pick(locale, "И-мэйл", "Email"), value: "info@ic-invest.mn", href: "mailto:info@ic-invest.mn" },
     {
+      icon: Phone,
+      label: pick(locale, "Утас", "Phone"),
+      value: "7505-1575",
+      href: "tel:75051575",
+    },
+    {
+      icon: Mail,
+      label: pick(locale, "И-мэйл", "Email"),
+      value: "info@ic-invest.mn",
+      href: "mailto:info@ic-invest.mn",
+    },
+    {
+      icon: MapPin,
       label: pick(locale, "Хаяг", "Address"),
       value: pick(
         locale,
@@ -38,45 +52,72 @@ export function Contact() {
 
   return (
     <section id="contact" className="theme-fade section-y bg-surface-alt">
-      <div className="container-page grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-12">
-        <div className="lg:col-span-6">
-          <Reveal>
-            <p className="eyebrow text-accent">{pick(locale, "Холбоо барих", "Contact")}</p>
-          </Reveal>
-          <h2 className="t-h2 mt-6 max-w-[13ch] text-balance text-fg">
-            <SplitReveal
-              text={pick(locale, "Хамтран ажиллахад бэлэн үү", "Ready to work together")}
-            />
-          </h2>
+      <div className="container-page">
+        {/* globe + heading */}
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-6">
+            <Reveal>
+              <p className="eyebrow text-accent">{pick(locale, "Холбоо барих", "Contact")}</p>
+            </Reveal>
+            <h2 className="t-h2 mt-6 max-w-[13ch] text-balance text-fg">
+              <SplitReveal
+                text={pick(locale, "Хамтран ажиллахад бэлэн үү", "Ready to work together")}
+              />
+            </h2>
+            <Reveal delay={0.12}>
+              <p className="t-body mt-6 max-w-md text-pretty text-fg-muted">
+                {pick(
+                  locale,
+                  "Улаанбаатараас дэлхийн хөрөнгийн зах зээл рүү — Инвескор Глобал Кью ETF нь Насдак дээр бүртгэлтэй хамгийн том компаниудад хөрөнгө оруулдаг.",
+                  "From Ulaanbaatar to the world's capital markets — the Invescore Global Q ETF invests in the largest companies listed on Nasdaq."
+                )}
+              </p>
+            </Reveal>
+          </div>
 
-          <Reveal delay={0.12}>
-            <dl className="mt-12 space-y-8">
-              {DETAILS.map((d) => (
-                <div key={d.label} className="border-t hairline pt-5">
-                  <dt className={labelClass}>{d.label}</dt>
-                  <dd className="mt-3">
-                    {d.href ? (
-                      <a
-                        href={d.href}
-                        className="link-underline t-lead text-fg transition-colors duration-500 hover:text-accent"
-                      >
-                        {d.value}
-                      </a>
-                    ) : (
-                      <p className="t-lead max-w-sm text-pretty text-fg">{d.value}</p>
-                    )}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
+          <div className="flex justify-center lg:col-span-6 lg:justify-end">
+            <ContactGlobe />
+          </div>
         </div>
 
-        <Reveal delay={0.2} className="lg:col-span-6">
+        {/* contact details as evervault cards */}
+        <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {DETAILS.map((d, i) => {
+            const Icon = d.icon;
+            const body = (
+              <div className="relative flex h-full min-h-[13rem] flex-col justify-between p-6 transition-colors duration-500">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border hairline bg-surface">
+                  <Icon className="h-[18px] w-[18px] text-accent" strokeWidth={1.7} />
+                </span>
+                <div>
+                  <p className={labelClass}>{d.label}</p>
+                  <p className="font-display mt-2 text-pretty text-[1.15rem] leading-snug text-fg">
+                    {d.value}
+                  </p>
+                </div>
+              </div>
+            );
+
+            return (
+              <Reveal key={d.label} delay={i * 0.08}>
+                {d.href ? (
+                  <a href={d.href} className="block h-full">
+                    <EvervaultCard className="h-full">{body}</EvervaultCard>
+                  </a>
+                ) : (
+                  <EvervaultCard className="h-full">{body}</EvervaultCard>
+                )}
+              </Reveal>
+            );
+          })}
+        </div>
+
+        {/* message form */}
+        <Reveal delay={0.15} className="mt-4">
           <div className="rounded-2xl border hairline bg-card p-8 md:p-10">
             <p className={labelClass}>{pick(locale, "Санал хүсэлт", "Send a message")}</p>
 
-            <div className="mt-8 space-y-6">
+            <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
               <div>
                 <label className={labelClass} htmlFor="c-name">
                   {pick(locale, "Овог нэр", "Full name")}
@@ -105,29 +146,28 @@ export function Contact() {
                 <label className={labelClass} htmlFor="c-msg">
                   {pick(locale, "Санал хүсэлт", "Message")}
                 </label>
-                <textarea
+                <input
                   id="c-msg"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  rows={3}
-                  className={`${fieldClass} resize-none`}
+                  className={fieldClass}
                   placeholder={pick(locale, "Бидэнд юугаар туслах вэ?", "How can we help?")}
                 />
               </div>
-
-              <a
-                href={mailtoHref}
-                className="group mt-2 inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-[0.95rem] font-medium text-accent-contrast transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:brightness-110"
-              >
-                {pick(locale, "Илгээх", "Submit")}
-                <span
-                  aria-hidden
-                  className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </a>
             </div>
+
+            <a
+              href={mailtoHref}
+              className="group mt-8 inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-[0.95rem] font-medium text-accent-contrast transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:brightness-110"
+            >
+              {pick(locale, "Илгээх", "Submit")}
+              <span
+                aria-hidden
+                className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </a>
           </div>
         </Reveal>
       </div>
