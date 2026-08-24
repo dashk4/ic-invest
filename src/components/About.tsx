@@ -192,45 +192,47 @@ function VisionHeader({ locale }: { locale: Locale }) {
   );
 }
 
-/** Overlapping portraits that fan apart on hover — a team, not a conversation. */
+/**
+ * Same stacked-rows layout as before, restyled so it reads as a roster rather
+ * than a conversation: uniform full-width rows instead of alternating
+ * left/right widths, square-cornered tiles instead of bubbles, and a shared
+ * hover that slides them all one way instead of shearing them apart.
+ */
 function TeamStackHeader({ locale }: { locale: Locale }) {
-  const faces = [ALL_MEMBERS[0], ALL_MEMBERS[3], ALL_MEMBERS[4], ALL_MEMBERS[7], ALL_MEMBERS[9]];
-  const mid = (faces.length - 1) / 2;
+  const rows = [ALL_MEMBERS[5], ALL_MEMBERS[8], ALL_MEMBERS[9]];
 
   return (
     <motion.div
       initial="initial"
       whileHover="animate"
-      className="relative flex h-full min-h-[6rem] w-full flex-1 flex-col items-center justify-center gap-5 overflow-hidden rounded-xl bg-surface-sunken/60 p-4 text-fg-subtle"
+      className="relative flex h-full min-h-[6rem] w-full flex-1 flex-col justify-center gap-1.5 overflow-hidden rounded-xl bg-surface-sunken/60 p-2 text-fg-subtle"
     >
       <span className="bg-dots pointer-events-none absolute inset-0 opacity-30" />
 
-      <div className="relative flex -space-x-6">
-        {faces.map((m, i) => (
-          <motion.span
-            key={m.mn}
-            variants={{
-              initial: { x: 0, y: 0 },
-              animate: { x: (i - mid) * 13, y: i % 2 ? 5 : -5 },
-            }}
-            transition={{ duration: 0.55, ease: EASE }}
-            style={{ zIndex: faces.length - i }}
-            className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-[3px] ring-[color:var(--c-surface-alt)]"
-          >
+      {rows.map((m, i) => (
+        <motion.div
+          key={m.mn}
+          variants={{
+            initial: { x: 0 },
+            animate: { x: 8, transition: { duration: 0.45, delay: i * 0.06, ease: EASE } },
+          }}
+          className="relative flex w-full items-center gap-2.5 rounded-lg border hairline bg-surface px-2 py-[5px]"
+        >
+          <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded">
             <Image
               src={m.photo}
               alt=""
               fill
-              sizes="64px"
+              sizes="20px"
               className="object-cover object-top grayscale transition-all duration-700 group-hover/bento:grayscale-0"
             />
-          </motion.span>
-        ))}
-      </div>
-
-      <p className="relative eyebrow text-fg-subtle">
-        {pick(locale, "10 мэргэжилтэн", "10 professionals")}
-      </p>
+          </span>
+          <span className="min-w-0 flex-1 truncate text-[0.66rem] text-fg-muted">
+            {pick(locale, m.mnTitle, m.enTitle)}
+          </span>
+          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent/70" />
+        </motion.div>
+      ))}
     </motion.div>
   );
 }

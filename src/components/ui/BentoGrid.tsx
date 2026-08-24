@@ -18,7 +18,7 @@ export function BentoGrid({
 }) {
   return (
     <div
-      className={`mx-auto grid grid-cols-1 gap-4 md:auto-rows-[19rem] md:grid-cols-3 ${className}`}
+      className={`mx-auto grid grid-cols-1 gap-4 md:auto-rows-[20rem] md:grid-cols-3 ${className}`}
     >
       {children}
     </div>
