@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Button } from "./ui/Button";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
+import ParticleShape from "./ui/ParticleShape";
+import { BRAND_CHECKMARK_PATH, BRAND_CHECKMARK_VIEWBOX, BRAND_RED } from "@/lib/brandMark";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
 function formatInt(n: number) {
@@ -28,11 +30,42 @@ export function Hero({
       <div className="container-page relative z-10 flex flex-1 flex-col justify-center pb-16 pt-6">
         <div className="grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-12">
           <div className="lg:col-span-8">
+            {/*
+              The brand's own checkmark swash (the "V" in InVesCore), isolated
+              from the logo file and rendered as a particle field that gathers
+              in on mount — same particle engine as reactbits' ParticleText,
+              forked to sample a filled SVG path instead of fillText.
+            */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              className="h-[clamp(4rem,7vw,6.25rem)] w-[clamp(4rem,7vw,6.25rem)]"
+            >
+              <ParticleShape
+                path={BRAND_CHECKMARK_PATH}
+                viewBox={BRAND_CHECKMARK_VIEWBOX}
+                color={BRAND_RED}
+                highlightColor="#ff8a7a"
+                trigger="mount"
+                particleSize={2.2}
+                density={2}
+                scatter={150}
+                gatherDuration={1500}
+                stagger={380}
+                pointerRepel={36}
+                repelRadius={90}
+                idleDrift={0.5}
+                glow
+                label="IC"
+              />
+            </motion.div>
+
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="eyebrow flex items-center gap-3 text-accent-on-dark"
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="eyebrow mt-6 flex items-center gap-3 text-accent-on-dark"
             >
               <span className="h-px w-8 bg-accent-on-dark/50" />
               Инвескор Ассет Менежмент ҮЦК
