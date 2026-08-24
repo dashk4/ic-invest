@@ -1,26 +1,302 @@
 @import "tailwindcss";
 
+/*
+  IC Asset Management — phase 3 design system.
+  A single-accent "quiet luxury" scheme: ink (near-black with a faint green
+  cast) + warm bone paper + one refined jade accent. Every other tone is a
+  derived opacity of ink or bone, which is what keeps the palette harmonious.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* raw palette */
+  --ink-900: #080b0a;
+  --ink-800: #0e1311;
+  --ink-700: #151b19;
+  --ink-600: #1e2624;
+  --bone-100: #f6f3ed;
+  --bone-200: #efebe3;
+  --bone-300: #e3ded3;
+  --jade-400: #6fbfa3;
+  --jade-500: #4a9d81;
+  --jade-600: #35785f;
+
+  /* semantic — light */
+  --c-surface: var(--bone-100);
+  --c-surface-alt: var(--bone-200);
+  --c-surface-sunken: var(--bone-300);
+  --c-surface-strong: var(--ink-800);
+  --c-surface-deep: var(--ink-900);
+
+  --c-fg: var(--ink-800);
+  --c-fg-muted: color-mix(in srgb, var(--ink-800) 62%, transparent);
+  --c-fg-subtle: color-mix(in srgb, var(--ink-800) 40%, transparent);
+
+  --c-on-strong: var(--bone-100);
+  --c-on-strong-muted: color-mix(in srgb, var(--bone-100) 62%, transparent);
+  --c-on-strong-subtle: color-mix(in srgb, var(--bone-100) 38%, transparent);
+
+  --c-line: color-mix(in srgb, var(--ink-800) 12%, transparent);
+  --c-line-strong: color-mix(in srgb, var(--bone-100) 14%, transparent);
+
+  --c-accent: var(--jade-600);
+  --c-accent-light: var(--jade-500);
+  --c-accent-on-dark: var(--jade-400);
+  --c-accent-contrast: var(--bone-100);
+  --c-card: color-mix(in srgb, #ffffff 55%, transparent);
+}
+
+:root[data-theme="dark"] {
+  --c-surface: var(--ink-800);
+  --c-surface-alt: var(--ink-700);
+  --c-surface-sunken: var(--ink-900);
+  --c-surface-strong: var(--ink-900);
+  --c-surface-deep: #050706;
+
+  --c-fg: var(--bone-100);
+  --c-fg-muted: color-mix(in srgb, var(--bone-100) 60%, transparent);
+  --c-fg-subtle: color-mix(in srgb, var(--bone-100) 38%, transparent);
+
+  --c-on-strong: var(--bone-100);
+  --c-on-strong-muted: color-mix(in srgb, var(--bone-100) 60%, transparent);
+  --c-on-strong-subtle: color-mix(in srgb, var(--bone-100) 38%, transparent);
+
+  --c-line: color-mix(in srgb, var(--bone-100) 13%, transparent);
+  --c-line-strong: color-mix(in srgb, var(--bone-100) 13%, transparent);
+
+  --c-accent: var(--jade-400);
+  --c-accent-light: var(--jade-400);
+  --c-accent-on-dark: var(--jade-400);
+  --c-accent-contrast: var(--ink-900);
+  --c-card: color-mix(in srgb, #ffffff 4%, transparent);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--c-surface);
+  --color-surface-alt: var(--c-surface-alt);
+  --color-surface-sunken: var(--c-surface-sunken);
+  --color-surface-strong: var(--c-surface-strong);
+  --color-surface-deep: var(--c-surface-deep);
+  --color-fg: var(--c-fg);
+  --color-fg-muted: var(--c-fg-muted);
+  --color-fg-subtle: var(--c-fg-subtle);
+  --color-on-strong: var(--c-on-strong);
+  --color-on-strong-muted: var(--c-on-strong-muted);
+  --color-on-strong-subtle: var(--c-on-strong-subtle);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-accent: var(--c-accent);
+  --color-accent-light: var(--c-accent-light);
+  --color-accent-on-dark: var(--c-accent-on-dark);
+  --color-accent-contrast: var(--c-accent-contrast);
+  --color-card: var(--c-card);
+
+  --font-display: var(--font-display-src);
+  --font-sans: var(--font-sans-src);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--c-surface);
+  color: var(--c-fg);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  letter-spacing: -0.005em;
+  transition:
+    background-color 0.6s ease,
+    color 0.6s ease;
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-accent-contrast);
+}
+
+/* ---------- type scale ---------- */
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* Cormorant is a high-contrast serif: it needs tight leading and a little
+   negative tracking at display sizes, or it reads loose and wispy. */
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(3.1rem, 7.4vw, 6.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 4.4vw, 3.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2vw, 1.9rem);
+  line-height: 1.2;
+  letter-spacing: -0.008em;
+}
+
+.t-lead {
+  font-size: clamp(1.075rem, 1.25vw, 1.25rem);
+  line-height: 1.65;
+  letter-spacing: -0.008em;
+}
+
+.t-body {
+  font-size: 1.0625rem;
+  line-height: 1.72;
+}
+
+.t-small {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.t-numeral {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  /* Cyrillic Й/Ү carry diacritics above the cap height; a 1.0 line-height
+     gets them clipped by RollText's overflow-hidden. */
+  line-height: 1.35;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* ---------- layout ---------- */
+
+.container-page {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-inline: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-page {
+    padding-inline: 4rem;
+  }
+}
+
+.section-y {
+  padding-block: clamp(6rem, 12vh, 10rem);
+}
+
+/* keep anchor targets clear of the fixed header */
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+.hairline {
+  border-color: var(--c-line);
+}
+
+.theme-fade {
+  transition:
+    background-color 0.6s ease,
+    border-color 0.6s ease,
+    color 0.6s ease;
+}
+
+/* ---------- motion ---------- */
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 46s linear infinite;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.06);
+  }
+}
+
+.drift {
+  animation: drift 22s ease-in-out infinite;
+}
+
+.drift-slow {
+  animation: drift 34s ease-in-out infinite reverse;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  transition: background-size 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .drift,
+  .drift-slow {
+    animation: none;
+  }
 }
