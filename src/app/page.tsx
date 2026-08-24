@@ -4,7 +4,6 @@ import { Stats } from "@/components/Stats";
 import { About } from "@/components/About";
 import { Funds } from "@/components/Funds";
 import { Insights } from "@/components/Insights";
-import { Team } from "@/components/Team";
 import { WhyIC } from "@/components/WhyIC";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
@@ -30,7 +29,6 @@ export default async function Home() {
         <About />
         <Funds />
         <Insights />
-        <Team />
         <WhyIC />
         <Contact />
       </main>

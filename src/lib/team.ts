@@ -8,6 +8,14 @@ export type Member = {
   en: string;
   enTitle: string;
   photo: string;
+  /**
+   * Short profile shown in the expanded card. Deliberately empty: these are
+   * real, named people and ic-invest.mn publishes no bios for them, so there
+   * is nothing to source this from. The card omits the block when unset —
+   * fill these in from the company's own copy rather than inventing one.
+   */
+  bioMn?: string;
+  bioEn?: string;
 };
 
 export type TeamGroup = {

@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Eye, HandshakeIcon, Sprout, Users } from "lucide-react";
+import { Eye, HandshakeIcon, Leaf, Sprout, Users } from "lucide-react";
 import { BentoGrid, BentoGridItem } from "./ui/BentoGrid";
 import { SectionHead } from "./ui/SectionHead";
+import { Reveal } from "./ui/Reveal";
+import { SplitReveal } from "./ui/SplitReveal";
+import { ExpandableTeam } from "./ui/ExpandableTeam";
 import { ALL_MEMBERS, TEAM } from "@/lib/team";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
@@ -90,15 +93,37 @@ export function About() {
           <BentoGridItem
             index={4}
             header={<BoardHeader locale={locale} />}
-            icon={<Users className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-            title={pick(locale, "Манай хамт олон", "Our people")}
+            icon={<Leaf className="h-4 w-4 text-accent" strokeWidth={1.7} />}
+            title={pick(locale, "Нөлөөллийн хөрөнгө оруулалт", "Impact investing")}
             description={pick(
               locale,
-              "Төлөөлөн удирдах зөвлөл, удирдлагын баг болон хамт олон — нийт 10 хүн.",
-              "Board, management and team — ten people in total."
+              "Байгаль орчин, нийгэм, засаглалын үзүүлэлтүүдэд эерэг нөлөөлөл үзүүлэх нөлөөллийн хөрөнгө оруулалтын стратегийг хэрэгжүүлэгч.",
+              "Integrating financial analysis with environmental, social and governance insight to find solutions that deliver both performance and tangible impact."
             )}
           />
         </BentoGrid>
+
+        <div id="team" className="mt-24 scroll-mt-28 border-t hairline pt-16">
+          <Reveal>
+            <p className="eyebrow text-accent">{pick(locale, "Хамт олон", "Our team")}</p>
+          </Reveal>
+          <h3 className="t-h2 mt-6 max-w-[16ch] text-balance text-fg">
+            <SplitReveal
+              text={pick(locale, "Манай хамт олон", "The people behind the capital")}
+            />
+          </h3>
+          <Reveal delay={0.12}>
+            <p className="t-body mt-6 max-w-sm text-pretty text-fg-muted">
+              {pick(
+                locale,
+                "Нэр дээр дарж дэлгэрэнгүй танилцана уу.",
+                "Select a name to see the full profile."
+              )}
+            </p>
+          </Reveal>
+
+          <ExpandableTeam locale={locale} />
+        </div>
       </div>
     </section>
   );
