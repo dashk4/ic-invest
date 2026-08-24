@@ -193,13 +193,20 @@ function VisionHeader({ locale }: { locale: Locale }) {
 }
 
 /**
- * Same stacked-rows layout as before, restyled so it reads as a roster rather
- * than a conversation: uniform full-width rows instead of alternating
- * left/right widths, square-cornered tiles instead of bubbles, and a shared
- * hover that slides them all one way instead of shearing them apart.
+ * Chat-style stack: rounded bubbles with the middle one narrow and pushed
+ * right, shearing apart on hover. Sized to the header box — at the original
+ * padding the third bubble was clipped.
  */
 function TeamStackHeader({ locale }: { locale: Locale }) {
   const rows = [ALL_MEMBERS[5], ALL_MEMBERS[8], ALL_MEMBERS[9]];
+  const shift = {
+    initial: { x: 0 },
+    animate: { x: 10, rotate: 3, transition: { duration: 0.2 } },
+  };
+  const shiftBack = {
+    initial: { x: 0 },
+    animate: { x: -10, rotate: -3, transition: { duration: 0.2 } },
+  };
 
   return (
     <motion.div
@@ -212,25 +219,23 @@ function TeamStackHeader({ locale }: { locale: Locale }) {
       {rows.map((m, i) => (
         <motion.div
           key={m.mn}
-          variants={{
-            initial: { x: 0 },
-            animate: { x: 8, transition: { duration: 0.45, delay: i * 0.06, ease: EASE } },
-          }}
-          className="relative flex w-full items-center gap-2.5 rounded-lg border hairline bg-surface px-2 py-[5px]"
+          variants={i === 1 ? shiftBack : shift}
+          className={`relative flex items-center gap-2.5 rounded-full border hairline bg-surface p-1 ${
+            i === 1 ? "ml-auto w-3/4" : "w-full"
+          }`}
         >
-          <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded">
+          <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full">
             <Image
               src={m.photo}
               alt=""
               fill
-              sizes="20px"
+              sizes="24px"
               className="object-cover object-top grayscale transition-all duration-700 group-hover/bento:grayscale-0"
             />
           </span>
-          <span className="min-w-0 flex-1 truncate text-[0.66rem] text-fg-muted">
+          <span className="truncate pr-1 text-[0.68rem] text-fg-muted">
             {pick(locale, m.mnTitle, m.enTitle)}
           </span>
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent/70" />
         </motion.div>
       ))}
     </motion.div>
