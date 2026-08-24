@@ -219,9 +219,71 @@ body {
   padding-block: clamp(6rem, 12vh, 10rem);
 }
 
-/* keep anchor targets clear of the fixed header */
+/* keep anchor targets clear of the floating glass header */
 section[id] {
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: 6.5rem;
+}
+
+/* ---------- frosted glass ---------- */
+
+.glass-panel {
+  position: relative;
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  transition:
+    background-color 0.7s ease,
+    border-color 0.7s ease,
+    box-shadow 0.7s ease;
+}
+
+/* the specular edge that makes it read as glass rather than a tinted box */
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, #ffffff 16%, transparent),
+    transparent 55%
+  );
+}
+
+.glass-on-dark {
+  background-color: color-mix(in srgb, #ffffff 7%, transparent);
+  border-color: color-mix(in srgb, #ffffff 15%, transparent);
+}
+
+.glass-on-light {
+  background-color: color-mix(in srgb, #ffffff 62%, transparent);
+  border-color: color-mix(in srgb, var(--ink-800) 10%, transparent);
+}
+
+/* An open dropdown puts real content behind the panel, where a 7% tint is
+   unreadable. Keep the blur, drop most of the transparency. */
+.glass-panel.glass-opaque.glass-on-dark {
+  background-color: var(--ink-900);
+}
+
+.glass-panel.glass-opaque.glass-on-light {
+  background-color: var(--bone-100);
+}
+
+.glass-raised {
+  box-shadow:
+    0 1px 0 0 color-mix(in srgb, #ffffff 10%, transparent) inset,
+    0 18px 50px -22px rgb(0 0 0 / 0.55);
+}
+
+/* Safari/Firefox without backdrop-filter would render a see-through bar */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-on-dark {
+    background-color: color-mix(in srgb, var(--ink-900) 88%, transparent);
+  }
+  .glass-on-light {
+    background-color: color-mix(in srgb, var(--bone-100) 94%, transparent);
+  }
 }
 
 .hairline {

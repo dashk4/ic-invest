@@ -37,14 +37,13 @@ export function Header() {
   const onDark = !scrolled || theme === "dark";
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        scrolled
-          ? "border-b hairline bg-surface/80 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <div className="container-page flex h-[4.5rem] items-center justify-between gap-6">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-5">
+      <div
+        className={`glass-panel mx-auto max-w-[1320px] overflow-hidden rounded-[1.25rem] border transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          onDark ? "glass-on-dark" : "glass-on-light"
+        } ${scrolled ? "glass-raised" : ""} ${open ? "glass-opaque" : ""}`}
+      >
+        <div className="relative flex h-[3.75rem] items-center justify-between gap-6 px-4 md:h-16 md:px-6">
         <Link href="#top" className="shrink-0">
           <Image
             src={onDark ? "/brand/white-logo_mn.svg" : "/brand/logo_mn.svg"}
@@ -108,40 +107,56 @@ export function Header() {
             />
           </button>
         </div>
-      </div>
+        </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-b hairline bg-surface lg:hidden"
-          >
-            <div className="container-page flex flex-col py-4">
-              {NAV.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="font-display border-b hairline py-4 text-2xl text-fg last:border-b-0"
-                >
-                  {pick(locale, item.mn, item.en)}
-                </a>
-              ))}
-              <a
-                href="https://system.ic-invest.mn"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="eyebrow mt-5 w-fit rounded-full bg-accent px-6 py-3 text-accent-contrast"
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="relative overflow-hidden lg:hidden"
+            >
+              <div
+                className={`flex flex-col px-4 pb-5 md:px-6 ${
+                  onDark ? "text-on-strong" : "text-fg"
+                }`}
               >
-                {pick(locale, "Нэвтрэх", "Login")}
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {NAV.map((item, i) => (
+                  <motion.a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: 0.06 + i * 0.045,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className={`font-display border-t py-3.5 text-2xl ${
+                      onDark
+                        ? "border-[color:var(--c-line-strong)]"
+                        : "border-[color:var(--c-line)]"
+                    }`}
+                  >
+                    {pick(locale, item.mn, item.en)}
+                  </motion.a>
+                ))}
+                <a
+                  href="https://system.ic-invest.mn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="eyebrow mt-5 w-fit rounded-full bg-accent px-6 py-3 text-accent-contrast"
+                >
+                  {pick(locale, "Нэвтрэх", "Login")}
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </header>
   );
 }
