@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./ui/Button";
 import { SplitReveal } from "./ui/SplitReveal";
-import { Cover } from "./ui/Cover";
 import { Counter } from "./ui/Counter";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
@@ -46,13 +45,13 @@ export function Hero({
                 text={pick(locale, "Хөрөнгө оруулалтын", "Your journey,")}
               />
               <br />
-              <Cover className="italic text-accent-on-dark">
+              <span className="italic text-accent-on-dark">
                 <SplitReveal
                   trigger="mount"
                   delay={0.3}
                   text={pick(locale, "мэргэшсэн удирдлага", "our expertise")}
                 />
-              </Cover>
+              </span>
             </h1>
           </div>
 
