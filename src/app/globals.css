@@ -297,6 +297,12 @@ section[id] {
     color 0.6s ease;
 }
 
+/* dot field behind bento skeletons (Aceternity's bg-dot-* utility) */
+.bg-dots {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
 /* ---------- motion ---------- */
 
 @keyframes marquee {

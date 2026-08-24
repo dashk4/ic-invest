@@ -1,8 +1,7 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Stats } from "@/components/Stats";
-import { Philosophy } from "@/components/Philosophy";
-import { VisionBanner } from "@/components/VisionBanner";
+import { About } from "@/components/About";
 import { Funds } from "@/components/Funds";
 import { Insights } from "@/components/Insights";
 import { Team } from "@/components/Team";
@@ -28,8 +27,7 @@ export default async function Home() {
           }}
         />
         <Stats />
-        <Philosophy />
-        <VisionBanner />
+        <About />
         <Funds />
         <Insights />
         <Team />
