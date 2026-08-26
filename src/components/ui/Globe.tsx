@@ -58,6 +58,10 @@ export type GlobeConfig = {
 interface WorldProps {
   globeConfig: GlobeConfig;
   data: Position[];
+  /** "never" fully halts r3f's render loop (and OrbitControls' autoRotate,
+   *  which rides on it) — used to keep this scene mounted and pre-built but
+   *  visually and computationally inert while off-screen. See ContactGlobe. */
+  frameloop?: "always" | "demand" | "never";
 }
 
 let numbersOfRings = [0];
@@ -246,13 +250,35 @@ export function WebGLRendererConfig() {
   return null;
 }
 
+/**
+ * r3f's render loop fully cancels its own requestAnimationFrame chain once
+ * frameloop isn't "always" (see fiber's loop() — it stops scheduling itself
+ * entirely, not just skipping frames). Flipping the frameloop prop back to
+ * "always" only updates the config the NEXT time a frame runs; it doesn't by
+ * itself restart a chain that has already stopped. invalidate() is what
+ * actually kicks requestAnimationFrame again, so it has to be called
+ * explicitly whenever frameloop toggles on.
+ */
+function FrameloopKicker({ active }: { active: boolean }) {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    if (active) invalidate();
+  }, [active, invalidate]);
+  return null;
+}
+
 export function World(props: WorldProps) {
-  const { globeConfig } = props;
+  const { globeConfig, frameloop = "always" } = props;
   const scene = new Scene();
   scene.fog = new Fog(0xffffff, 400, 2000);
   return (
-    <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 180, 1800)}>
+    <Canvas
+      scene={scene}
+      camera={new PerspectiveCamera(50, aspect, 180, 1800)}
+      frameloop={frameloop}
+    >
       <WebGLRendererConfig />
+      <FrameloopKicker active={frameloop === "always"} />
       <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
       <directionalLight
         color={globeConfig.directionalLeftLight}

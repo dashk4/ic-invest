@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * three + three-globe + r3f + drei is well over a megabyte, so the globe is
@@ -87,10 +87,21 @@ function GlobePlaceholder() {
 }
 
 export function ContactGlobe() {
-  // Fine to pay this eagerly, off-screen: it's a small decorative scene on a
-  // page whose whole point is to be scrolled through, not conditional on
-  // whether it's currently in view.
+  // Fine to pay the download + WebGL build eagerly, off-screen: it's a small
+  // decorative scene on a page whose whole point is to be scrolled through.
   const [ready, setReady] = useState(false);
+  // But actually RUNNING the scene (r3f's render loop + OrbitControls'
+  // autoRotate, which rides on it) is a different cost, and a continuously
+  // rendering canvas turned out to periodically disturb page layout enough
+  // to snap the scroll position back — reported as scroll "catching" and
+  // reversing direction while reading the News section, well before Contact
+  // was ever in view. Confirmed by bisection: the disturbance tracked with
+  // the render loop running, not with the one-time mount, and not with
+  // Lenis. So the render loop itself now only runs while this section is
+  // actually near the viewport — mounted and pre-built the whole time, but
+  // inert until there's a reason for it to be moving.
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
@@ -99,12 +110,31 @@ export function ContactGlobe() {
     });
   }, []);
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Negative margin on purpose: the render loop should only wake up once
+    // the globe is substantially inside the viewport, not just peeking in —
+    // that keeps it fully inert for the entire length of the News section
+    // above it, which is where the layout disturbance was actually reported.
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      rootMargin: "-200px",
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div
+      ref={ref}
       aria-hidden
-      className="pointer-events-none relative aspect-square w-full max-w-[540px]"
+      className="pointer-events-none relative aspect-square w-full max-w-[540px] overflow-hidden"
     >
-      {ready ? <World globeConfig={CONFIG} data={ARCS} /> : <GlobePlaceholder />}
+      {ready ? (
+        <World globeConfig={CONFIG} data={ARCS} frameloop={inView ? "always" : "never"} />
+      ) : (
+        <GlobePlaceholder />
+      )}
     </div>
   );
 }
