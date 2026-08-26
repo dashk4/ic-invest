@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FundDetail, type FundDetailData } from "@/components/FundDetail";
-import { FUNDS, getFundFacts, getObjective } from "@/lib/api";
-import { FUND_LABEL_EN } from "@/lib/fundI18n";
+import { excerpt, FUNDS, getFundFacts, getObjective } from "@/lib/api";
+import { FUND_EXCERPT_EN, FUND_LABEL_EN } from "@/lib/fundI18n";
 import { FUND_DESCRIPTION_EN, FUND_DETAILS } from "@/lib/fundDetail";
 
 export function generateStaticParams() {
@@ -65,16 +65,19 @@ export default async function FundPage({
 
   const otherFunds = FUND_DETAILS.filter((f) => f.sid !== meta.sid).map((f) => {
     const other = FUNDS.find((x) => x.sid === f.sid)!;
-    return { slug: f.slug, code: other.code, name: f.nameFallback.mn };
+    return { slug: f.slug, code: other.code, name: f.nameFallback.mn, nameEn: f.nameFallback.en };
   });
 
   const data: FundDetailData = {
     sid: meta.sid,
     slug: meta.slug,
+    index: FUND_DETAILS.findIndex((f) => f.sid === meta.sid),
     code: fund.code,
     labelMn: fund.label,
     labelEn: FUND_LABEL_EN[meta.sid] ?? fund.label,
     name: objective?.name ?? meta.nameFallback.mn,
+    blurbMn: objective?.text ? excerpt(objective.text, 120) : meta.descriptionFallback?.mn.split("\n\n")[0] ?? "",
+    blurbEn: FUND_EXCERPT_EN[meta.sid] ?? meta.descriptionFallback?.en.split("\n\n")[0] ?? "",
     descriptionMn: objective?.text ?? meta.descriptionFallback?.mn ?? "",
     descriptionEn: FUND_DESCRIPTION_EN[meta.sid] ?? meta.descriptionFallback?.en ?? "",
     logo: meta.logo,

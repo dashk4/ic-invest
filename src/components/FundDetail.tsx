@@ -2,21 +2,27 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { Briefcase, ExternalLink, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
+import DotField from "./ui/DotField";
 import { useLocale, pick } from "@/lib/locale";
+
+const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users];
 
 export type FundFactRow = { labelMn: string; labelEn: string; value: string; numeric: number | null };
 
 export type FundDetailData = {
   sid: number;
   slug: string;
+  index: number;
   code: string;
   labelMn: string;
   labelEn: string;
   name: string;
+  blurbMn: string;
+  blurbEn: string;
   descriptionMn: string;
   descriptionEn: string;
   logo: string;
@@ -24,13 +30,15 @@ export type FundDetailData = {
   logoHeight: number;
   facts: FundFactRow[];
   externalSite?: string;
-  otherFunds: { slug: string; name: string; code: string }[];
+  otherFunds: { slug: string; name: string; nameEn: string; code: string }[];
 };
 
 export function FundDetail({ fund }: { fund: FundDetailData }) {
   const { locale } = useLocale();
   const description = pick(locale, fund.descriptionMn, fund.descriptionEn);
   const paragraphs = description.split("\n\n").filter(Boolean);
+  const blurb = pick(locale, fund.blurbMn, fund.blurbEn);
+  const Icon = ICONS[fund.index % ICONS.length];
 
   return (
     <>
@@ -51,13 +59,13 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
           <Reveal>
             <Link
               href="/#funds"
-              className="link-underline eyebrow text-on-strong-subtle transition-colors duration-300 hover:text-accent-on-dark"
+              className="eyebrow text-on-strong-subtle transition-colors duration-300 hover:text-accent-on-dark"
             >
               ← {pick(locale, "Хөрөнгө оруулалтын сан", "Our funds")}
             </Link>
           </Reveal>
 
-          <div className="mt-10 grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="mt-10 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12 lg:gap-8">
             <div className="lg:col-span-8">
               <Reveal delay={0.05}>
                 <div
@@ -115,24 +123,48 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
               </Reveal>
             </div>
 
-            {fund.facts.length > 0 && (
-              <div className="lg:col-span-4">
-                <RevealGroup className="flex flex-col divide-y divide-[color:var(--c-line-strong)] rounded-2xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-2">
-                  {fund.facts.map((f) => (
-                    <RevealItem key={f.labelMn} className="px-5 py-5">
-                      <p className="eyebrow text-on-strong-subtle">{pick(locale, f.labelMn, f.labelEn)}</p>
-                      <p className="t-numeral mt-2 text-2xl text-on-strong">
-                        {f.numeric != null ? (
-                          <Counter value={f.numeric} decimals={f.numeric % 1 !== 0 ? 2 : 0} />
-                        ) : (
-                          f.value
-                        )}
-                      </p>
-                    </RevealItem>
-                  ))}
-                </RevealGroup>
-              </div>
-            )}
+            {/* visual card — same ghost-numeral/icon language as the FundsList
+                cards on the homepage, so a fund's identity carries through
+                from the list into its own page instead of resetting */}
+            <div className="lg:col-span-4">
+              <Reveal delay={0.1} className="h-full">
+                <div className="relative flex h-full min-h-[15rem] flex-col justify-between overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-7">
+                  <span
+                    aria-hidden
+                    className="t-numeral pointer-events-none absolute -right-2 -top-5 select-none text-[6.5rem] leading-none text-on-strong/[0.04]"
+                  >
+                    {String(fund.index + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -left-14 -top-14 h-40 w-40 rounded-full bg-accent-on-dark/10 blur-3xl"
+                  />
+
+                  <span className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.04] text-accent-on-dark">
+                    <Icon className="h-[19px] w-[19px]" strokeWidth={1.7} />
+                  </span>
+
+                  {fund.facts.length > 0 ? (
+                    <div className="relative flex flex-col divide-y divide-[color:var(--c-line-strong)]">
+                      {fund.facts.map((f) => (
+                        <div key={f.labelMn} className="py-4 first:pt-0 last:pb-0">
+                          <p className="eyebrow text-on-strong-subtle">{pick(locale, f.labelMn, f.labelEn)}</p>
+                          <p className="t-numeral mt-2 text-2xl text-on-strong">
+                            {f.numeric != null ? (
+                              <Counter value={f.numeric} decimals={f.numeric % 1 !== 0 ? 2 : 0} />
+                            ) : (
+                              f.value
+                            )}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="relative t-small max-w-[26ch] text-pretty text-on-strong-muted">{blurb}</p>
+                  )}
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
@@ -152,32 +184,83 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
                   </Reveal>
                 ))}
               </div>
+
+              <Reveal delay={0.1} className="mt-14 border-t hairline pt-6">
+                <p className="t-small max-w-2xl text-pretty text-fg-subtle">
+                  {pick(
+                    locale,
+                    'Сангийн удирдлагыг хариуцдаг "Инвескор Ассет Менежмент ҮЦК" ХХК нь Санхүүгийн Зохицуулах Хорооноос 2022 оны 4 дүгээр сарын 6-нд олгосон тусгай зөвшөөрөл, гэрчилгээ №309/41-тэй.',
+                    'Managed by Invescore Asset Management SC LLC, licensed by the Financial Regulatory Commission on 6 April 2022, certificate no. 309/41.'
+                  )}
+                </p>
+              </Reveal>
             </div>
 
             <div className="lg:col-span-4">
               <Reveal delay={0.1}>
                 <p className="eyebrow text-fg-subtle">{pick(locale, "Бусад сангууд", "Other funds")}</p>
-                <ul className="mt-6 space-y-1">
+                <div className="mt-6 flex flex-col gap-3">
                   {fund.otherFunds.map((f) => (
-                    <li key={f.slug} className="border-t hairline first:border-t-0">
-                      <Link
-                        href={`/funds/${f.slug}`}
-                        className="group flex items-center justify-between gap-4 py-4"
+                    <Link
+                      key={f.slug}
+                      href={`/funds/${f.slug}`}
+                      className="group flex items-center justify-between gap-4 rounded-2xl border border-[color:var(--c-line-strong)] bg-surface-alt/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40"
+                    >
+                      <span>
+                        <span className="eyebrow block text-fg-subtle">{f.code}</span>
+                        <span className="t-small mt-1 block max-w-[22ch] text-pretty text-fg">
+                          {pick(locale, f.name, f.nameEn)}
+                        </span>
+                      </span>
+                      <span
+                        aria-hidden
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border hairline text-fg-subtle transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:border-accent group-hover:text-accent"
                       >
-                        <span>
-                          <span className="eyebrow block text-fg-subtle">{f.code}</span>
-                          <span className="t-small mt-1 block max-w-[22ch] text-pretty text-fg">{f.name}</span>
-                        </span>
-                        <span
-                          aria-hidden
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border hairline text-fg-subtle transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:border-accent group-hover:text-accent"
-                        >
-                          →
-                        </span>
-                      </Link>
-                    </li>
+                        →
+                      </span>
+                    </Link>
                   ))}
-                </ul>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.2} className="mt-3">
+                <div className="relative overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-card p-7">
+                  <div className="pointer-events-none absolute inset-0 z-0">
+                    <DotField
+                      dotRadius={1.2}
+                      dotSpacing={16}
+                      cursorRadius={160}
+                      cursorForce={0.07}
+                      bulgeStrength={32}
+                      glowRadius={140}
+                      gradientFrom="rgba(111,191,163,0.35)"
+                      gradientTo="rgba(74,157,129,0.12)"
+                      glowColor="#6fbfa3"
+                    />
+                  </div>
+                  <p className="relative z-10 eyebrow text-fg-subtle">
+                    {pick(locale, "Сонирхож байна уу", "Interested?")}
+                  </p>
+                  <p className="font-display relative z-10 mt-3 text-pretty text-[1.15rem] leading-snug text-fg">
+                    {pick(
+                      locale,
+                      "Хөрөнгө оруулалтын талаар зөвлөгөө авахыг хүсвэл бидэнтэй холбогдоно уу.",
+                      "Reach out for guidance on investing in this fund."
+                    )}
+                  </p>
+                  <Link
+                    href="/#contact"
+                    className="group relative z-10 mt-6 inline-flex items-center gap-2.5 text-[0.9rem] font-medium text-accent"
+                  >
+                    {pick(locale, "Холбоо барих", "Contact us")}
+                    <span
+                      aria-hidden
+                      className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  </Link>
+                </div>
               </Reveal>
             </div>
           </div>

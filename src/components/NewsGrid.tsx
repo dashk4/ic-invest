@@ -68,9 +68,7 @@ export function NewsGrid({ mn, en }: { mn: NewsItem[]; en: NewsItem[] }) {
               <span className="eyebrow text-fg-subtle">
                 {formatDate(item.created_at ?? item.publish_date, locale)}
               </span>
-              <h3 className="t-h3 mt-2 text-balance text-fg">
-                <span className="link-underline">{item.title}</span>
-              </h3>
+              <h3 className="t-h3 mt-2 text-balance text-fg">{item.title}</h3>
               <p className="t-small mt-2 max-w-prose text-pretty text-fg-muted">
                 {item.content}
               </p>
