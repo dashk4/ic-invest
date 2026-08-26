@@ -48,6 +48,12 @@ export const NAV: NavEntry[] = [
       { mn: "Алсын хараа", en: "Vision", href: "/about#vision", icon: Eye },
       { mn: "Үнэт зүйл", en: "Values", href: "/about#philosophy", icon: Gem },
       { mn: "Хамт олон", en: "Our Team", href: "/about#team", icon: Users },
+      // the old standalone "Хөрөнгө оруулагчдад" (investor relations) nav
+      // item folded in here as "Мэдээ, мэдээлэл" — its Мэдээлэл/Судалгаа
+      // children both pointed at the same /#insights anchor anyway, so one
+      // entry covers it. Moved here from the Funds dropdown, which was
+      // getting crowded with 5 fund links plus this.
+      { mn: "Мэдээ, мэдээлэл", en: "News & insights", href: "/#insights", icon: Megaphone },
     ],
   },
   {
@@ -55,16 +61,12 @@ export const NAV: NavEntry[] = [
     mn: "Хөрөнгө оруулалтын сан",
     en: "Investment funds",
     href: "/#funds",
-    // the old standalone "Хөрөнгө оруулагчдад" (investor relations) nav item
-    // folded in here as "Мэдээ, мэдээлэл" — its Мэдээлэл/Судалгаа children
-    // both pointed at the same /#insights anchor anyway, so one entry covers it
     children: [
       { mn: "Мобисан", en: "Mobisan", href: "/funds/mbs", icon: Briefcase },
       { mn: '"Инвескор РИ Сайкл"', en: "Invescore RI Cycle", href: "/funds/ric", icon: ShieldCheck },
       { mn: "Инвескор Глобал Кью", en: "Invescore Global Q", href: "/funds/etf", icon: TrendingUp },
       { mn: "И Эс Пи Ирээдүй", en: "E-Fund", href: "/funds/mf", icon: Users },
       { mn: '"Вертикор Экъюти"', en: "Vertikor Equity", href: "/funds/veq", icon: PieChart },
-      { mn: "Мэдээ, мэдээлэл", en: "News & insights", href: "/#insights", icon: Megaphone },
     ],
   },
   {
