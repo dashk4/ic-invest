@@ -37,6 +37,7 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logo: "/brand/Ricycle_Logo_PNG-removebg-preview.png",
     logoWidth: 612,
     logoHeight: 408,
+    logoOnDark: true,
     nameFallback: { mn: '"Инвескор РИ Сайкл" хувийн ХОС', en: "Invescore RI Cycle private fund" },
   },
   {
