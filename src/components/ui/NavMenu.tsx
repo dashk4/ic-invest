@@ -63,9 +63,17 @@ function MenuItem({
       onMouseEnter={() => setActive(entry.key)}
       className="relative flex h-full items-center"
     >
+      {active === entry.key && (
+        <motion.div
+          layoutId="nav-glass"
+          transition={transition}
+          style={{ position: "absolute", background: "color-mix(in srgb, #ffffff 7%, transparent)" }}
+          className="glass-panel inset-y-2 -inset-x-3 z-0 rounded-full border border-[color:var(--c-line-strong)]"
+        />
+      )}
       <a
         href={entry.href}
-        className="group eyebrow flex items-center gap-1.5 whitespace-nowrap text-[0.82rem]! text-on-strong-muted transition-colors duration-500"
+        className="group eyebrow relative z-10 flex items-center gap-1.5 whitespace-nowrap text-[0.82rem]! text-on-strong-muted transition-colors duration-500"
       >
         <RollText hoverClassName="text-accent-on-dark">
           {pick(locale, entry.mn, entry.en)}
