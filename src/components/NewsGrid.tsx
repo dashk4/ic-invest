@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Reveal } from "./ui/Reveal";
+import { ScrollBeam } from "./ui/ScrollBeam";
 import { useLocale, pick } from "@/lib/locale";
 import type { NewsItem } from "@/lib/api";
 
@@ -43,30 +44,40 @@ export function NewsGrid({ mn, en }: { mn: NewsItem[]; en: NewsItem[] }) {
   }
 
   return (
-    <div className="mt-16 border-t hairline">
-      {news.slice(0, 3).map((item, i) => (
-        <motion.a
-          key={item.id}
-          href={`https://ic-invest.mn/${locale}/content/${item.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="group grid grid-cols-1 gap-y-3 border-b hairline py-9 md:grid-cols-12 md:gap-x-10"
-        >
-          <span className="eyebrow pt-2 text-fg-subtle md:col-span-2">
-            {formatDate(item.created_at ?? item.publish_date, locale)}
-          </span>
-
-          <h3 className="t-h3 text-balance text-fg md:col-span-7">
-            <span className="link-underline">{item.title}</span>
-          </h3>
-
-          <p className="t-small text-pretty text-fg-muted md:col-span-3">{item.content}</p>
-        </motion.a>
-      ))}
+    <div className="mt-16 max-w-3xl">
+      {/* chronological list, so this is where the scroll-beam actually
+          means something — a timeline of real dated posts, not a grid */}
+      <ScrollBeam>
+        <div className="space-y-2">
+          {news.slice(0, 6).map((item, i) => (
+            <motion.a
+              key={item.id}
+              href={`https://ic-invest.mn/${locale}/content/${item.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+              className="group relative block border-b hairline py-8 pl-10"
+            >
+              <span
+                aria-hidden
+                className="absolute -left-[6.5px] top-9 h-3.5 w-3.5 rounded-full border-2 border-accent bg-surface"
+              />
+              <span className="eyebrow text-fg-subtle">
+                {formatDate(item.created_at ?? item.publish_date, locale)}
+              </span>
+              <h3 className="t-h3 mt-2 text-balance text-fg">
+                <span className="link-underline">{item.title}</span>
+              </h3>
+              <p className="t-small mt-2 max-w-prose text-pretty text-fg-muted">
+                {item.content}
+              </p>
+            </motion.a>
+          ))}
+        </div>
+      </ScrollBeam>
     </div>
   );
 }
