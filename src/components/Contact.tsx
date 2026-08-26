@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
-import { EvervaultCard } from "./ui/EvervaultCard";
-import DotField from "./ui/DotField";
 import { ContactGlobe } from "./ContactGlobe";
 import { useLocale, pick } from "@/lib/locale";
 
@@ -48,7 +46,7 @@ export function Contact() {
   )}`;
 
   const fieldClass =
-    "mt-2 w-full border-b hairline bg-transparent py-2.5 text-fg outline-none transition-colors duration-500 placeholder:text-fg-subtle focus:border-accent";
+    "mt-2 w-full rounded-xl border border-[color:var(--c-line-strong)] bg-surface-sunken/40 px-4 py-3 text-fg outline-none transition-colors duration-300 placeholder:text-fg-subtle focus:border-accent focus:bg-surface-sunken/70";
   const labelClass = "eyebrow text-fg-subtle";
 
   return (
@@ -87,17 +85,17 @@ export function Contact() {
           </div>
         </div>
 
-        {/* contact details as evervault cards */}
+        {/* contact details — plain cards, hover lift + accent border only */}
         <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-3">
           {DETAILS.map((d, i) => {
             const Icon = d.icon;
+            const cardClass =
+              "group relative flex h-full min-h-[13rem] flex-col justify-between rounded-2xl border border-[color:var(--c-line-strong)] bg-surface-sunken/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:bg-surface-sunken/60";
+
             const body = (
-              <div className="relative flex h-full min-h-[13rem] flex-col justify-between p-6 transition-colors duration-500">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 shadow-[0_0_0_1px_rgba(0,0,0,0)] backdrop-blur-sm transition-colors duration-500 group-hover/card:border-accent/50 group-hover/card:bg-accent/15">
-                  <Icon
-                    className="h-[19px] w-[19px] text-accent"
-                    strokeWidth={1.7}
-                  />
+              <>
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 transition-colors duration-300 group-hover:border-accent/50 group-hover:bg-accent/15">
+                  <Icon className="h-[19px] w-[19px] text-accent" strokeWidth={1.7} />
                 </span>
                 <div>
                   <p className={labelClass}>{d.label}</p>
@@ -105,40 +103,17 @@ export function Contact() {
                     {d.value}
                   </p>
                 </div>
-              </div>
-            );
-
-            // ambient dot field behind the card, jade-tinted; the evervault
-            // character reveal layers on top of it on hover
-            const backdrop = (
-              <>
-                <div className="absolute inset-0 bg-surface-sunken/40" />
-                <DotField
-                  dotRadius={1.3}
-                  dotSpacing={15}
-                  cursorRadius={150}
-                  cursorForce={0.08}
-                  bulgeStrength={36}
-                  glowRadius={130}
-                  gradientFrom="rgba(111,191,163,0.4)"
-                  gradientTo="rgba(74,157,129,0.14)"
-                  glowColor="#6fbfa3"
-                />
               </>
             );
 
             return (
               <Reveal key={d.label} delay={i * 0.08}>
                 {d.href ? (
-                  <a href={d.href} className="block h-full">
-                    <EvervaultCard className="h-full" backdrop={backdrop}>
-                      {body}
-                    </EvervaultCard>
+                  <a href={d.href} className={cardClass}>
+                    {body}
                   </a>
                 ) : (
-                  <EvervaultCard className="h-full" backdrop={backdrop}>
-                    {body}
-                  </EvervaultCard>
+                  <div className={cardClass}>{body}</div>
                 )}
               </Reveal>
             );
@@ -147,7 +122,7 @@ export function Contact() {
 
         {/* message form */}
         <Reveal delay={0.15} className="mt-4">
-          <div className="rounded-2xl border hairline bg-card p-8 md:p-10">
+          <div className="rounded-2xl border border-[color:var(--c-line-strong)] bg-card p-8 md:p-10">
             <p className={labelClass}>
               {pick(locale, "Санал хүсэлт", "Send a message")}
             </p>
@@ -177,15 +152,16 @@ export function Contact() {
                   placeholder="99XX XXXX"
                 />
               </div>
-              <div>
+              <div className="md:col-span-1">
                 <label className={labelClass} htmlFor="c-msg">
                   {pick(locale, "Санал хүсэлт", "Message")}
                 </label>
-                <input
+                <textarea
                   id="c-msg"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className={fieldClass}
+                  rows={1}
+                  className={`${fieldClass} resize-none`}
                   placeholder={pick(
                     locale,
                     "Бидэнд юугаар туслах вэ?",
