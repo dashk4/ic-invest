@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Calculator } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
@@ -109,7 +110,7 @@ function AmountField({
   return (
     <label className="block">
       <span className="eyebrow text-on-strong-subtle">{label}</span>
-      <div className="mt-3 flex items-center gap-2 rounded-2xl border border-[color:var(--c-line-strong)] bg-white/[0.03] px-4 py-3.5 transition-colors duration-300 focus-within:border-accent-on-dark/50">
+      <div className="mt-3 flex items-center gap-2 rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.035] px-4 py-3.5 transition-all duration-300 focus-within:border-accent-on-dark/60 focus-within:bg-accent-on-dark/[0.05]">
         <input
           type="text"
           inputMode="numeric"
@@ -144,10 +145,10 @@ function Segmented<T extends string>({
           key={opt.value}
           type="button"
           onClick={() => onChange(opt.value)}
-          className={`eyebrow rounded-full border px-3 py-2.5 text-center transition-colors duration-300 ${
+          className={`eyebrow rounded-lg border px-3 py-3 text-center transition-all duration-300 ${
             value === opt.value
-              ? "border-transparent bg-accent-on-dark text-[color:var(--ink-900)]"
-              : "border-[color:var(--c-line-strong)] text-on-strong-subtle hover:border-accent-on-dark/40 hover:text-on-strong"
+              ? "border-accent-on-dark bg-accent-on-dark text-[color:var(--ink-900)] shadow-[0_8px_24px_rgba(111,191,163,0.16)]"
+              : "border-[color:var(--c-line-strong)] text-on-strong-subtle hover:-translate-y-0.5 hover:border-accent-on-dark/50 hover:bg-white/[0.06] hover:text-on-strong"
           }`}
         >
           {opt.label}
@@ -329,13 +330,17 @@ function Chart({
 
         {/* area + total line */}
         <path d={areaPath} fill={`url(#area-${gradId})`} stroke="none" />
-        <path
+        <motion.path
+          initial={{ pathLength: 0, opacity: 0.35 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           d={linePath("total")}
           fill="none"
           stroke="var(--jade-400)"
-          strokeWidth={2}
+          strokeWidth={3}
           strokeLinejoin="round"
           strokeLinecap="round"
+          style={{ filter: "drop-shadow(0 0 7px rgba(111,191,163,0.35))" }}
         />
         {/* own-contribution line */}
         <path
@@ -520,7 +525,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
         {/* stat cards */}
         <RevealGroup className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
           <RevealItem>
-            <div className="rounded-2xl border border-accent-on-dark/50 bg-accent-on-dark/[0.06] p-6">
+            <div className="rounded-xl border border-accent-on-dark/50 bg-gradient-to-br from-accent-on-dark/[0.16] to-transparent p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
               <p className="eyebrow text-accent-on-dark">{pick(locale, "Нийт үр дүн", "Total value")}</p>
               <p className="t-numeral mt-3 text-3xl text-on-strong md:text-4xl">
                 <Counter value={finalTotal} decimals={0} suffix="₮" />
@@ -528,7 +533,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
             </div>
           </RevealItem>
           <RevealItem>
-            <div className="rounded-2xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-6">
+            <div className="rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.035] p-6">
               <p className="eyebrow text-on-strong-subtle">
                 {pick(locale, "Өөрийн оруулсан дүн", "Your contributions")}
               </p>
@@ -538,7 +543,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
             </div>
           </RevealItem>
           <RevealItem>
-            <div className="rounded-2xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-6">
+            <div className="rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.035] p-6">
               <p className="eyebrow text-on-strong-subtle">{pick(locale, "Ашиг", "Profit")}</p>
               <p className="t-numeral mt-3 text-3xl text-accent-on-dark md:text-4xl">
                 <Counter value={profit} decimals={0} suffix="₮" />
@@ -550,7 +555,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
         {/* controls + chart */}
         <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-12">
           <Reveal delay={0.08} className="lg:col-span-4">
-            <div className="flex h-full flex-col gap-7 rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-7">
+            <div className="flex h-full flex-col gap-7 rounded-xl border border-[color:var(--c-line-strong)] bg-black/10 p-7 shadow-[0_24px_80px_rgba(0,0,0,0.14)]">
               <div>
                 <p className="eyebrow text-on-strong-subtle">{pick(locale, "Давтамж", "Frequency")}</p>
                 <div className="mt-3">
@@ -574,7 +579,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
                   <span className="eyebrow text-on-strong-subtle">
                     {pick(locale, "Таамагласан жилийн өгөөж", "Assumed annual return")}
                   </span>
-                  <span className="eyebrow rounded-full bg-accent-on-dark px-3 py-1 text-[color:var(--ink-900)]">
+                  <span className="eyebrow rounded-md bg-accent-on-dark px-3 py-1.5 text-[color:var(--ink-900)]">
                     {ratePct}%
                   </span>
                 </div>
@@ -594,7 +599,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
               <div>
                 <div className="flex items-center justify-between gap-3">
                   <span className="eyebrow text-on-strong-subtle">{pick(locale, "Хугацаа", "Term")}</span>
-                  <span className="eyebrow whitespace-nowrap rounded-full bg-accent-on-dark px-3 py-1 text-[color:var(--ink-900)]">
+                  <span className="eyebrow whitespace-nowrap rounded-md bg-accent-on-dark px-3 py-1.5 text-[color:var(--ink-900)]">
                     {termDisplay} {pick(locale, unit === "years" ? "жил" : "сар", unit === "years" ? "yr" : "mo")}
                   </span>
                 </div>
@@ -639,7 +644,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
           </Reveal>
 
           <Reveal delay={0.14} className="lg:col-span-8">
-            <div className="flex h-full flex-col rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-7">
+            <div className="flex h-full flex-col rounded-xl border border-accent-on-dark/25 bg-gradient-to-br from-white/[0.07] to-white/[0.02] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.16)]">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-5">
                   <span className="flex items-center gap-2 text-sm text-on-strong-subtle">
@@ -661,12 +666,12 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
                     {pick(locale, "Өөрийн оруулсан дүн", "Your contributions")}
                   </span>
                 </div>
-                <span className="eyebrow rounded-full border border-[color:var(--c-line-strong)] px-4 py-1.5 text-accent-on-dark">
+                <span className="eyebrow rounded-md border border-accent-on-dark/40 bg-accent-on-dark/[0.08] px-4 py-1.5 text-accent-on-dark">
                   {pick(locale, "Таамагласан өгөөж", "Assumed return")}: {ratePct}%
                 </span>
               </div>
 
-              <div className="mt-6 flex-1">
+              <div className="mt-6 flex-1 rounded-lg border border-white/[0.06] bg-black/[0.12] px-2 py-4 sm:px-4">
                 <Chart points={points} xMax={xMax} unit={unit} locale={locale} />
               </div>
             </div>
