@@ -1,8 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Briefcase, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { useLocale, pick } from "@/lib/locale";
+
+const MotionLink = motion.create(Link);
 
 export type FundCardData = {
   sid: number;
@@ -33,11 +36,9 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
         const Icon = ICONS[i % ICONS.length];
 
         return (
-          <motion.a
+          <MotionLink
             key={f.sid}
             href={f.href}
-            target="_blank"
-            rel="noopener noreferrer"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -94,7 +95,7 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
                 →
               </span>
             </div>
-          </motion.a>
+          </MotionLink>
         );
       })}
     </div>

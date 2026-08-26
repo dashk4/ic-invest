@@ -1,5 +1,6 @@
 import { excerpt, FUNDS, getFundFacts, getObjective } from "@/lib/api";
 import { FUND_EXCERPT_EN, FUND_LABEL_EN } from "@/lib/fundI18n";
+import { FUND_DETAILS } from "@/lib/fundDetail";
 import { FundsList, type FundCardData } from "./FundsList";
 // 3D marquee didn't land well visually — parked, not deleted, in case it's
 // worth revisiting with a different tile design later.
@@ -12,10 +13,11 @@ export async function Funds() {
       const objective = await getObjective(f.sid);
       const facts = f.sid === 4 ? await getFundFacts(f.sid) : [];
       const navFact = facts.find((x) => /цэвэр үнэ цэн/i.test(x.first_text));
+      const slug = FUND_DETAILS.find((d) => d.sid === f.sid)?.slug ?? String(f.sid);
       return {
         sid: f.sid,
         code: f.code,
-        href: f.href,
+        href: `/funds/${slug}`,
         name: objective?.name ?? f.label,
         labelMn: f.label,
         labelEn: FUND_LABEL_EN[f.sid] ?? f.label,
