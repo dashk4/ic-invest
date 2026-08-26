@@ -34,9 +34,9 @@ export const FUND_DETAILS: FundDetailMeta[] = [
   {
     sid: 3,
     slug: "ric",
-    logo: "/brand/Ricycle_Logo_PNG.png",
-    logoWidth: 1876,
-    logoHeight: 1251,
+    logo: "/brand/Ricycle_Logo_PNG-removebg-preview.png",
+    logoWidth: 612,
+    logoHeight: 408,
     nameFallback: { mn: '"Инвескор РИ Сайкл" хувийн ХОС', en: "Invescore RI Cycle private fund" },
   },
   {
@@ -54,9 +54,9 @@ export const FUND_DETAILS: FundDetailMeta[] = [
   {
     sid: 5,
     slug: "mf",
-    logo: "/brand/E-Fund%20hevtee.svg",
-    logoWidth: 355,
-    logoHeight: 97,
+    logo: "/brand/E-Fund%20hevtee.png",
+    logoWidth: 710,
+    logoHeight: 194,
     nameFallback: { mn: "И Эс Пи Ирээдүй хамтын нээлттэй сан", en: "E-Fund (ISP Ireedui) mutual fund" },
     descriptionFallback: {
       mn: 'И Эс Пи Ирээдүй хамтын хөрөнгө оруулалтын сан нь ажил олгогч байгууллага болон тэдгээрийн ажилтнуудад зориулсан хуримтлалын сан бөгөөд ажилтнуудын санхүүгийн тогтвортой байдлыг дэмжих, урт хугацааны хуримтлал бий болгох зорилготой юм.\n\n"Инвескор Ассет Менежмент" ХХК-ийн үүсгэн байгуулсан "И Эс Пи Ирээдүй Хамтын ХОС" ХХК нь Санхүүгийн зохицуулах хорооны 2025 оны 10 дугаар сарын 24-ний өдрийн №424 дүгээр тогтоолоор нэгж эрхээ олон нийтэд санал болгох зөвшөөрөл авсны дагуу анхдагч зах зээлийн арилжааг албан ёсоор нээлээ.',

@@ -74,26 +74,29 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
           <div className="mt-12 max-w-3xl">
             <Reveal delay={0.05}>
               {fund.logoOnDark ? (
-                <div className="relative h-16 w-56">
+                <div className="relative h-24 w-80">
                   <Image
                     src={fund.logo}
                     alt={fund.name}
                     fill
-                    sizes="224px"
+                    sizes="320px"
                     className="object-contain object-left"
                   />
                 </div>
               ) : (
+                // a plain white patch just big enough for the mark — no
+                // rounded card edges, so it reads as the logo's own light
+                // background rather than a boxed UI frame sitting behind it
                 <div
-                  className="inline-flex h-16 items-center rounded-2xl px-6 py-3"
+                  className="inline-flex h-24 items-center px-2 py-1"
                   style={{ background: "var(--bone-100)" }}
                 >
-                  <div className="relative h-full w-32">
+                  <div className="relative h-full w-56">
                     <Image
                       src={fund.logo}
                       alt={fund.name}
                       fill
-                      sizes="160px"
+                      sizes="224px"
                       className="object-contain object-left"
                     />
                   </div>
