@@ -8,6 +8,7 @@ import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
 import DotField from "./ui/DotField";
 import { useLocale, pick } from "@/lib/locale";
+import { FundCalculator } from "./FundCalculator";
 
 const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users, PieChart];
 
@@ -156,6 +157,12 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
             >
               {pick(locale, "Холбоо барих", "Contact us")}
             </Link>
+            <Link
+              href="#calculator"
+              className="rounded-full border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
+            >
+              {pick(locale, "Тооцоолуур", "Calculator")}
+            </Link>
             {fund.externalSite && (
               <a
                 href={`https://${fund.externalSite}`}
@@ -268,6 +275,14 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
           </div>
         </div>
       </section>
+
+      <FundCalculator
+        fund={{
+          name: fund.name,
+          code: fund.code,
+          nav: fund.facts.find((fact) => fact.numeric != null)?.numeric ?? null,
+        }}
+      />
     </>
   );
 }
