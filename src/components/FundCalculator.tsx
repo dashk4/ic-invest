@@ -3,7 +3,7 @@
 import { useId, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Calculator } from "lucide-react";
-import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
+import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
 import { useLocale, pick, type Locale } from "@/lib/locale";
@@ -486,34 +486,36 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
       </div>
 
       <div className="container-page relative">
-        <div className="mx-auto max-w-3xl text-center">
-          <Reveal>
-            <p className="eyebrow flex items-center justify-center gap-2 text-accent-on-dark">
-              <Calculator className="h-3.5 w-3.5" strokeWidth={1.8} />
-              {pick(locale, "Тооцоолуур", "Calculator")}
-            </p>
-          </Reveal>
-          {fund && (
-            <Reveal delay={0.03} className="mt-5">
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent-on-dark/30 bg-accent-on-dark/[0.08] px-4 py-2 text-sm text-accent-on-dark">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent-on-dark" />
-                {fund.code} · {fund.name}
-              </span>
+        <div className="mx-auto flex max-w-5xl flex-col gap-7 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <Reveal>
+              <p className="eyebrow flex items-center gap-2 text-accent-on-dark">
+                <Calculator className="h-3.5 w-3.5" strokeWidth={1.8} />
+                {pick(locale, "Тооцоолуур", "Calculator")}
+              </p>
             </Reveal>
-          )}
-          <h2 className="t-h2 mt-6 text-balance text-on-strong">
-            <SplitReveal
-              text={pick(
-                locale,
-                fund
-                  ? `${fund.name} сангийн тооцоолуур`
-                  : "Хөрөнгө оруулалтын сангийн тооцоолол",
-                fund ? `${fund.name} fund calculator` : "Investment fund calculator"
-              )}
-            />
-          </h2>
-          <Reveal delay={0.1}>
-            <p className="t-body mt-5 text-pretty text-on-strong-muted">
+            {fund && (
+              <Reveal delay={0.03} className="mt-5">
+                <span className="inline-flex items-center gap-2 rounded-full border border-accent-on-dark/30 bg-accent-on-dark/[0.08] px-4 py-2 text-sm text-accent-on-dark">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent-on-dark" />
+                  {fund.code} · {fund.name}
+                </span>
+              </Reveal>
+            )}
+            <h2 className="t-h2 mt-5 text-balance text-on-strong md:mt-4">
+              <SplitReveal
+                text={pick(
+                  locale,
+                  fund
+                    ? `${fund.name} сангийн тооцоолуур`
+                    : "Хөрөнгө оруулалтын сангийн тооцоолол",
+                  fund ? `${fund.name} fund calculator` : "Investment fund calculator"
+                )}
+              />
+            </h2>
+          </div>
+          <Reveal delay={0.1} className="max-w-md md:pb-1">
+            <p className="t-body text-pretty text-on-strong-muted">
               {pick(
                 locale,
                 fund
@@ -527,41 +529,10 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
           </Reveal>
         </div>
 
-        {/* stat cards */}
-        <RevealGroup className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
-          <RevealItem>
-            <div className="relative overflow-hidden rounded-xl border border-accent-on-dark/55 bg-[linear-gradient(135deg,rgba(111,191,163,0.22),rgba(111,191,163,0.04)_62%,transparent)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-              <span aria-hidden className="absolute -right-8 -top-10 h-32 w-32 rounded-full border border-accent-on-dark/20" />
-              <p className="eyebrow text-accent-on-dark">{pick(locale, "Нийт дүн", "Total value")}</p>
-              <p className="t-numeral mt-4 text-4xl leading-none text-on-strong md:text-[2.8rem]">
-                <Counter value={finalTotal} decimals={0} suffix="₮" />
-              </p>
-            </div>
-          </RevealItem>
-          <RevealItem>
-            <div className="rounded-xl border border-[color:var(--c-line-strong)] bg-[linear-gradient(135deg,rgba(245,243,238,0.09),rgba(255,255,255,0.02))] p-6">
-              <p className="eyebrow text-on-strong-subtle">
-                {pick(locale, "Өөрийн оруулсан дүн", "Your contributions")}
-              </p>
-              <p className="t-numeral mt-4 text-4xl leading-none text-on-strong md:text-[2.8rem]">
-                <Counter value={finalOwn} decimals={0} suffix="₮" />
-              </p>
-            </div>
-          </RevealItem>
-          <RevealItem>
-            <div className="rounded-xl border border-[color:var(--bronze-400)]/45 bg-[linear-gradient(135deg,rgba(183,155,108,0.16),rgba(183,155,108,0.03))] p-6">
-              <p className="eyebrow text-[color:var(--bronze-300)]">{pick(locale, "Өгөөжийн дүн", "Estimated gain")}</p>
-              <p className="t-numeral mt-4 text-4xl leading-none text-[color:var(--bronze-200)] md:text-[2.8rem]">
-                <Counter value={profit} decimals={0} suffix="₮" />
-              </p>
-            </div>
-          </RevealItem>
-        </RevealGroup>
-
         {/* controls + chart */}
-        <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-12">
+        <div className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-12">
           <Reveal delay={0.08} className="lg:col-span-4">
-            <div className="flex h-full flex-col gap-7 rounded-xl border border-[color:var(--c-line-strong)] bg-black/10 p-7 shadow-[0_24px_80px_rgba(0,0,0,0.14)]">
+            <div className="relative flex h-full flex-col gap-7 overflow-hidden rounded-xl border border-[color:var(--c-line-strong)] bg-black/10 p-7 shadow-[0_24px_80px_rgba(0,0,0,0.14)] before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-gradient-to-b before:from-accent-on-dark before:via-accent-on-dark/40 before:to-transparent">
               <div>
                 <p className="eyebrow text-on-strong-subtle">{pick(locale, "Давтамж", "Frequency")}</p>
                 <div className="mt-3">
@@ -650,7 +621,27 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
           </Reveal>
 
           <Reveal delay={0.14} className="lg:col-span-8">
-            <div className="flex h-full flex-col rounded-xl border border-accent-on-dark/25 bg-gradient-to-br from-white/[0.07] to-white/[0.02] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.16)]">
+            <div className="flex h-full flex-col rounded-xl border border-accent-on-dark/25 bg-gradient-to-br from-white/[0.08] to-white/[0.015] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.16)]">
+              <div className="grid grid-cols-1 gap-5 border-b border-white/[0.09] pb-6 sm:grid-cols-3">
+                <div>
+                  <p className="eyebrow text-accent-on-dark">{pick(locale, "Ирээдүйн дүн", "Future value")}</p>
+                  <p className="t-numeral mt-2 text-3xl leading-none text-on-strong md:text-4xl">
+                    <Counter value={finalTotal} decimals={0} suffix="₮" />
+                  </p>
+                </div>
+                <div>
+                  <p className="eyebrow text-on-strong-subtle">{pick(locale, "Оруулсан дүн", "Contributed")}</p>
+                  <p className="t-numeral mt-2 text-3xl leading-none text-on-strong md:text-4xl">
+                    <Counter value={finalOwn} decimals={0} suffix="₮" />
+                  </p>
+                </div>
+                <div>
+                  <p className="eyebrow text-[color:var(--bronze-300)]">{pick(locale, "Өгөөжийн дүн", "Estimated gain")}</p>
+                  <p className="t-numeral mt-2 text-3xl leading-none text-[color:var(--bronze-200)] md:text-4xl">
+                    <Counter value={profit} decimals={0} suffix="₮" />
+                  </p>
+                </div>
+              </div>
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-5">
                   <span className="flex items-center gap-2 text-sm text-on-strong-subtle">
