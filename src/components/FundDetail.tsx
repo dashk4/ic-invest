@@ -65,107 +65,88 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
             </Link>
           </Reveal>
 
-          <div className="mt-10 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12 lg:gap-8">
-            <div className="lg:col-span-8">
-              <Reveal delay={0.05}>
-                <div
-                  className="inline-flex h-20 items-center rounded-2xl px-7 py-4"
-                  style={{ background: "var(--bone-100)" }}
-                >
-                  <div className="relative h-full w-40">
-                    <Image
-                      src={fund.logo}
-                      alt={fund.name}
-                      fill
-                      sizes="200px"
-                      className="object-contain object-left"
-                    />
-                  </div>
-                </div>
-              </Reveal>
-
-              <p className="eyebrow mt-8 text-accent-on-dark">{fund.code}</p>
-              <h1 className="t-h2 mt-4 max-w-[22ch] text-balance text-on-strong">
-                <SplitReveal text={fund.name} />
-              </h1>
-              <Reveal delay={0.12}>
-                <p className="t-body mt-6 max-w-xl text-pretty text-on-strong-muted">
-                  {pick(locale, fund.labelMn, fund.labelEn)}
-                </p>
-              </Reveal>
-
-              <Reveal delay={0.18} className="mt-9 flex flex-wrap items-center gap-3">
-                <a
-                  href="https://system.ic-invest.mn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-accent px-7 py-3 text-[0.9rem] font-medium text-accent-contrast transition-all duration-500 hover:brightness-110"
-                >
-                  {pick(locale, "Нэвтрэх", "Login")}
-                </a>
-                <Link
-                  href="/#contact"
-                  className="rounded-full border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
-                >
-                  {pick(locale, "Холбоо барих", "Contact us")}
-                </Link>
-                {fund.externalSite && (
-                  <a
-                    href={`https://${fund.externalSite}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 px-3 py-3 text-[0.9rem] text-on-strong-muted transition-colors duration-300 hover:text-accent-on-dark"
-                  >
-                    {fund.externalSite}
-                    <ExternalLink className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </a>
-                )}
-              </Reveal>
-            </div>
-
-            {/* visual card — same ghost-numeral/icon language as the FundsList
-                cards on the homepage, so a fund's identity carries through
-                from the list into its own page instead of resetting */}
-            <div className="lg:col-span-4">
-              <Reveal delay={0.1} className="h-full">
-                <div className="relative flex h-full min-h-[15rem] flex-col justify-between overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-7">
-                  <span
-                    aria-hidden
-                    className="t-numeral pointer-events-none absolute -right-2 -top-5 select-none text-[6.5rem] leading-none text-on-strong/[0.04]"
-                  >
-                    {String(fund.index + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute -left-14 -top-14 h-40 w-40 rounded-full bg-accent-on-dark/10 blur-3xl"
+          <div className="mt-10 max-w-3xl">
+            <Reveal delay={0.05}>
+              <div
+                className="inline-flex h-16 items-center rounded-2xl px-6 py-3"
+                style={{ background: "var(--bone-100)" }}
+              >
+                <div className="relative h-full w-32">
+                  <Image
+                    src={fund.logo}
+                    alt={fund.name}
+                    fill
+                    sizes="160px"
+                    className="object-contain object-left"
                   />
-
-                  <span className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.04] text-accent-on-dark">
-                    <Icon className="h-[19px] w-[19px]" strokeWidth={1.7} />
-                  </span>
-
-                  {fund.facts.length > 0 ? (
-                    <div className="relative flex flex-col divide-y divide-[color:var(--c-line-strong)]">
-                      {fund.facts.map((f) => (
-                        <div key={f.labelMn} className="py-4 first:pt-0 last:pb-0">
-                          <p className="eyebrow text-on-strong-subtle">{pick(locale, f.labelMn, f.labelEn)}</p>
-                          <p className="t-numeral mt-2 text-2xl text-on-strong">
-                            {f.numeric != null ? (
-                              <Counter value={f.numeric} decimals={f.numeric % 1 !== 0 ? 2 : 0} />
-                            ) : (
-                              f.value
-                            )}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="relative t-small max-w-[26ch] text-pretty text-on-strong-muted">{blurb}</p>
-                  )}
                 </div>
-              </Reveal>
+              </div>
+            </Reveal>
+
+            <div className="mt-8 flex items-center gap-2.5">
+              <Icon className="h-4 w-4 text-accent-on-dark" strokeWidth={1.8} />
+              <p className="eyebrow text-accent-on-dark">{fund.code}</p>
             </div>
+            <h1 className="t-h2 mt-4 text-balance text-on-strong">
+              <SplitReveal text={fund.name} />
+            </h1>
+            <Reveal delay={0.12}>
+              <p className="t-body mt-6 max-w-xl text-pretty text-on-strong-muted">
+                {pick(locale, fund.labelMn, fund.labelEn)}
+              </p>
+            </Reveal>
           </div>
+
+          {fund.facts.length > 0 ? (
+            <RevealGroup className="mt-14 grid max-w-2xl grid-cols-2 gap-8 border-t border-[color:var(--c-line-strong)] pt-10">
+              {fund.facts.map((f) => (
+                <RevealItem key={f.labelMn}>
+                  <p className="t-numeral text-4xl text-on-strong md:text-5xl">
+                    {f.numeric != null ? (
+                      <Counter value={f.numeric} decimals={f.numeric % 1 !== 0 ? 2 : 0} />
+                    ) : (
+                      f.value
+                    )}
+                  </p>
+                  <p className="eyebrow mt-3 text-on-strong-subtle">{pick(locale, f.labelMn, f.labelEn)}</p>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          ) : (
+            <Reveal delay={0.16} className="mt-14 max-w-2xl border-l-2 border-accent-on-dark/40 pl-6">
+              <p className="font-display text-pretty text-[1.3rem] leading-snug text-on-strong-muted">
+                {blurb}
+              </p>
+            </Reveal>
+          )}
+
+          <Reveal delay={0.22} className="mt-12 flex flex-wrap items-center gap-3">
+            <a
+              href="https://system.ic-invest.mn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-accent px-7 py-3 text-[0.9rem] font-medium text-accent-contrast transition-all duration-500 hover:brightness-110"
+            >
+              {pick(locale, "Нэвтрэх", "Login")}
+            </a>
+            <Link
+              href="/#contact"
+              className="rounded-full border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
+            >
+              {pick(locale, "Холбоо барих", "Contact us")}
+            </Link>
+            {fund.externalSite && (
+              <a
+                href={`https://${fund.externalSite}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 px-3 py-3 text-[0.9rem] text-on-strong-muted transition-colors duration-300 hover:text-accent-on-dark"
+              >
+                {fund.externalSite}
+                <ExternalLink className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            )}
+          </Reveal>
         </div>
       </section>
 

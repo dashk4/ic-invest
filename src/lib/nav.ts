@@ -5,6 +5,7 @@ import {
   Gem,
   Megaphone,
   MessageSquare,
+  ShieldCheck,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -32,6 +33,12 @@ export type NavEntry = {
 
 export const NAV: NavEntry[] = [
   {
+    key: "home",
+    mn: "Нүүр",
+    en: "Home",
+    href: "/",
+  },
+  {
     key: "about",
     mn: "Бидний тухай",
     en: "About us",
@@ -47,15 +54,15 @@ export const NAV: NavEntry[] = [
     mn: "Хөрөнгө оруулалтын сан",
     en: "Investment funds",
     href: "/#funds",
-  },
-  {
-    key: "investors",
-    mn: "Хөрөнгө оруулагчдад",
-    en: "Investor relations",
-    href: "/#insights",
+    // the old standalone "Хөрөнгө оруулагчдад" (investor relations) nav item
+    // folded in here as "Мэдээ, мэдээлэл" — its Мэдээлэл/Судалгаа children
+    // both pointed at the same /#insights anchor anyway, so one entry covers it
     children: [
-      { mn: "Мэдээлэл", en: "Announcement", href: "/#insights", icon: Megaphone },
-      { mn: "Судалгаа", en: "Market outlook", href: "/#insights", icon: TrendingUp },
+      { mn: "Мобисан", en: "Mobisan", href: "/funds/mbs", icon: Briefcase },
+      { mn: '"Инвескор РИ Сайкл"', en: "Invescore RI Cycle", href: "/funds/ric", icon: ShieldCheck },
+      { mn: "Инвескор Глобал Кью", en: "Invescore Global Q", href: "/funds/etf", icon: TrendingUp },
+      { mn: "И Эс Пи Ирээдүй", en: "E-Fund", href: "/funds/mf", icon: Users },
+      { mn: "Мэдээ, мэдээлэл", en: "News & insights", href: "/#insights", icon: Megaphone },
     ],
   },
   {
