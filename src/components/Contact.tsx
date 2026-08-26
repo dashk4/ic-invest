@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
+import DotField from "./ui/DotField";
 import { ContactGlobe } from "./ContactGlobe";
 import { useLocale, pick } from "@/lib/locale";
 
@@ -85,19 +86,33 @@ export function Contact() {
           </div>
         </div>
 
-        {/* contact details — plain cards, hover lift + accent border only */}
+        {/* contact details — ambient dot field behind each card, no reveal
+            gimmick this time, just the ambient texture */}
         <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-3">
           {DETAILS.map((d, i) => {
             const Icon = d.icon;
             const cardClass =
-              "group relative flex h-full min-h-[13rem] flex-col justify-between rounded-2xl border border-[color:var(--c-line-strong)] bg-surface-sunken/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:bg-surface-sunken/60";
+              "group relative flex h-full min-h-[13rem] flex-col justify-between overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-surface-sunken/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50";
 
             const body = (
               <>
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 transition-colors duration-300 group-hover:border-accent/50 group-hover:bg-accent/15">
+                <div className="pointer-events-none absolute inset-0 z-0">
+                  <DotField
+                    dotRadius={1.3}
+                    dotSpacing={15}
+                    cursorRadius={150}
+                    cursorForce={0.08}
+                    bulgeStrength={36}
+                    glowRadius={130}
+                    gradientFrom="rgba(111,191,163,0.4)"
+                    gradientTo="rgba(74,157,129,0.14)"
+                    glowColor="#6fbfa3"
+                  />
+                </div>
+                <span className="relative z-10 flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 transition-colors duration-300 group-hover:border-accent/50 group-hover:bg-accent/15">
                   <Icon className="h-[19px] w-[19px] text-accent" strokeWidth={1.7} />
                 </span>
-                <div>
+                <div className="relative z-10">
                   <p className={labelClass}>{d.label}</p>
                   <p className="font-display mt-2 text-pretty text-[1.2rem] leading-snug text-fg">
                     {d.value}
@@ -120,14 +135,29 @@ export function Contact() {
           })}
         </div>
 
-        {/* message form */}
+        {/* message form — same ambient dot field, larger radius for the
+            bigger card */}
         <Reveal delay={0.15} className="mt-4">
-          <div className="rounded-2xl border border-[color:var(--c-line-strong)] bg-card p-8 md:p-10">
-            <p className={labelClass}>
+          <div className="relative overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-card p-8 md:p-10">
+            <div className="pointer-events-none absolute inset-0 z-0">
+              <DotField
+                dotRadius={1.2}
+                dotSpacing={16}
+                cursorRadius={220}
+                cursorForce={0.06}
+                bulgeStrength={30}
+                glowRadius={170}
+                gradientFrom="rgba(111,191,163,0.35)"
+                gradientTo="rgba(74,157,129,0.12)"
+                glowColor="#6fbfa3"
+              />
+            </div>
+
+            <p className={`relative z-10 ${labelClass}`}>
               {pick(locale, "Санал хүсэлт", "Send a message")}
             </p>
 
-            <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="relative z-10 mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
               <div>
                 <label className={labelClass} htmlFor="c-name">
                   {pick(locale, "Овог нэр", "Full name")}
@@ -173,7 +203,7 @@ export function Contact() {
 
             <a
               href={mailtoHref}
-              className="group mt-8 inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-[0.95rem] font-medium text-accent-contrast transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:brightness-110"
+              className="group relative z-10 mt-8 inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-[0.95rem] font-medium text-accent-contrast transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:brightness-110"
             >
               {pick(locale, "Илгээх", "Submit")}
               <span

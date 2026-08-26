@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Briefcase, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { useLocale, pick } from "@/lib/locale";
 
@@ -26,15 +25,9 @@ function formatNav(n: number) {
 
 export function FundsList({ funds }: { funds: FundCardData[] }) {
   const { locale } = useLocale();
-  // Aceternity's card-hover-effect: one shared layoutId highlight that
-  // slides between cards, rather than each card fading in its own.
-  const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <div
-      onMouseLeave={() => setHovered(null)}
-      className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-2"
-    >
+    <div className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-2">
       {funds.map((f, i) => {
         const blurb = pick(locale, f.excerptMn, f.excerptEn);
         const Icon = ICONS[i % ICONS.length];
@@ -45,25 +38,12 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
             href={f.href}
             target="_blank"
             rel="noopener noreferrer"
-            onMouseEnter={() => setHovered(i)}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 transition-colors duration-500 hover:border-accent-on-dark/40 md:p-9"
+            className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 transition-colors duration-500 hover:border-accent-on-dark/40 hover:bg-white/[0.05] md:p-9"
           >
-            <AnimatePresence>
-              {hovered === i && (
-                <motion.span
-                  layoutId="fund-hover-highlight"
-                  className="absolute inset-0 rounded-3xl bg-accent-on-dark/[0.07]"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { duration: 0.15 } }}
-                  exit={{ opacity: 0, transition: { duration: 0.15, delay: 0.1 } }}
-                />
-              )}
-            </AnimatePresence>
-
             {/* oversized ghost numeral, purely decorative */}
             <span
               aria-hidden
