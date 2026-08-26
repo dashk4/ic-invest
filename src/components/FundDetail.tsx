@@ -74,12 +74,12 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
           <div className="mt-12 max-w-3xl">
             <Reveal delay={0.05}>
               {fund.logoOnDark ? (
-                <div className="relative h-36 w-[26rem]">
+                <div className="relative h-48 w-[36rem] max-w-full">
                   <Image
                     src={fund.logo}
                     alt={fund.name}
                     fill
-                    sizes="416px"
+                    sizes="576px"
                     className="object-contain object-left"
                   />
                 </div>
