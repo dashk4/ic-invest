@@ -175,6 +175,8 @@ function Slider({
   minLabel: string;
   maxLabel: string;
 }) {
+  const progress = ((value - min) / (max - min)) * 100;
+
   return (
     <div>
       <input
@@ -184,8 +186,11 @@ function Slider({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        style={{ accentColor: "var(--jade-400)" }}
-        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[color:var(--c-line-strong)]"
+        style={{
+          accentColor: "var(--jade-400)",
+          background: `linear-gradient(to right, var(--jade-400) ${progress}%, rgba(255,255,255,0.14) ${progress}%)`,
+        }}
+        className="h-2 w-full cursor-pointer appearance-none rounded-full"
       />
       <div className="eyebrow mt-2 flex justify-between text-on-strong-subtle">
         <span>{minLabel}</span>
@@ -525,27 +530,28 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
         {/* stat cards */}
         <RevealGroup className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
           <RevealItem>
-            <div className="rounded-xl border border-accent-on-dark/50 bg-gradient-to-br from-accent-on-dark/[0.16] to-transparent p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-              <p className="eyebrow text-accent-on-dark">{pick(locale, "Нийт үр дүн", "Total value")}</p>
-              <p className="t-numeral mt-3 text-3xl text-on-strong md:text-4xl">
+            <div className="relative overflow-hidden rounded-xl border border-accent-on-dark/55 bg-[linear-gradient(135deg,rgba(111,191,163,0.22),rgba(111,191,163,0.04)_62%,transparent)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+              <span aria-hidden className="absolute -right-8 -top-10 h-32 w-32 rounded-full border border-accent-on-dark/20" />
+              <p className="eyebrow text-accent-on-dark">{pick(locale, "Нийт дүн", "Total value")}</p>
+              <p className="t-numeral mt-4 text-4xl leading-none text-on-strong md:text-[2.8rem]">
                 <Counter value={finalTotal} decimals={0} suffix="₮" />
               </p>
             </div>
           </RevealItem>
           <RevealItem>
-            <div className="rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.035] p-6">
+            <div className="rounded-xl border border-[color:var(--c-line-strong)] bg-[linear-gradient(135deg,rgba(245,243,238,0.09),rgba(255,255,255,0.02))] p-6">
               <p className="eyebrow text-on-strong-subtle">
                 {pick(locale, "Өөрийн оруулсан дүн", "Your contributions")}
               </p>
-              <p className="t-numeral mt-3 text-3xl text-on-strong md:text-4xl">
+              <p className="t-numeral mt-4 text-4xl leading-none text-on-strong md:text-[2.8rem]">
                 <Counter value={finalOwn} decimals={0} suffix="₮" />
               </p>
             </div>
           </RevealItem>
           <RevealItem>
-            <div className="rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.035] p-6">
-              <p className="eyebrow text-on-strong-subtle">{pick(locale, "Ашиг", "Profit")}</p>
-              <p className="t-numeral mt-3 text-3xl text-accent-on-dark md:text-4xl">
+            <div className="rounded-xl border border-[color:var(--bronze-400)]/45 bg-[linear-gradient(135deg,rgba(183,155,108,0.16),rgba(183,155,108,0.03))] p-6">
+              <p className="eyebrow text-[color:var(--bronze-300)]">{pick(locale, "Өгөөжийн дүн", "Estimated gain")}</p>
+              <p className="t-numeral mt-4 text-4xl leading-none text-[color:var(--bronze-200)] md:text-[2.8rem]">
                 <Counter value={profit} decimals={0} suffix="₮" />
               </p>
             </div>
@@ -579,7 +585,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
                   <span className="eyebrow text-on-strong-subtle">
                     {pick(locale, "Таамагласан жилийн өгөөж", "Assumed annual return")}
                   </span>
-                  <span className="eyebrow rounded-md bg-accent-on-dark px-3 py-1.5 text-[color:var(--ink-900)]">
+                  <span className="font-display text-xl tabular-nums text-accent-on-dark">
                     {ratePct}%
                   </span>
                 </div>
@@ -599,7 +605,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
               <div>
                 <div className="flex items-center justify-between gap-3">
                   <span className="eyebrow text-on-strong-subtle">{pick(locale, "Хугацаа", "Term")}</span>
-                  <span className="eyebrow whitespace-nowrap rounded-md bg-accent-on-dark px-3 py-1.5 text-[color:var(--ink-900)]">
+                  <span className="font-display text-xl tabular-nums text-accent-on-dark">
                     {termDisplay} {pick(locale, unit === "years" ? "жил" : "сар", unit === "years" ? "yr" : "mo")}
                   </span>
                 </div>
@@ -666,7 +672,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
                     {pick(locale, "Өөрийн оруулсан дүн", "Your contributions")}
                   </span>
                 </div>
-                <span className="eyebrow rounded-md border border-accent-on-dark/40 bg-accent-on-dark/[0.08] px-4 py-1.5 text-accent-on-dark">
+                <span className="font-display text-lg tabular-nums text-accent-on-dark">
                   {pick(locale, "Таамагласан өгөөж", "Assumed return")}: {ratePct}%
                 </span>
               </div>

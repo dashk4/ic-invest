@@ -19,6 +19,9 @@
   --jade-400: #6fbfa3;
   --jade-500: #4a9d81;
   --jade-600: #35785f;
+  --bronze-200: #e0c99c;
+  --bronze-300: #c9ad79;
+  --bronze-400: #ad8c58;
 
   /* semantic — light */
   --c-surface: var(--bone-100);
