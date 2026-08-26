@@ -482,7 +482,7 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
   return (
     <section
       id="calculator"
-      className="theme-fade section-y relative overflow-hidden bg-surface-strong text-on-strong"
+      className="theme-fade relative overflow-hidden bg-surface-strong py-20 text-on-strong md:py-28"
     >
       <div className="grain pointer-events-none absolute inset-0">
         <div
@@ -540,11 +540,14 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
         </div>
 
         {/* controls + chart */}
-        <div className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-12">
-          <Reveal delay={0.08} className="lg:col-span-4">
-            <div className="relative flex h-full flex-col gap-7 overflow-hidden rounded-xl border border-[color:var(--c-line-strong)] bg-black/10 p-7 shadow-[0_24px_80px_rgba(0,0,0,0.14)] before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-gradient-to-b before:from-accent-on-dark before:via-accent-on-dark/40 before:to-transparent">
+        <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-12">
+          <Reveal delay={0.08} className="lg:col-span-5">
+            <div className="relative flex h-full flex-col gap-6 overflow-hidden rounded-xl border border-[color:var(--c-line-strong)] bg-black/10 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.14)] before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-gradient-to-b before:from-accent-on-dark before:via-accent-on-dark/40 before:to-transparent md:p-7">
               <div>
-                <p className="eyebrow text-on-strong-subtle">{pick(locale, "Давтамж", "Frequency")}</p>
+                <div className="flex items-center justify-between gap-4">
+                  <p className="eyebrow text-on-strong-subtle">{pick(locale, "Давтамж", "Frequency")}</p>
+                  <span className="text-xs text-on-strong-subtle">01 / 04</span>
+                </div>
                 <div className="mt-3">
                   <Segmented options={FREQ_OPTIONS} value={frequency} onChange={setFrequency} />
                 </div>
@@ -632,8 +635,8 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
             </div>
           </Reveal>
 
-          <Reveal delay={0.14} className="lg:col-span-8">
-            <div className="flex h-full flex-col rounded-xl border border-accent-on-dark/25 bg-gradient-to-br from-white/[0.08] to-white/[0.015] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.16)]">
+          <Reveal delay={0.14} className="lg:col-span-7">
+            <div className="flex h-full flex-col rounded-xl border border-accent-on-dark/25 bg-gradient-to-br from-white/[0.08] to-white/[0.015] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.16)] md:p-7">
               <div className="grid grid-cols-1 gap-6 border-b border-white/[0.09] pb-7 sm:grid-cols-[1.5fr_1fr_1fr] sm:items-end">
                 <div className="border-l-2 border-accent-on-dark pl-5">
                   <p className="eyebrow text-accent-on-dark">{pick(locale, "Ирээдүйд хуримтлагдах дүн", "Projected future value")}</p>
