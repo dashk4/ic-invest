@@ -65,7 +65,7 @@ function MenuItem({
     >
       <a
         href={entry.href}
-        className="group eyebrow flex items-center gap-1.5 whitespace-nowrap text-on-strong-muted transition-colors duration-500"
+        className="group eyebrow flex items-center gap-1.5 whitespace-nowrap text-[0.82rem]! text-on-strong-muted transition-colors duration-500"
       >
         <RollText hoverClassName="text-accent-on-dark">
           {pick(locale, entry.mn, entry.en)}
