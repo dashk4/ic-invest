@@ -14,6 +14,16 @@ import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
  * once and only the mask position tracks the pointer.
  */
 
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789₮%.+-";
+
+function randomString(length: number) {
+  let out = "";
+  for (let i = 0; i < length; i++) {
+    out += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+  }
+  return out;
+}
+
 export function EvervaultCard({
   children,
   backdrop,
@@ -29,6 +39,7 @@ export function EvervaultCard({
   const [field, setField] = useState("");
 
   // client-only: keeps the random field out of the server render
+  useEffect(() => setField(randomString(1800)), []);
 
   function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect();
@@ -67,16 +78,15 @@ function CardPattern({
       {/* Theme-aware stops. The published card assumes a dark page; forcing a
           dark reveal on the light theme buried the dark body text under it. */}
       <motion.div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500 "
+        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
         style={{
           ...style,
-          background:
-            "linear-gradient(120deg, var(--c-vault-a), var(--c-vault-b))",
+          background: "linear-gradient(120deg, var(--c-vault-a), var(--c-vault-b))",
         }}
       />
       {/* no mix-blend-overlay: over a light surface it greyed the characters out */}
       <motion.div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500"
+        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
         style={style}
       >
         <p className="h-full break-words whitespace-pre-wrap font-mono text-[0.72rem] leading-[1.35] font-bold text-[color:var(--c-vault-char)]">

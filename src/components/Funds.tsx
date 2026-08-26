@@ -1,6 +1,7 @@
 import { excerpt, FUNDS, getFundFacts, getObjective } from "@/lib/api";
 import { FUND_EXCERPT_EN, FUND_LABEL_EN } from "@/lib/fundI18n";
 import { FundsList, type FundCardData } from "./FundsList";
+import { FundsMarquee } from "./FundsMarquee";
 import { FundsHeading } from "./FundsHeading";
 
 export async function Funds() {
@@ -37,6 +38,7 @@ export async function Funds() {
 
       <div className="container-page relative">
         <FundsHeading />
+        <FundsMarquee funds={funds} />
         <FundsList funds={funds} />
       </div>
     </section>
