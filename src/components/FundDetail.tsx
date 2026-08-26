@@ -45,7 +45,7 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
   return (
     <>
       {/* banner — same dark/grain treatment as the funds section on the homepage */}
-      <section className="theme-fade relative overflow-hidden bg-surface-strong pb-20 pt-36 text-on-strong md:pt-44">
+      <section className="theme-fade relative overflow-hidden bg-surface-strong pb-24 pt-28 text-on-strong md:pt-36">
         <div className="grain pointer-events-none absolute inset-0">
           <div
             className="drift-slow absolute right-[-10%] top-[10%] h-[55vh] w-[55vh] rounded-full opacity-[0.10] blur-[140px]"
@@ -72,16 +72,17 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
             </Link>
           </Reveal>
 
-          <div className="mt-12 max-w-3xl">
-            <Reveal delay={0.05}>
+          <div className="mt-14 grid max-w-6xl items-center gap-12 lg:grid-cols-[1fr_0.82fr] lg:gap-20">
+            <Reveal delay={0.05} className="order-2 lg:order-2">
               {fund.logoOnDark ? (
-                <div className="relative h-48 w-[36rem] max-w-full">
+                <div className="relative flex h-[18rem] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-accent-on-dark/25 bg-[radial-gradient(circle_at_50%_45%,rgba(111,191,163,0.16),rgba(255,255,255,0.025)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.25)]">
+                  <span aria-hidden className="absolute right-7 top-7 font-display text-5xl text-on-strong/[0.06]">{String(fund.index + 1).padStart(2, "0")}</span>
                   <Image
                     src={fund.logo}
                     alt={fund.name}
                     fill
                     sizes="576px"
-                    className="object-contain object-left"
+                    className="object-contain object-center p-10"
                   />
                 </div>
               ) : (
@@ -89,35 +90,35 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
                 // rounded card edges, so it reads as the logo's own light
                 // background rather than a boxed UI frame sitting behind it
                 <div
-                  className="inline-flex h-24 items-center px-2 py-1"
+                  className="relative flex h-[18rem] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-accent-on-dark/25 bg-[radial-gradient(circle_at_50%_45%,rgba(111,191,163,0.16),rgba(255,255,255,0.025)_48%,transparent_72%)]"
                   style={{ background: "var(--bone-100)" }}
                 >
-                  <div className="relative h-full w-56">
+                  <div className="relative h-28 w-72">
                     <Image
                       src={fund.logo}
                       alt={fund.name}
                       fill
-                      sizes="224px"
-                      className="object-contain object-left"
+                      sizes="288px"
+                      className="object-contain object-center"
                     />
                   </div>
                 </div>
               )}
             </Reveal>
 
-            <div className="mt-8 flex items-center gap-2.5">
+            <div className="order-1 lg:order-1">
+            <div className="flex items-center gap-2.5">
               <Icon className="h-4 w-4 text-accent-on-dark" strokeWidth={1.8} />
               <p className="eyebrow text-accent-on-dark">{fund.code}</p>
             </div>
-            <h1 className="t-h2 mt-4 text-balance text-on-strong">
+            <h1 className="t-h2 mt-5 max-w-2xl text-balance text-on-strong">
               <SplitReveal text={fund.name} />
             </h1>
             <Reveal delay={0.12}>
-              <p className="t-body mt-6 max-w-xl text-pretty text-on-strong-muted">
+              <p className="t-body mt-6 max-w-xl border-l-2 border-accent-on-dark/45 pl-5 text-pretty text-on-strong-muted">
                 {pick(locale, fund.labelMn, fund.labelEn)}
               </p>
             </Reveal>
-          </div>
 
           {fund.facts.length > 0 ? (
             <RevealGroup className="mt-14 grid max-w-2xl grid-cols-2 gap-8 border-t border-[color:var(--c-line-strong)] pt-10">
@@ -147,19 +148,19 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
               href="https://system.ic-invest.mn"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-accent px-7 py-3 text-[0.9rem] font-medium text-accent-contrast transition-all duration-500 hover:brightness-110"
+              className="rounded-lg bg-accent px-7 py-3 text-[0.9rem] font-medium text-accent-contrast transition-all duration-500 hover:-translate-y-0.5 hover:brightness-110"
             >
               {pick(locale, "Нэвтрэх", "Login")}
             </a>
             <Link
               href="/#contact"
-              className="rounded-full border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
+              className="rounded-lg border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-all duration-500 hover:-translate-y-0.5 hover:border-accent-on-dark hover:bg-white/[0.04]"
             >
               {pick(locale, "Холбоо барих", "Contact us")}
             </Link>
             <Link
               href="#calculator"
-              className="rounded-full border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
+              className="rounded-lg border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-all duration-500 hover:-translate-y-0.5 hover:border-accent-on-dark hover:bg-white/[0.04]"
             >
               {pick(locale, "Тооцоолуур", "Calculator")}
             </Link>
@@ -175,21 +176,26 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
               </a>
             )}
           </Reveal>
+            </div>
+        </div>
         </div>
       </section>
 
       {/* body — description */}
-      <section className="theme-fade bg-surface">
+      <section className="theme-fade border-t hairline bg-surface">
         <div className="container-page py-20 md:py-24">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
             <div className="lg:col-span-8">
               <Reveal>
                 <p className="eyebrow text-accent">{pick(locale, "Сангийн тухай", "About this fund")}</p>
+                <h2 className="t-h3 mt-5 max-w-xl text-balance text-fg">
+                  {pick(locale, "Урт хугацааны үнэ цэнэ бүтээх хөрөнгө оруулалт", "Investing for long-term value")}
+                </h2>
               </Reveal>
-              <div className="mt-6 space-y-5">
+              <div className="mt-8 space-y-6">
                 {paragraphs.map((p, i) => (
                   <Reveal key={i} delay={i * 0.06}>
-                    <p className="t-body max-w-prose text-pretty text-fg-muted">{p}</p>
+                    <p className={`${i === 0 ? "t-lead text-fg" : "t-body text-fg-muted"} max-w-prose text-pretty`}>{p}</p>
                   </Reveal>
                 ))}
               </div>
@@ -213,7 +219,7 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
                     <Link
                       key={f.slug}
                       href={`/funds/${f.slug}`}
-                      className="group flex items-center justify-between gap-4 rounded-2xl border border-[color:var(--c-line-strong)] bg-surface-alt/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40"
+                      className="group flex items-center justify-between gap-4 rounded-xl border border-[color:var(--c-line-strong)] bg-surface-alt/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface-alt"
                     >
                       <span>
                         <span className="eyebrow block text-fg-subtle">{f.code}</span>
@@ -233,7 +239,7 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
               </Reveal>
 
               <Reveal delay={0.2} className="mt-3">
-                <div className="relative overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-card p-7">
+                <div className="relative overflow-hidden rounded-xl border border-[color:var(--c-line-strong)] bg-card p-7">
                   <div className="pointer-events-none absolute inset-0 z-0">
                     <DotField
                       dotRadius={1.2}
