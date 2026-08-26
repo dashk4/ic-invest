@@ -108,9 +108,9 @@ function AmountField({
   onChange: (v: number) => void;
 }) {
   return (
-    <label className="block">
-      <span className="eyebrow text-on-strong-subtle">{label}</span>
-      <div className="mt-3 flex items-center gap-2 rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.035] px-4 py-3.5 transition-all duration-300 focus-within:border-accent-on-dark/60 focus-within:bg-accent-on-dark/[0.05]">
+    <label className="group block border-b border-white/[0.09] pb-5 last:border-b-0 last:pb-0">
+      <span className="eyebrow text-on-strong-subtle transition-colors duration-300 group-focus-within:text-accent-on-dark">{label}</span>
+      <div className="mt-2 flex items-center gap-4 border-l border-white/[0.16] pl-4 transition-colors duration-300 group-focus-within:border-accent-on-dark">
         <input
           type="text"
           inputMode="numeric"
@@ -119,9 +119,9 @@ function AmountField({
             const digits = e.target.value.replace(/[^\d]/g, "");
             onChange(digits === "" ? 0 : Math.min(Number(digits), 999_999_999));
           }}
-          className="t-numeral w-full bg-transparent text-lg text-on-strong outline-none"
+          className="t-numeral w-full bg-transparent text-2xl leading-none text-on-strong outline-none placeholder:text-on-strong-subtle"
         />
-        <span className="text-on-strong-subtle">₮</span>
+        <span className="border-l border-white/[0.14] pl-4 font-display text-lg text-accent-on-dark">₮</span>
       </div>
     </label>
   );
@@ -622,28 +622,32 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
 
           <Reveal delay={0.14} className="lg:col-span-8">
             <div className="flex h-full flex-col rounded-xl border border-accent-on-dark/25 bg-gradient-to-br from-white/[0.08] to-white/[0.015] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.16)]">
-              <div className="grid grid-cols-1 gap-5 border-b border-white/[0.09] pb-6 sm:grid-cols-3">
-                <div>
-                  <p className="eyebrow text-accent-on-dark">{pick(locale, "Ирээдүйн дүн", "Future value")}</p>
-                  <p className="t-numeral mt-2 text-3xl leading-none text-on-strong md:text-4xl">
+              <div className="grid grid-cols-1 gap-6 border-b border-white/[0.09] pb-7 sm:grid-cols-[1.5fr_1fr_1fr] sm:items-end">
+                <div className="border-l-2 border-accent-on-dark pl-5">
+                  <p className="eyebrow text-accent-on-dark">{pick(locale, "Ирээдүйд хуримтлагдах дүн", "Projected future value")}</p>
+                  <p className="t-numeral mt-3 text-4xl leading-none text-on-strong md:text-5xl">
                     <Counter value={finalTotal} decimals={0} suffix="₮" />
                   </p>
                 </div>
-                <div>
-                  <p className="eyebrow text-on-strong-subtle">{pick(locale, "Оруулсан дүн", "Contributed")}</p>
-                  <p className="t-numeral mt-2 text-3xl leading-none text-on-strong md:text-4xl">
+                <div className="border-l border-white/[0.13] pl-4">
+                  <p className="eyebrow text-on-strong-subtle">{pick(locale, "Нийт оруулалт", "Total contributed")}</p>
+                  <p className="t-numeral mt-3 text-2xl leading-none text-on-strong md:text-3xl">
                     <Counter value={finalOwn} decimals={0} suffix="₮" />
                   </p>
                 </div>
-                <div>
-                  <p className="eyebrow text-[color:var(--bronze-300)]">{pick(locale, "Өгөөжийн дүн", "Estimated gain")}</p>
-                  <p className="t-numeral mt-2 text-3xl leading-none text-[color:var(--bronze-200)] md:text-4xl">
+                <div className="border-l border-white/[0.13] pl-4">
+                  <p className="eyebrow text-[color:var(--bronze-300)]">{pick(locale, "Тооцоолсон өгөөж", "Estimated gain")}</p>
+                  <p className="t-numeral mt-3 text-2xl leading-none text-[color:var(--bronze-200)] md:text-3xl">
                     <Counter value={profit} decimals={0} suffix="₮" />
                   </p>
                 </div>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex flex-wrap items-center gap-5">
+                <div>
+                  <p className="font-display text-xl text-on-strong">
+                    {pick(locale, "Хуримтлалын өсөлтийн зураглал", "Growth trajectory")}
+                  </p>
+                  <div className="mt-3 flex flex-wrap items-center gap-5">
                   <span className="flex items-center gap-2 text-sm text-on-strong-subtle">
                     <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--jade-400)" }} />
                     {pick(locale, "Нийт үр дүн", "Total value")}
@@ -662,9 +666,10 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
                     </svg>
                     {pick(locale, "Өөрийн оруулсан дүн", "Your contributions")}
                   </span>
+                  </div>
                 </div>
-                <span className="font-display text-lg tabular-nums text-accent-on-dark">
-                  {pick(locale, "Таамагласан өгөөж", "Assumed return")}: {ratePct}%
+                <span className="border-l-2 border-[color:var(--bronze-400)] pl-3 font-display text-lg tabular-nums text-[color:var(--bronze-200)]">
+                  {pick(locale, "Таамагласан өгөөж", "Assumed return")} <strong className="font-semibold">{ratePct}%</strong>
                 </span>
               </div>
 
