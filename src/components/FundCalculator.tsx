@@ -100,17 +100,26 @@ function niceTicks(max: number, targetCount = 6): number[] {
 
 function AmountField({
   label,
+  index,
   value,
   onChange,
 }: {
   label: string;
+  index: string;
   value: number;
   onChange: (v: number) => void;
 }) {
   return (
-    <label className="group block border-b border-white/[0.09] pb-5 last:border-b-0 last:pb-0">
-      <span className="eyebrow text-on-strong-subtle transition-colors duration-300 group-focus-within:text-accent-on-dark">{label}</span>
-      <div className="mt-2 flex items-center gap-4 border-l border-white/[0.16] pl-4 transition-colors duration-300 group-focus-within:border-accent-on-dark">
+    <label className="group grid grid-cols-[2.5rem_1fr] gap-3 border-b border-white/[0.1] py-5 first:pt-0 last:border-b-0 last:pb-0">
+      <span className="font-display text-xl leading-none text-accent-on-dark/60 transition-colors duration-300 group-focus-within:text-accent-on-dark">
+        {index}
+      </span>
+      <div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="eyebrow text-on-strong-subtle transition-colors duration-300 group-focus-within:text-accent-on-dark">{label}</span>
+          <span className="text-xs uppercase tracking-[0.18em] text-on-strong-subtle">MNT</span>
+        </div>
+        <div className="mt-3 flex items-baseline gap-3 border-b border-white/[0.2] pb-2 transition-colors duration-300 group-focus-within:border-accent-on-dark">
         <input
           type="text"
           inputMode="numeric"
@@ -119,9 +128,10 @@ function AmountField({
             const digits = e.target.value.replace(/[^\d]/g, "");
             onChange(digits === "" ? 0 : Math.min(Number(digits), 999_999_999));
           }}
-          className="t-numeral w-full bg-transparent text-2xl leading-none text-on-strong outline-none placeholder:text-on-strong-subtle"
+          className="t-numeral w-full bg-transparent text-[2rem] leading-none text-on-strong outline-none placeholder:text-on-strong-subtle md:text-[2.25rem]"
         />
-        <span className="border-l border-white/[0.14] pl-4 font-display text-lg text-accent-on-dark">₮</span>
+        <span className="font-display text-xl text-accent-on-dark">₮</span>
+        </div>
       </div>
     </label>
   );
@@ -541,11 +551,13 @@ export function FundCalculator({ fund }: { fund?: FundCalculatorContext }) {
               </div>
 
               <AmountField
+                index="01"
                 label={pick(locale, "Эхний дүн", "Initial amount")}
                 value={initial}
                 onChange={setInitial}
               />
               <AmountField
+                index="02"
                 label={pick(locale, "Тогтмол оруулах дүн", "Regular contribution")}
                 value={contribution}
                 onChange={setContribution}
