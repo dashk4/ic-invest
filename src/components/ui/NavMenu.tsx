@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { NAV, type NavEntry } from "@/lib/nav";
 import { pick, type Locale } from "@/lib/locale";
-import { RollText } from "./RollText";
 
 /**
  * Aceternity UI's navbar-menu interaction: a shared `layoutId` panel that
@@ -73,29 +72,9 @@ function MenuItem({
       )}
       <a
         href={entry.href}
-        className="group eyebrow relative z-10 flex items-center gap-1.5 whitespace-nowrap text-[0.82rem]! text-on-strong-muted transition-colors duration-500"
+        className="eyebrow relative z-10 flex items-center gap-1.5 whitespace-nowrap text-[0.82rem]! text-on-strong-muted transition-colors duration-500 hover:text-accent-on-dark"
       >
-        <RollText hoverClassName="text-accent-on-dark">
-          {pick(locale, entry.mn, entry.en)}
-        </RollText>
-        {entry.children && (
-          <motion.svg
-            aria-hidden
-            viewBox="0 0 10 6"
-            fill="none"
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="h-[5px] w-[9px] shrink-0 opacity-70"
-          >
-            <path
-              d="M1 1L5 5L9 1"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </motion.svg>
-        )}
+        {pick(locale, entry.mn, entry.en)}
       </a>
 
       {active !== null && isOpen && (
