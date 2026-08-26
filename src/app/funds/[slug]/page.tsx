@@ -83,6 +83,7 @@ export default async function FundPage({
     logo: meta.logo,
     logoWidth: meta.logoWidth,
     logoHeight: meta.logoHeight,
+    logoOnDark: meta.logoOnDark ?? false,
     facts,
     externalSite: meta.externalSite,
     otherFunds,

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Briefcase, ExternalLink, ShieldCheck, TrendingUp, Users } from "lucide-react";
+import { ArrowLeft, Briefcase, ExternalLink, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
@@ -28,6 +28,7 @@ export type FundDetailData = {
   logo: string;
   logoWidth: number;
   logoHeight: number;
+  logoOnDark: boolean;
   facts: FundFactRow[];
   externalSite?: string;
   otherFunds: { slug: string; name: string; nameEn: string; code: string }[];
@@ -59,28 +60,45 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
           <Reveal>
             <Link
               href="/#funds"
-              className="eyebrow text-on-strong-subtle transition-colors duration-300 hover:text-accent-on-dark"
+              className="group inline-flex items-center gap-3 text-on-strong-subtle"
             >
-              ← {pick(locale, "Хөрөнгө оруулалтын сан", "Our funds")}
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--c-line-strong)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-x-1 group-hover:border-accent-on-dark group-hover:text-accent-on-dark">
+                <ArrowLeft className="h-4 w-4" strokeWidth={1.8} />
+              </span>
+              <span className="eyebrow transition-colors duration-300 group-hover:text-accent-on-dark">
+                {pick(locale, "Хөрөнгө оруулалтын сан", "Our funds")}
+              </span>
             </Link>
           </Reveal>
 
-          <div className="mt-10 max-w-3xl">
+          <div className="mt-12 max-w-3xl">
             <Reveal delay={0.05}>
-              <div
-                className="inline-flex h-16 items-center rounded-2xl px-6 py-3"
-                style={{ background: "var(--bone-100)" }}
-              >
-                <div className="relative h-full w-32">
+              {fund.logoOnDark ? (
+                <div className="relative h-16 w-56">
                   <Image
                     src={fund.logo}
                     alt={fund.name}
                     fill
-                    sizes="160px"
+                    sizes="224px"
                     className="object-contain object-left"
                   />
                 </div>
-              </div>
+              ) : (
+                <div
+                  className="inline-flex h-16 items-center rounded-2xl px-6 py-3"
+                  style={{ background: "var(--bone-100)" }}
+                >
+                  <div className="relative h-full w-32">
+                    <Image
+                      src={fund.logo}
+                      alt={fund.name}
+                      fill
+                      sizes="160px"
+                      className="object-contain object-left"
+                    />
+                  </div>
+                </div>
+              )}
             </Reveal>
 
             <div className="mt-8 flex items-center gap-2.5">

@@ -10,6 +10,11 @@ export type FundDetailMeta = {
   logo: string;
   logoWidth: number;
   logoHeight: number;
+  /** true when the asset itself is light/white and reads directly on the
+   *  dark banner — those show at full size with no backing plate. Logos
+   *  with dark ink in the mark (checked by sampling pixel luminance) keep
+   *  the light plate behind them or they'd disappear. */
+  logoOnDark?: boolean;
   nameFallback: { mn: string; en: string };
   descriptionFallback?: { mn: string; en: string };
   staticFacts?: { mn: string; en: string; value: string }[];
@@ -23,6 +28,7 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logo: "/brand/Mobi-Fund_Red_Logo_PNG.png",
     logoWidth: 1311,
     logoHeight: 560,
+    logoOnDark: true,
     nameFallback: { mn: "Мобисан хувийн ХОС", en: "Mobisan private fund" },
   },
   {
@@ -36,9 +42,10 @@ export const FUND_DETAILS: FundDetailMeta[] = [
   {
     sid: 4,
     slug: "etf",
-    logo: "/brand/Ungut-full.png",
+    logo: "/brand/Tsagaan-full.png",
     logoWidth: 3000,
     logoHeight: 800,
+    logoOnDark: true,
     nameFallback: {
       mn: "Инвескор Глобал Кью хамтын биржээр арилжаалагддаг хөрөнгө оруулалтын сан",
       en: "Invescore Global Q exchange-traded fund",
