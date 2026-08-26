@@ -1,31 +1,24 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * three + three-globe + r3f + drei is well over a megabyte, so the globe is
- * code-split. It used to only start fetching once the section was actually
- * near the viewport, which meant the multi-hundred-KB chunk began downloading
- * at the exact moment the user was already looking at the empty placeholder —
- * a long, visible pop-in. Now the import is warmed during idle time as soon as
- * this module loads (see the requestIdleCallback below), so by the time the
- * user scrolls this far it's usually already cached; only the WebGL mount
- * itself is still gated on visibility, since creating a GL context off-screen
- * would be wasted work.
+ * code-split, and mounting it costs real one-time CPU work on top of that
+ * (WebGL context, shaders, building the country-polygon geometry). Both used
+ * to only happen once the section scrolled within 300px of the viewport,
+ * which meant the download AND the init started at the exact moment the user
+ * was already staring at the empty placeholder. Both now run during idle time
+ * right after the page loads (see ContactGlobe below) instead of waiting on
+ * scroll proximity, so by the time the user actually reaches this section the
+ * globe is already built, not just downloaded.
  */
 const loadGlobe = () => import("./ui/Globe").then((m) => m.World);
 const World = dynamic(loadGlobe, {
   ssr: false,
   loading: () => <GlobePlaceholder />,
 });
-
-if (typeof window !== "undefined") {
-  const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
-  idle(() => {
-    loadGlobe();
-  });
-}
 
 // Ulaanbaatar, and the markets the funds reach
 const UB = { lat: 47.8864, lng: 106.9057 };
@@ -94,32 +87,24 @@ function GlobePlaceholder() {
 }
 
 export function ContactGlobe() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  // Fine to pay this eagerly, off-screen: it's a small decorative scene on a
+  // page whose whole point is to be scrolled through, not conditional on
+  // whether it's currently in view.
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "300px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
+    idle(() => {
+      loadGlobe().then(() => setReady(true));
+    });
   }, []);
 
   return (
     <div
-      ref={ref}
       aria-hidden
       className="pointer-events-none relative aspect-square w-full max-w-[540px]"
     >
-      {visible ? <World globeConfig={CONFIG} data={ARCS} /> : <GlobePlaceholder />}
+      {ready ? <World globeConfig={CONFIG} data={ARCS} /> : <GlobePlaceholder />}
     </div>
   );
 }
