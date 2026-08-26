@@ -102,7 +102,10 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Lenis (SmoothScroll.tsx) owns scroll smoothing, anchors included — native
+     smooth-behavior running at the same time fought it frame to frame and
+     produced a stutter/catch feeling, sometimes stalling scroll entirely. */
+  scroll-behavior: auto;
   color-scheme: light;
 }
 

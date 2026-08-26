@@ -5,13 +5,27 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * three + three-globe + r3f + drei is well over a megabyte, so the globe is
- * code-split and only fetched once the section is actually near the viewport.
- * Until then the slot holds a static ring so the layout does not jump.
+ * code-split. It used to only start fetching once the section was actually
+ * near the viewport, which meant the multi-hundred-KB chunk began downloading
+ * at the exact moment the user was already looking at the empty placeholder —
+ * a long, visible pop-in. Now the import is warmed during idle time as soon as
+ * this module loads (see the requestIdleCallback below), so by the time the
+ * user scrolls this far it's usually already cached; only the WebGL mount
+ * itself is still gated on visibility, since creating a GL context off-screen
+ * would be wasted work.
  */
-const World = dynamic(() => import("./ui/Globe").then((m) => m.World), {
+const loadGlobe = () => import("./ui/Globe").then((m) => m.World);
+const World = dynamic(loadGlobe, {
   ssr: false,
   loading: () => <GlobePlaceholder />,
 });
+
+if (typeof window !== "undefined") {
+  const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
+  idle(() => {
+    loadGlobe();
+  });
+}
 
 // Ulaanbaatar, and the markets the funds reach
 const UB = { lat: 47.8864, lng: 106.9057 };

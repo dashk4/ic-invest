@@ -11,6 +11,9 @@ export function SmoothScroll() {
       wheelMultiplier: 0.85,
       gestureOrientation: "vertical",
       smoothWheel: true,
+      // native CSS smooth-behavior is off (see globals.css) so this is the
+      // only thing animating hash-link jumps now — otherwise they'd snap
+      anchors: true,
     });
     setLenis(lenis);
 
