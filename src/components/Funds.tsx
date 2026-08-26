@@ -13,16 +13,22 @@ export async function Funds() {
       const objective = await getObjective(f.sid);
       const facts = f.sid === 4 ? await getFundFacts(f.sid) : [];
       const navFact = facts.find((x) => /цэвэр үнэ цэн/i.test(x.first_text));
-      const slug = FUND_DETAILS.find((d) => d.sid === f.sid)?.slug ?? String(f.sid);
+      const meta = FUND_DETAILS.find((d) => d.sid === f.sid);
+      const slug = meta?.slug ?? String(f.sid);
+      // sid 5 and 6 have no live objective (the API returns null for both),
+      // so their card copy falls back to the same real, hand-entered text
+      // used on their own detail page instead of going blank.
       return {
         sid: f.sid,
         code: f.code,
         href: `/funds/${slug}`,
-        name: objective?.name ?? f.label,
+        name: objective?.name ?? meta?.nameFallback.mn ?? f.label,
         labelMn: f.label,
         labelEn: FUND_LABEL_EN[f.sid] ?? f.label,
-        excerptMn: objective?.text ? excerpt(objective.text, 135) : "",
-        excerptEn: FUND_EXCERPT_EN[f.sid] ?? "",
+        excerptMn: objective?.text
+          ? excerpt(objective.text, 135)
+          : (meta?.descriptionFallback?.mn.split("\n\n")[0] ?? ""),
+        excerptEn: FUND_EXCERPT_EN[f.sid] ?? meta?.descriptionFallback?.en.split("\n\n")[0] ?? "",
         nav: navFact ? Number(navFact.last_text) : null,
       };
     })

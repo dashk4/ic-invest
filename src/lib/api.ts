@@ -50,6 +50,12 @@ export const FUNDS = [
     label: "Хамтын нээлттэй хөрөнгө оруулалтын сан",
     href: "https://ic-invest.mn/mn/service/5",
   },
+  {
+    sid: 6,
+    code: "VEQ",
+    label: "Хувийн хөрөнгө оруулалтын сан",
+    href: "https://ic-invest.mn/mn/service/6",
+  },
 ] as const;
 
 function stripHtml(html: string): string {

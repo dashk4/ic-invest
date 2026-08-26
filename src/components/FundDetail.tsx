@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Briefcase, ExternalLink, ShieldCheck, TrendingUp, Users } from "lucide-react";
+import { ArrowLeft, Briefcase, ExternalLink, PieChart, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
 import DotField from "./ui/DotField";
 import { useLocale, pick } from "@/lib/locale";
 
-const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users];
+const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users, PieChart];
 
 export type FundFactRow = { labelMn: string; labelEn: string; value: string; numeric: number | null };
 

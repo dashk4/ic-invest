@@ -38,7 +38,10 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logoWidth: 612,
     logoHeight: 408,
     logoOnDark: true,
-    nameFallback: { mn: '"Инвескор РИ Сайкл" хувийн ХОС', en: "Invescore RI Cycle private fund" },
+    nameFallback: {
+      mn: '"Инвескор РИ Сайкл" хувийн ХОС',
+      en: "Invescore RI Cycle private fund",
+    },
   },
   {
     sid: 4,
@@ -59,15 +62,35 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logoWidth: 710,
     logoHeight: 194,
     logoOnDark: true,
-    nameFallback: { mn: "И Эс Пи Ирээдүй хамтын нээлттэй сан", en: "E-Fund (ISP Ireedui) mutual fund" },
+    nameFallback: {
+      mn: "И Эс Пи Ирээдүй хамтын нээлттэй сан",
+      en: "E-Fund (ISP Ireedui) mutual fund",
+    },
     descriptionFallback: {
       mn: 'И Эс Пи Ирээдүй хамтын хөрөнгө оруулалтын сан нь ажил олгогч байгууллага болон тэдгээрийн ажилтнуудад зориулсан хуримтлалын сан бөгөөд ажилтнуудын санхүүгийн тогтвортой байдлыг дэмжих, урт хугацааны хуримтлал бий болгох зорилготой юм.\n\n"Инвескор Ассет Менежмент" ХХК-ийн үүсгэн байгуулсан "И Эс Пи Ирээдүй Хамтын ХОС" ХХК нь Санхүүгийн зохицуулах хорооны 2025 оны 10 дугаар сарын 24-ний өдрийн №424 дүгээр тогтоолоор нэгж эрхээ олон нийтэд санал болгох зөвшөөрөл авсны дагуу анхдагч зах зээлийн арилжааг албан ёсоор нээлээ.',
-      en: "The E-Fund is a collective savings and investment fund for employer organizations and their staff, built to support employees' financial stability and long-term savings.\n\nEstablished by Invescore Asset Management LLC, \"И Эс Пи Ирээдүй Хамтын ХОС\" LLC received approval from the Financial Regulatory Commission (Resolution No. 424, 24 October 2025) to offer its units to the public, and formally opened primary-market trading.",
+      en: 'The E-Fund is a collective savings and investment fund for employer organizations and their staff, built to support employees\' financial stability and long-term savings.\n\nEstablished by Invescore Asset Management LLC, "И Эс Пи Ирээдүй Хамтын ХОС" LLC received approval from the Financial Regulatory Commission (Resolution No. 424, 24 October 2025) to offer its units to the public, and formally opened primary-market trading.',
     },
     staticFacts: [
-      { mn: "Анхдагч арилжааны хугацаа", en: "Primary offering window", value: "2025.10.29 – 2025.11.29" },
+      {
+        mn: "Анхдагч арилжааны хугацаа",
+        en: "Primary offering window",
+        value: "2025.10.29 – 2025.11.29",
+      },
     ],
     externalSite: "www.efund.mn",
+  },
+  {
+    sid: 6,
+    slug: "veq",
+    logo: "/brand/pocket-fund.png",
+    logoWidth: 1006,
+    logoHeight: 248,
+    logoOnDark: true,
+    nameFallback: { mn: '"Вертикор Экъюти" хувийн ХОС', en: "Vertikor Equity private fund" },
+    descriptionFallback: {
+      mn: "Вертикор Экъюти хувийн хөрөнгө оруулалтын сан нь хувьцаа, өрийн хэрэгсэл болон бусад санхүүгийн хэрэгслүүдэд хөрөнгө оруулах, Сангийн хөрөнгийг эрсдэл, өгөөжийн оновчтой түвшинд идэвхтэйгээр удирдан хөрөнгө оруулагч нарт боломжит хамгийн өндөр өгөөжийг хүртээхэд оршино.",
+      en: "Vertikor Equity private fund invests in equities, debt instruments and other financial instruments, actively managing the fund's assets at an optimal balance of risk and return to deliver investors the highest return possible.",
+    },
   },
 ];
 

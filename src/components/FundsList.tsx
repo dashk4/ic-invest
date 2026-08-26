@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Briefcase, ShieldCheck, TrendingUp, Users } from "lucide-react";
+import { Briefcase, PieChart, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { useLocale, pick } from "@/lib/locale";
 
 const MotionLink = motion.create(Link);
+const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users, PieChart];
 
 export type FundCardData = {
   sid: number;
@@ -18,8 +19,6 @@ export type FundCardData = {
   excerptEn: string;
   nav: number | null;
 };
-
-const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users];
 
 function formatNav(n: number) {
   const [whole, frac] = n.toFixed(2).split(".");
