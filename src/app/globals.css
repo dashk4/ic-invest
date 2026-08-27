@@ -1,13 +1,16 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
 /*
-  IC Asset Management — phase 3 design system.
-  A single-accent "quiet luxury" scheme: ink (near-black with a faint green
-  cast) + warm bone paper + one refined jade accent. Every other tone is a
-  derived opacity of ink or bone, which is what keeps the palette harmonious.
+  IC Asset Management design system. Warm paper and jade keep the interface
+  calm; the navy and red come directly from the company mark. Navy carries
+  primary actions and anchored panels, while red stays a small signature
+  accent so it never reads as a market-loss state.
 */
 
 :root {
+  --ticker-height: 3.25rem;
+
   /* raw palette */
   --ink-900: #080b0a;
   --ink-800: #0e1311;
@@ -22,6 +25,9 @@
   --bronze-200: #e0c99c;
   --bronze-300: #c9ad79;
   --bronze-400: #ad8c58;
+  --brand-navy: #062f55;
+  --brand-navy-deep: #042541;
+  --brand-red: #da2128;
 
   /* semantic — light */
   --c-surface: var(--bone-100);
@@ -45,7 +51,10 @@
   --c-accent-light: var(--jade-500);
   --c-accent-on-dark: var(--jade-400);
   --c-accent-contrast: var(--bone-100);
-  --c-card: color-mix(in srgb, #ffffff 55%, transparent);
+  --c-action: var(--brand-navy);
+  --c-action-contrast: #ffffff;
+  --c-card: color-mix(in srgb, #ffffff 88%, transparent);
+  --c-card-shadow: 0 24px 70px -42px rgb(6 47 85 / 0.34);
   /* evervault reveal — light here, so the dark body text keeps reading */
   --c-vault-a: color-mix(in srgb, var(--jade-400) 60%, transparent);
   --c-vault-b: color-mix(in srgb, var(--jade-500) 32%, transparent);
@@ -74,7 +83,10 @@
   --c-accent-light: var(--jade-400);
   --c-accent-on-dark: var(--jade-400);
   --c-accent-contrast: var(--ink-900);
-  --c-card: color-mix(in srgb, #ffffff 4%, transparent);
+  --c-action: var(--jade-400);
+  --c-action-contrast: var(--ink-900);
+  --c-card: color-mix(in srgb, #ffffff 6%, transparent);
+  --c-card-shadow: 0 24px 70px -42px rgb(0 0 0 / 0.8);
   --c-vault-a: var(--ink-800);
   --c-vault-b: var(--jade-600);
   --c-vault-char: color-mix(in srgb, var(--jade-400) 45%, transparent);
@@ -98,10 +110,12 @@
   --color-accent-light: var(--c-accent-light);
   --color-accent-on-dark: var(--c-accent-on-dark);
   --color-accent-contrast: var(--c-accent-contrast);
+  --color-action: var(--c-action);
+  --color-action-contrast: var(--c-action-contrast);
   --color-card: var(--c-card);
 
-  --font-display: var(--font-display-src);
-  --font-sans: var(--font-sans-src);
+  --font-display: var(--font-manrope-src);
+  --font-sans: var(--font-manrope-src);
 }
 
 html {
@@ -140,14 +154,12 @@ body {
   font-weight: 600;
 }
 
-/* Cormorant is a high-contrast serif: it needs tight leading and a little
-   negative tracking at display sizes, or it reads loose and wispy. */
 .t-display {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(3.1rem, 7.4vw, 6.75rem);
-  line-height: 0.98;
-  letter-spacing: -0.015em;
+  font-size: clamp(2.65rem, 5.5vw, 5.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
 }
 
 .t-h2 {
@@ -229,7 +241,7 @@ body {
 }
 
 .section-y {
-  padding-block: clamp(6rem, 12vh, 10rem);
+  padding-block: clamp(4.75rem, 9vh, 7.5rem);
 }
 
 /* keep anchor targets clear of the floating glass header */
@@ -315,6 +327,159 @@ section[id] {
     color 0.6s ease;
 }
 
+.surface-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  box-shadow: var(--c-card-shadow);
+}
+
+.brand-action {
+  background: var(--c-action);
+  color: var(--c-action-contrast);
+  box-shadow: 0 16px 34px -20px color-mix(in srgb, var(--c-action) 85%, transparent);
+}
+
+.brand-action:hover {
+  box-shadow: 0 20px 40px -20px color-mix(in srgb, var(--c-action) 92%, transparent);
+}
+
+.brand-signal {
+  background: var(--brand-red);
+}
+
+.brand-chip {
+  background: color-mix(in srgb, var(--c-action) 9%, transparent);
+  color: var(--c-action);
+}
+
+.brand-icon,
+.brand-card-arrow {
+  background: var(--c-action);
+  color: var(--c-action-contrast);
+}
+
+.brand-card-arrow {
+  background: color-mix(in srgb, var(--c-action) 9%, transparent);
+  color: var(--c-action);
+}
+
+.group:hover .brand-card-arrow {
+  background: var(--c-action);
+  color: var(--c-action-contrast);
+}
+
+.hero-vignette {
+  background:
+    radial-gradient(circle at 76% 36%, rgb(111 191 163 / 0.07), transparent 25rem),
+    linear-gradient(115deg, rgb(5 7 6 / 0.5), transparent 42%, rgb(5 7 6 / 0.58));
+}
+
+.cta-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(110deg, transparent 28%, rgb(255 255 255 / 0.18) 50%, transparent 72%);
+  transform: translateX(-125%);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-button:hover::before {
+  transform: translateX(125%);
+}
+
+.cta-button-solid {
+  box-shadow: 0 14px 30px -18px color-mix(in srgb, var(--c-action) 85%, transparent);
+}
+
+.cta-button-solid .cta-arrow {
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  color: currentColor;
+}
+
+.cta-button-on-dark .cta-arrow {
+  background: var(--ink-900);
+  color: var(--c-accent-on-dark);
+}
+
+.cta-button-on-dark {
+  box-shadow: 0 16px 30px -24px rgb(111 191 163 / 0.62);
+}
+
+.cta-button-ghost {
+  background: rgb(255 255 255 / 0.015);
+}
+
+.cta-arrow {
+  background: rgb(5 7 6 / 0.1);
+}
+
+.cta-button-ghost .cta-arrow {
+  border: 1px solid currentColor;
+  background: transparent;
+  opacity: 0.8;
+}
+
+.ticker-tape {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: color-mix(in srgb, var(--ink-900) 96%, transparent);
+  box-shadow: 0 -18px 36px -28px rgb(0 0 0 / 0.9);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+.hero-data-rail {
+  padding-bottom: calc(var(--ticker-height) + 1.25rem);
+}
+
+@media (min-width: 768px) {
+  .hero-data-rail {
+    padding-bottom: calc(var(--ticker-height) + 1.5rem);
+  }
+}
+
+.ticker-tape-inner {
+  display: flex;
+  width: 100%;
+  height: var(--ticker-height);
+  align-items: center;
+  padding-inline: 0.35rem;
+}
+
+.ticker-tape .tradingview-widget-container {
+  min-width: 0;
+  height: var(--ticker-height);
+  overflow: hidden;
+}
+
+.ticker-tape .ticker-tape-iframe {
+  display: block;
+  width: 100% !important;
+  height: var(--ticker-height) !important;
+  border: 0;
+}
+
+.footer-with-ticker {
+  padding-bottom: calc(2.5rem + var(--ticker-height, 3.25rem) + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 640px) {
+  .ticker-tape-inner {
+    padding-inline: 0;
+  }
+}
+
 /* dot field behind bento skeletons (Aceternity's bg-dot-* utility) */
 .bg-dots {
   background-image: radial-gradient(currentColor 1px, transparent 1px);
@@ -354,6 +519,80 @@ section[id] {
   animation: drift 34s ease-in-out infinite reverse;
 }
 
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-500px);
+    opacity: 0;
+  }
+}
+
+.animate-meteor {
+  animation-name: meteor;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Border Glow (reactbits.dev): a conic-gradient ring that sweeps around a
+   card's edge. Driven by an animated custom property so the gradient
+   actually rotates (browsers can't tween a plain `background` angle) —
+   registered below with @property so its animation is interpolated as a
+   number, not just snapped between values like an unregistered custom
+   property would be. Wrap a card with .border-glow and it needs
+   position:relative + a matching border-radius; the ring itself lives on
+   ::before, masked to a thin band so only the outline glows, not the fill. */
+@property --border-glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.border-glow {
+  position: relative;
+  isolation: isolate;
+}
+
+.border-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--border-glow-angle),
+    transparent 0%,
+    var(--jade-400) 8%,
+    var(--brand-red) 16%,
+    transparent 28%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: border-glow-spin 3.5s linear infinite;
+  pointer-events: none;
+}
+
+.border-glow:hover::before {
+  opacity: 1;
+}
+
+@keyframes border-glow-spin {
+  to {
+    --border-glow-angle: 360deg;
+  }
+}
+
 .grain::after {
   content: "";
   position: absolute;
@@ -370,7 +609,9 @@ section[id] {
   }
   .animate-marquee,
   .drift,
-  .drift-slow {
+  .drift-slow,
+  .animate-meteor,
+  .border-glow::before {
     animation: none;
   }
 }

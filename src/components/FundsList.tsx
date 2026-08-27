@@ -42,7 +42,7 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 transition-colors duration-500 hover:border-accent-on-dark/40 hover:bg-white/[0.05] md:p-9"
+            className="border-glow group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 transition-colors duration-500 hover:border-accent-on-dark/40 hover:bg-white/[0.05] md:p-9"
           >
             {/* oversized ghost numeral, purely decorative */}
             <span

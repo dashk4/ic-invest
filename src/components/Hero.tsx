@@ -7,6 +7,7 @@ import { Reveal } from "./ui/Reveal";
 import { Counter } from "./ui/Counter";
 import { Button } from "./ui/Button";
 import ParticleShape from "./ui/ParticleShape";
+import { Meteors } from "./ui/Meteors";
 import { BRAND_CHECKMARK_PATH, BRAND_CHECKMARK_VIEWBOX, BRAND_RED } from "@/lib/brandMark";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
@@ -213,6 +214,7 @@ function RailCell({ label, children }: { label: string; children: ReactNode }) {
 function Atmosphere() {
   return (
     <div className="grain pointer-events-none absolute inset-0 overflow-hidden">
+      <Meteors number={14} />
       <div
         className="drift absolute -top-[20%] left-[45%] h-[70vh] w-[70vh] rounded-full opacity-[0.16] blur-[130px]"
         style={{ background: "var(--jade-400)" }}
