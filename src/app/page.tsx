@@ -3,11 +3,18 @@ import { Hero } from "@/components/Hero";
 import { Stats } from "@/components/Stats";
 import { Funds } from "@/components/Funds";
 import { Contact } from "@/components/Contact";
+import { Careers } from "@/components/Careers";
 import { Footer } from "@/components/Footer";
-import { getFundFacts, getObjective } from "@/lib/api";
+import { FUNDS, getFundFacts, getObjective, getOverviewStats, numericValue } from "@/lib/api";
+import { FUND_LABEL_EN } from "@/lib/fundI18n";
 
 export default async function Home() {
-  const [objective, facts] = await Promise.all([getObjective(4), getFundFacts(4)]);
+  const [objective, facts, stats] = await Promise.all([
+    getObjective(4),
+    getFundFacts(4),
+    getOverviewStats(),
+  ]);
+  const heroMeta = FUNDS.find((fund) => fund.sid === 4)!;
   const navFact = facts.find((x) => /цэвэр үнэ цэн/i.test(x.first_text));
   const unitsFact = facts.find((x) => /нэгж эрхийн тоо/i.test(x.first_text));
 
@@ -17,14 +24,18 @@ export default async function Home() {
       <main>
         <Hero
           heroFund={{
-            name: objective?.name ?? "Инвескор Глобал Кью",
-            nav: navFact ? Number(navFact.last_text) : null,
-            units: unitsFact ? Number(unitsFact.last_text) : null,
+            name: objective?.name ?? "",
+            code: heroMeta.code,
+            categoryMn: heroMeta.label,
+            categoryEn: FUND_LABEL_EN[heroMeta.sid] ?? heroMeta.label,
+            nav: numericValue(navFact?.last_text),
+            units: numericValue(unitsFact?.last_text),
           }}
         />
-        <Stats />
+        <Stats stats={stats} />
         <Funds />
         <Contact />
+        <Careers />
       </main>
       <Footer />
     </>

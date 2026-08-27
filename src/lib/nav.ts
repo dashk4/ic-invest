@@ -3,7 +3,6 @@ import {
   Briefcase,
   Eye,
   Gem,
-  Megaphone,
   MessageSquare,
   PieChart,
   ShieldCheck,
@@ -22,6 +21,13 @@ export type NavChild = {
   href: string;
   icon: LucideIcon;
   external?: boolean;
+  fundMeta?: {
+    categoryMn: string;
+    categoryEn: string;
+    logo: string;
+    logoWidth: number;
+    logoHeight: number;
+  };
 };
 
 export type NavEntry = {
@@ -48,12 +54,6 @@ export const NAV: NavEntry[] = [
       { mn: "Алсын хараа", en: "Vision", href: "/about#vision", icon: Eye },
       { mn: "Үнэт зүйл", en: "Values", href: "/about#philosophy", icon: Gem },
       { mn: "Хамт олон", en: "Our Team", href: "/about#team", icon: Users },
-      // the old standalone "Хөрөнгө оруулагчдад" (investor relations) nav
-      // item folded in here as "Мэдээ, мэдээлэл" — its Мэдээлэл/Судалгаа
-      // children both pointed at the same /#insights anchor anyway, so one
-      // entry covers it. Moved here from the Funds dropdown, which was
-      // getting crowded with 5 fund links plus this.
-      { mn: "Мэдээ, мэдээлэл", en: "News & insights", href: "/#insights", icon: Megaphone },
     ],
   },
   {
@@ -62,12 +62,78 @@ export const NAV: NavEntry[] = [
     en: "Investment funds",
     href: "/#funds",
     children: [
-      { mn: "Мобисан", en: "Mobisan", href: "/funds/mbs", icon: Briefcase },
-      { mn: '"Инвескор РИ Сайкл"', en: "Invescore RI Cycle", href: "/funds/ric", icon: ShieldCheck },
-      { mn: "Инвескор Глобал Кью", en: "Invescore Global Q", href: "/funds/etf", icon: TrendingUp },
-      { mn: "И Эс Пи Ирээдүй", en: "E-Fund", href: "/funds/mf", icon: Users },
-      { mn: '"Вертикор Экъюти"', en: "Vertikor Equity", href: "/funds/veq", icon: PieChart },
+      {
+        mn: "Мобисан",
+        en: "Mobisan",
+        href: "/funds/mbs",
+        icon: Briefcase,
+        fundMeta: {
+          categoryMn: "Хувийн хөрөнгө оруулалтын сан",
+          categoryEn: "Private investment fund",
+          logo: "/brand/Mobi-Fund_Red_Logo_PNG.png",
+          logoWidth: 1311,
+          logoHeight: 560,
+        },
+      },
+      {
+        mn: '"Инвескор РИ Сайкл"',
+        en: "Invescore RI Cycle",
+        href: "/funds/ric",
+        icon: ShieldCheck,
+        fundMeta: {
+          categoryMn: "Хувийн хөрөнгө оруулалтын сан",
+          categoryEn: "Private investment fund",
+          logo: "/brand/Ricycle_Logo_PNG-removebg-preview.png",
+          logoWidth: 612,
+          logoHeight: 408,
+        },
+      },
+      {
+        mn: "Инвескор Глобал Кью",
+        en: "Invescore Global Q",
+        href: "/funds/etf",
+        icon: TrendingUp,
+        fundMeta: {
+          categoryMn: "Биржээр арилжаалагддаг хамтын сан",
+          categoryEn: "Exchange-traded fund",
+          logo: "/brand/Ungut-full.png",
+          logoWidth: 3000,
+          logoHeight: 800,
+        },
+      },
+      {
+        mn: "И Эс Пи Ирээдүй",
+        en: "E-Fund",
+        href: "/funds/mf",
+        icon: Users,
+        fundMeta: {
+          categoryMn: "Хамтын нээлттэй хөрөнгө оруулалтын сан",
+          categoryEn: "Open-ended mutual fund",
+          logo: "/brand/E-Fund%20hevtee.png",
+          logoWidth: 710,
+          logoHeight: 194,
+        },
+      },
+      {
+        mn: '"Вертикор Экъюти"',
+        en: "Vertikor Equity",
+        href: "/funds/veq",
+        icon: PieChart,
+        fundMeta: {
+          categoryMn: "Хувийн хөрөнгө оруулалтын сан",
+          categoryEn: "Private investment fund",
+          logo: "/brand/pocket-fund.png",
+          logoWidth: 1006,
+          logoHeight: 248,
+        },
+      },
     ],
+  },
+  {
+    key: "news",
+    mn: "Мэдээ, мэдээлэл",
+    en: "News & insights",
+    href: "/news",
   },
   {
     key: "contact",
@@ -79,9 +145,8 @@ export const NAV: NavEntry[] = [
       {
         mn: "Ажлын байр",
         en: "Job offer",
-        href: "https://ic-invest.mn/mn/contact-us#workplace",
+        href: "/#workplace",
         icon: Briefcase,
-        external: true,
       },
     ],
   },
