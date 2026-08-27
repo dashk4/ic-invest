@@ -16,7 +16,9 @@ declare module "@react-three/fiber" {
 extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 3;
-const aspect = 1.2;
+// ContactGlobe renders this scene in a square canvas. Keeping the camera
+// aspect square prevents the sphere from being stretched into an oval.
+const aspect = 1;
 const cameraZ = 300;
 
 type Position = {

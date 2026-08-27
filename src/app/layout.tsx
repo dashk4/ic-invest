@@ -1,23 +1,24 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider, THEME_NO_FLASH_SCRIPT } from "@/lib/theme";
 import { LocaleProvider } from "@/lib/locale";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
-const display = Cormorant_Garamond({
-  variable: "--font-display-src",
-  subsets: ["cyrillic", "latin"],
-  weight: ["500", "600", "700"],
+const manrope = localFont({
+  src: [
+    { path: "./fonts/Manrope-ExtraLight.ttf", weight: "200", style: "normal" },
+    { path: "./fonts/Manrope-Light.ttf", weight: "300", style: "normal" },
+    { path: "./fonts/Manrope-Regular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/Manrope-Medium.ttf", weight: "500", style: "normal" },
+    { path: "./fonts/Manrope-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "./fonts/Manrope-Bold.ttf", weight: "700", style: "normal" },
+    { path: "./fonts/Manrope-ExtraBold.ttf", weight: "800", style: "normal" },
+  ],
+  variable: "--font-manrope-src",
   display: "swap",
-});
-
-const sans = Inter({
-  variable: "--font-sans-src",
-  subsets: ["cyrillic", "latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="mn"
       suppressHydrationWarning
-      className={`${display.variable} ${sans.variable} h-full antialiased`}
+      className={`${manrope.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-surface text-fg">
         <Script id="theme-no-flash" strategy="beforeInteractive">

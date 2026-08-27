@@ -2,17 +2,81 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Briefcase, ExternalLink, PieChart, ShieldCheck, TrendingUp, Users } from "lucide-react";
+import {
+  ArrowLeft,
+  BarChart3,
+  Briefcase,
+  ExternalLink,
+  FileText,
+  PieChart,
+  ShieldCheck,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
 import DotField from "./ui/DotField";
 import { useLocale, pick } from "@/lib/locale";
+import {
+  excerpt,
+  type ApproachItem,
+  type CommitteeManager,
+  type FundDocument,
+  type FundManager,
+  type NewsItem,
+  type PartnerItem,
+  type PerformanceItem,
+  type PortfolioChart,
+  type PortfolioItem,
+  numericValue,
+  uploadUrl,
+} from "@/lib/api";
 import { FundCalculator } from "./FundCalculator";
 
 const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users, PieChart];
+const MN_MONTHS = [
+  "1-р сар",
+  "2-р сар",
+  "3-р сар",
+  "4-р сар",
+  "5-р сар",
+  "6-р сар",
+  "7-р сар",
+  "8-р сар",
+  "9-р сар",
+  "10-р сар",
+  "11-р сар",
+  "12-р сар",
+];
+const EN_MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export type FundFactRow = { labelMn: string; labelEn: string; value: string; numeric: number | null };
+
+export type FundLiveData = {
+  managers: FundManager[];
+  committeeManagers: CommitteeManager[];
+  portfolio: PortfolioItem[];
+  portfolioChart: PortfolioChart | null;
+  performance: PerformanceItem[];
+  approach: ApproachItem[];
+  partners: PartnerItem[];
+  documents: FundDocument[];
+  serviceNews: NewsItem[];
+};
 
 export type FundDetailData = {
   sid: number;
@@ -33,12 +97,281 @@ export type FundDetailData = {
   facts: FundFactRow[];
   externalSite?: string;
   otherFunds: { slug: string; name: string; nameEn: string; code: string }[];
+  live: FundLiveData;
 };
+
+function formatDate(value: string, locale: string) {
+  const date = new Date(value.includes("T") ? value : value.replace(" ", "T"));
+  if (Number.isNaN(date.getTime())) return value;
+  const month = date.getUTCMonth();
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
+  return locale === "en"
+    ? `${EN_MONTHS[month]} ${day}, ${year}`
+    : `${year} оны ${MN_MONTHS[month]}ын ${day}`;
+}
+
+function formatNumber(value: number | string | null | undefined) {
+  const number = typeof value === "string" ? numericValue(value) : value;
+  if (number == null || !Number.isFinite(number)) return "—";
+  return number.toLocaleString("en-US");
+}
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+}
+
+function FundLiveSections({ fund }: { fund: FundDetailData }) {
+  const { locale } = useLocale();
+  const live = fund.live;
+  const people = [...live.managers, ...live.committeeManagers];
+  const hasPortfolio = live.portfolio.length > 0 || Boolean(live.portfolioChart?.labels?.length);
+  const hasPerformance = live.performance.length > 0 || live.approach.length > 0;
+  const hasResources = live.partners.length > 0 || live.documents.length > 0 || live.serviceNews.length > 0;
+
+  if (people.length === 0 && !hasPortfolio && !hasPerformance && !hasResources) return null;
+
+  const chart = live.portfolioChart;
+  const chartLabels = chart?.labels ?? [];
+  const chartData = chart?.datas ?? [];
+  const chartColors = chart?.colors ?? [];
+  const chartValues = chartData.map((value) => numericValue(String(value)) ?? 0).filter(Number.isFinite);
+  const chartMax = Math.max(...chartValues, 1);
+
+  return (
+    <section className="theme-fade border-t hairline bg-surface">
+      <div className="container-page space-y-20 py-20 md:py-24">
+        {people.length > 0 && (
+          <section>
+            <Reveal>
+              <p className="eyebrow text-accent">{pick(locale, "Удирдлагын баг", "Management team")}</p>
+              <h2 className="t-h3 mt-4 max-w-xl text-balance text-fg">
+                {pick(locale, "Сангийн менежмент", "Fund management")}
+              </h2>
+            </Reveal>
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {people.map((person, index) => {
+                const image = uploadUrl(person.image);
+                return (
+                  <Reveal key={`${person.id}-${index}`} delay={index * 0.05}>
+                    <article className="h-full rounded-2xl border border-[color:var(--c-line)] bg-card p-5">
+                      <div className="flex items-center gap-4">
+                        {image ? (
+                          <Image
+                            src={image}
+                            alt={person.fullname}
+                            width={56}
+                            height={56}
+                            className="h-14 w-14 rounded-full object-cover"
+                          />
+                        ) : (
+                          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-accent/15 font-display text-sm text-accent">
+                            {initials(person.fullname)}
+                          </span>
+                        )}
+                        <div className="min-w-0">
+                          <h3 className="font-display text-[1rem] text-fg">{person.fullname}</h3>
+                          <p className="eyebrow mt-1 text-fg-subtle">{person.position}</p>
+                        </div>
+                      </div>
+                      {person.description && (
+                        <p className="t-small mt-5 text-fg-muted">{excerpt(person.description, 180)}</p>
+                      )}
+                    </article>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {hasPortfolio && (
+          <section>
+            <Reveal>
+              <p className="eyebrow text-accent">{pick(locale, "Багцын бүтэц", "Portfolio")}</p>
+              <h2 className="t-h3 mt-4 max-w-xl text-balance text-fg">
+                {pick(locale, "Хөрөнгө оруулалтын бүтэц", "Investment structure")}
+              </h2>
+            </Reveal>
+            <div className="mt-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+              {chartLabels.length ? (
+                <Reveal className="rounded-2xl border border-[color:var(--c-line)] bg-card p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="eyebrow text-fg-subtle">{pick(locale, "Бүтцийн харьцаа", "Allocation")}</p>
+                    <BarChart3 className="h-4 w-4 text-accent" strokeWidth={1.7} />
+                  </div>
+                  <div className="mt-7 flex h-48 items-end gap-2 border-b hairline pb-0">
+                    {chartLabels.map((label, index) => {
+                      const value = numericValue(String(chartData[index] ?? 0)) ?? 0;
+                      const height = Math.max((value / chartMax) * 100, value > 0 ? 4 : 0);
+                      const color = chartColors[index] || "var(--jade-400)";
+                      return (
+                        <div key={`${label}-${index}`} className="flex min-w-0 flex-1 flex-col items-center justify-end gap-2">
+                          <span className="t-small text-fg-muted">{formatNumber(value)}%</span>
+                          <div className="w-full max-w-12 rounded-t-lg" style={{ height: `${height}%`, background: color }} />
+                          <span className="w-full truncate text-center text-[0.65rem] text-fg-subtle" title={label}>
+                            {label}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Reveal>
+              ) : null}
+              {live.portfolio.length > 0 && (
+                <Reveal delay={0.08} className="overflow-hidden rounded-2xl border border-[color:var(--c-line)] bg-card">
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-4 border-b hairline px-5 py-4 text-[0.7rem] uppercase tracking-[0.12em] text-fg-subtle">
+                    <span>{pick(locale, "Хөрөнгө", "Holding")}</span>
+                    <span>{pick(locale, "Жин", "Weight")}</span>
+                    <span>{pick(locale, "Өгөөж", "Return")}</span>
+                  </div>
+                  <div className="divide-y divide-[color:var(--c-line)]">
+                    {live.portfolio.map((item) => (
+                      <div key={item.id} className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-4 px-5 py-4">
+                        <div className="min-w-0">
+                          <p className="truncate font-display text-[0.95rem] text-fg">{item.bond}</p>
+                          <p className="mt-1 truncate text-[0.72rem] text-fg-subtle">{item.sector?.name ?? "—"}</p>
+                        </div>
+                        <span className="t-small text-fg-muted">{formatNumber(item.bond_weight)}%</span>
+                        <span className="t-small text-fg-muted">{formatNumber(item.yearly_profit)}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </Reveal>
+              )}
+            </div>
+          </section>
+        )}
+
+        {hasPerformance && (
+          <section className="grid gap-10 lg:grid-cols-2">
+            {live.performance.length > 0 && (
+              <div>
+                <Reveal>
+                  <p className="eyebrow text-accent">{pick(locale, "Гүйцэтгэл", "Performance")}</p>
+                  <h2 className="t-h3 mt-4 text-fg">{pick(locale, "Сангийн үзүүлэлт", "Fund metrics")}</h2>
+                </Reveal>
+                <div className="mt-7 divide-y divide-[color:var(--c-line)] border-y border-[color:var(--c-line)]">
+                  {live.performance.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between gap-5 py-4">
+                      <span className="t-small text-fg-muted">{item.name}</span>
+                      <span className="font-display text-lg text-fg">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {live.approach.length > 0 && (
+              <div>
+                <Reveal>
+                  <p className="eyebrow text-accent">{pick(locale, "Хөрөнгө оруулалтын аргачлал", "Approach")}</p>
+                  <h2 className="t-h3 mt-4 text-fg">{pick(locale, "Бидний аргачлал", "Our approach")}</h2>
+                </Reveal>
+                <div className="mt-7 space-y-3">
+                  {live.approach.map((item) => (
+                    <article key={item.id} className="rounded-2xl border border-[color:var(--c-line)] bg-card p-5">
+                      <h3 className="font-display text-[1rem] text-fg">{item.name}</h3>
+                      <p className="t-small mt-3 text-fg-muted">{excerpt(item.text, 260)}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
+        {hasResources && (
+          <section className="grid gap-10 lg:grid-cols-3">
+            {live.documents.length > 0 && (
+              <div className="lg:col-span-1">
+                <Reveal>
+                  <p className="eyebrow text-accent">{pick(locale, "Файлууд", "Documents")}</p>
+                  <h2 className="t-h3 mt-4 text-fg">{pick(locale, "Сангийн материал", "Fund resources")}</h2>
+                </Reveal>
+                <div className="mt-7 space-y-3">
+                  {live.documents.map((document) => (
+                    <a
+                      key={document.id}
+                      href={`https://ic-invest.mn/mn/service/document/download/${document.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-3 rounded-xl border border-[color:var(--c-line)] bg-card p-4 transition-colors hover:border-accent/40"
+                    >
+                      <FileText className="h-4 w-4 shrink-0 text-accent" strokeWidth={1.7} />
+                      <span className="min-w-0 flex-1 truncate text-sm text-fg">{document.name}</span>
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0 text-fg-subtle transition-transform group-hover:translate-x-0.5" strokeWidth={1.7} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+            {live.partners.length > 0 && (
+              <div>
+                <Reveal>
+                  <p className="eyebrow text-accent">{pick(locale, "Оролцогчид", "Partners")}</p>
+                  <h2 className="t-h3 mt-4 text-fg">{pick(locale, "Хамтрагч байгууллагууд", "Our partners")}</h2>
+                </Reveal>
+                <div className="mt-7 grid grid-cols-2 gap-3">
+                  {live.partners.map((partner) => {
+                    const logo = uploadUrl(partner.logo);
+                    const content = (
+                      <div className="flex h-24 items-center justify-center rounded-xl border border-[color:var(--c-line)] bg-card p-4">
+                        {logo ? (
+                          <Image src={logo} alt={partner.name} width={150} height={64} className="max-h-12 w-auto object-contain" />
+                        ) : (
+                          <span className="text-center text-sm text-fg-muted">{partner.name}</span>
+                        )}
+                      </div>
+                    );
+                    return partner.website ? (
+                      <a key={partner.id} href={partner.website} target="_blank" rel="noopener noreferrer" aria-label={partner.name}>
+                        {content}
+                      </a>
+                    ) : (
+                      <div key={partner.id}>{content}</div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            {live.serviceNews.length > 0 && (
+              <div>
+                <Reveal>
+                  <p className="eyebrow text-accent">{pick(locale, "Мэдээ", "News")}</p>
+                  <h2 className="t-h3 mt-4 text-fg">{pick(locale, "Сангийн мэдээ", "Fund news")}</h2>
+                </Reveal>
+                <div className="mt-7 space-y-3">
+                  {live.serviceNews.map((item) => (
+                    <article key={item.id} className="rounded-xl border border-[color:var(--c-line)] bg-card p-4">
+                      <p className="eyebrow text-fg-subtle">
+                        {item.published_at || item.created_at ? formatDate(item.published_at ?? item.created_at ?? "", locale) : ""}
+                      </p>
+                      <h3 className="mt-2 line-clamp-2 font-display text-[0.95rem] leading-snug text-fg">{item.title}</h3>
+                      <p className="t-small mt-2 line-clamp-3 text-fg-muted">{excerpt(item.content, 150)}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+      </div>
+    </section>
+  );
+}
 
 export function FundDetail({ fund }: { fund: FundDetailData }) {
   const { locale } = useLocale();
   const description = pick(locale, fund.descriptionMn, fund.descriptionEn);
-  const paragraphs = description.split("\n\n").filter(Boolean);
+  const paragraphs = description
+    .split(/\n\s*\n/)
+    .map((paragraph) => excerpt(paragraph, 900))
+    .filter(Boolean);
   const blurb = pick(locale, fund.blurbMn, fund.blurbEn);
   const Icon = ICONS[fund.index % ICONS.length];
 
@@ -200,15 +533,6 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
                 ))}
               </div>
 
-              <Reveal delay={0.1} className="mt-14 border-t hairline pt-6">
-                <p className="t-small max-w-2xl text-pretty text-fg-subtle">
-                  {pick(
-                    locale,
-                    'Сангийн удирдлагыг хариуцдаг "Инвескор Ассет Менежмент ҮЦК" ХХК нь Санхүүгийн Зохицуулах Хорооноос 2022 оны 4 дүгээр сарын 6-нд олгосон тусгай зөвшөөрөл, гэрчилгээ №309/41-тэй.',
-                    'Managed by Invescore Asset Management SC LLC, licensed by the Financial Regulatory Commission on 6 April 2022, certificate no. 309/41.'
-                  )}
-                </p>
-              </Reveal>
             </div>
 
             <div className="lg:col-span-4">
@@ -281,6 +605,8 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
           </div>
         </div>
       </section>
+
+      <FundLiveSections fund={fund} />
 
       <FundCalculator
         fund={{

@@ -18,7 +18,14 @@ function formatInt(n: number) {
 export function Hero({
   heroFund,
 }: {
-  heroFund: { name: string; nav: number | null; units: number | null };
+  heroFund: {
+    name: string;
+    code: string;
+    categoryMn: string;
+    categoryEn: string;
+    nav: number | null;
+    units: number | null;
+  };
 }) {
   const { locale } = useLocale();
 
@@ -98,7 +105,7 @@ export function Hero({
 
               trigger="mount": the initial gather always runs regardless of
               this prop, but "hover" additionally restarts the full
-              scatter-to-gather animation on every pointerenter, which read as
+              scatter-to-gather animation on every pointerenter, which reads as
               the mark "resetting" each time the cursor crossed it. Pointer
               repel still works either way — that logic isn't gated by trigger.
             */}
@@ -108,9 +115,9 @@ export function Hero({
                 className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full opacity-25 blur-3xl"
                 style={{ background: BRAND_RED }}
               />
-              <span className="absolute left-6 top-6 eyebrow text-on-strong-subtle">IC</span>
-              <span className="absolute right-6 top-6 h-2 w-2 rounded-full" style={{ background: BRAND_RED }} />
-              <div className="relative h-[clamp(6.5rem,11vw,9rem)] w-[clamp(6.5rem,11vw,9rem)]">
+              <span className="absolute left-6 top-6 z-10 eyebrow text-on-strong-subtle">IC</span>
+              <span className="absolute right-6 top-6 z-10 h-2 w-2 rounded-full" style={{ background: BRAND_RED }} />
+              <div className="relative z-0 h-[clamp(6.5rem,11vw,9rem)] w-[clamp(6.5rem,11vw,9rem)]">
                 <ParticleShape
                   path={BRAND_CHECKMARK_PATH}
                   viewBox={BRAND_CHECKMARK_VIEWBOX}
@@ -120,6 +127,8 @@ export function Hero({
                   particleSize={2.4}
                   density={2}
                   scatter={170}
+                  scatterMode="random"
+                  scatterPadding={84}
                   gatherDuration={1600}
                   stagger={400}
                   pointerRepel={40}
@@ -137,6 +146,9 @@ export function Hero({
       <DataRail
         locale={locale}
         name={heroFund.name}
+        code={heroFund.code}
+        categoryMn={heroFund.categoryMn}
+        categoryEn={heroFund.categoryEn}
         nav={heroFund.nav}
         units={heroFund.units}
       />
@@ -147,11 +159,17 @@ export function Hero({
 function DataRail({
   locale,
   name,
+  code,
+  categoryMn,
+  categoryEn,
   nav,
   units,
 }: {
   locale: Locale;
   name: string;
+  code: string;
+  categoryMn: string;
+  categoryEn: string;
   nav: number | null;
   units: number | null;
 }) {
@@ -170,7 +188,7 @@ function DataRail({
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-on-dark opacity-70" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-on-dark" />
               </span>
-              INQ ETF
+              {code}
             </span>
           </RailCell>
 
@@ -189,14 +207,16 @@ function DataRail({
 
           <RailCell label={pick(locale, "Ангилал", "Category")}>
             <span className="text-[0.95rem] font-medium text-on-strong">
-              {pick(locale, "Биржээр арилжаалагдах", "Exchange-traded")}
+              {pick(locale, categoryMn, categoryEn)}
             </span>
           </RailCell>
         </div>
 
-        <p className="mt-4 border-t border-[color:var(--c-line-strong)] pt-4 text-[0.8rem] text-on-strong-subtle">
-          {name}
-        </p>
+        {name && (
+          <p className="mt-4 border-t border-[color:var(--c-line-strong)] pt-4 text-[0.8rem] text-on-strong-subtle">
+            {name}
+          </p>
+        )}
       </div>
     </motion.div>
   );

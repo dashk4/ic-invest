@@ -1,18 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { useActionState } from "react";
+import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
-import DotField from "./ui/DotField";
 import { ContactGlobe } from "./ContactGlobe";
 import { useLocale, pick } from "@/lib/locale";
+import { submitFeedback, type FeedbackState } from "@/app/actions/feedback";
+
+const INITIAL_FEEDBACK_STATE: FeedbackState = { ok: false, message: "" };
 
 export function Contact() {
   const { locale } = useLocale();
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  const [state, formAction, pending] = useActionState(
+    submitFeedback,
+    INITIAL_FEEDBACK_STATE,
+  );
 
   const DETAILS = [
     {
@@ -39,29 +42,27 @@ export function Contact() {
     },
   ];
 
-  const mailtoHref = `mailto:info@ic-invest.mn?subject=${encodeURIComponent(
-    (locale === "en" ? "Message from " : "Санал хүсэлт — ") +
-      (name || (locale === "en" ? "Website visitor" : "Хэрэглэгч")),
-  )}&body=${encodeURIComponent(
-    `${pick(locale, "Овог нэр", "Name")}: ${name}\n${pick(locale, "Утас", "Phone")}: ${phone}\n\n${message}`,
-  )}`;
-
   const fieldClass =
-    "mt-2 w-full rounded-xl border border-[color:var(--c-line-strong)] bg-surface-sunken/40 px-4 py-3 text-fg outline-none transition-colors duration-300 placeholder:text-fg-subtle focus:border-accent focus:bg-surface-sunken/70";
-  const labelClass = "eyebrow text-fg-subtle";
+    "mt-2 w-full rounded-xl border border-[color:var(--c-line-strong)] bg-[color:var(--ink-900)] px-4 py-3 text-on-strong outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-on-strong-subtle focus:border-accent-on-dark focus:shadow-[0_0_0_4px_rgba(111,191,163,0.1)]";
+  const labelClass = "eyebrow text-on-strong-subtle";
 
   return (
-    <section id="contact" className="theme-fade section-y bg-surface-alt">
-      <div className="container-page">
-        {/* globe + heading */}
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-6">
+    <section
+      id="contact"
+      className="theme-fade relative overflow-hidden bg-surface-strong py-[clamp(4.25rem,8vh,6.5rem)] text-on-strong"
+    >
+        <div className="grain pointer-events-none absolute inset-0" />
+        <div className="pointer-events-none absolute right-[8%] top-[10%] h-80 w-80 rounded-full bg-accent-on-dark/10 blur-[110px]" />
+
+      <div className="container-page relative">
+        <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-10">
+          <div className="relative z-10 lg:col-span-7">
             <Reveal>
-              <p className="eyebrow text-accent">
+              <p className="eyebrow text-accent-on-dark">
                 {pick(locale, "Холбоо барих", "Contact")}
               </p>
             </Reveal>
-            <h2 className="t-h2 mt-6 max-w-[13ch] text-balance text-fg">
+            <h2 className="mt-4 max-w-[15ch] text-balance font-display text-[clamp(2.35rem,4.2vw,3.6rem)] leading-[1.06] text-on-strong">
               <SplitReveal
                 text={pick(
                   locale,
@@ -71,7 +72,7 @@ export function Contact() {
               />
             </h2>
             <Reveal delay={0.12}>
-              <p className="t-body mt-6 max-w-md text-pretty text-fg-muted">
+              <p className="t-body mt-5 max-w-xl text-pretty text-on-strong-muted">
                 {pick(
                   locale,
                   "Улаанбаатараас дэлхийн хөрөнгийн зах зээл рүү — Инвескор Глобал Кью ETF нь Насдак дээр бүртгэлтэй хамгийн том компаниудад хөрөнгө оруулдаг.",
@@ -81,91 +82,79 @@ export function Contact() {
             </Reveal>
           </div>
 
-          <div className="flex justify-center lg:col-span-6 lg:justify-end">
-            <ContactGlobe />
+          <div className="relative flex justify-center lg:col-span-5 lg:min-h-[38rem] lg:justify-end">
+            <div className="pointer-events-none absolute inset-1/4 rounded-full bg-accent-on-dark/10 blur-3xl" />
+            <div className="relative w-full max-w-[400px] shrink-0 lg:w-[min(760px,60vw)] lg:max-w-none lg:translate-x-[65%]">
+              <ContactGlobe />
+            </div>
           </div>
         </div>
 
-        {/* contact details — ambient dot field behind each card, no reveal
-            gimmick this time, just the ambient texture */}
-        <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-3">
-          {DETAILS.map((d, i) => {
-            const Icon = d.icon;
-            const cardClass =
-              "group relative flex h-full min-h-[13rem] flex-col justify-between overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-surface-sunken/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50";
+        <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-12">
+          <div className="grid gap-3 lg:col-span-4">
+            {DETAILS.map((d, i) => {
+              const Icon = d.icon;
+              const cardClass =
+                "group flex min-h-[5.5rem] items-center gap-4 rounded-[1.25rem] border border-[color:var(--c-line-strong)] bg-white/[0.035] p-4 transition-[border-color,background-color] duration-300 hover:border-accent-on-dark/40 hover:bg-white/[0.055]";
 
-            const body = (
-              <>
-                <div className="pointer-events-none absolute inset-0 z-0">
-                  <DotField
-                    dotRadius={1.3}
-                    dotSpacing={15}
-                    cursorRadius={150}
-                    cursorForce={0.08}
-                    bulgeStrength={36}
-                    glowRadius={130}
-                    gradientFrom="rgba(111,191,163,0.4)"
-                    gradientTo="rgba(74,157,129,0.14)"
-                    glowColor="#6fbfa3"
-                  />
-                </div>
-                <span className="relative z-10 flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 transition-colors duration-300 group-hover:border-accent/50 group-hover:bg-accent/15">
-                  <Icon className="h-[19px] w-[19px] text-accent" strokeWidth={1.7} />
-                </span>
-                <div className="relative z-10">
-                  <p className={labelClass}>{d.label}</p>
-                  <p className="font-display mt-2 text-pretty text-[1.2rem] leading-snug text-fg">
-                    {d.value}
-                  </p>
-                </div>
-              </>
-            );
+              const body = (
+                <>
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-on-dark text-[color:var(--ink-900)] transition-transform duration-300 group-hover:scale-105">
+                    <Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="eyebrow text-on-strong-subtle">{d.label}</p>
+                    <p className="font-display mt-1 text-pretty text-[0.98rem] leading-snug text-on-strong">
+                      {d.value}
+                    </p>
+                  </div>
+                </>
+              );
 
-            return (
-              <Reveal key={d.label} delay={i * 0.08}>
-                {d.href ? (
-                  <a href={d.href} className={cardClass}>
-                    {body}
-                  </a>
-                ) : (
-                  <div className={cardClass}>{body}</div>
+              return (
+                <Reveal key={d.label} delay={i * 0.08}>
+                  {d.href ? (
+                    <a href={d.href} className={cardClass}>
+                      {body}
+                    </a>
+                  ) : (
+                    <div className={cardClass}>{body}</div>
+                  )}
+                </Reveal>
+              );
+            })}
+          </div>
+
+          <Reveal delay={0.08} className="lg:col-span-8">
+          <form action={formAction} className="h-full rounded-[1.5rem] border border-[color:var(--c-line-strong)] bg-white/[0.04] p-6 md:p-7">
+            <input type="hidden" name="locale" value={locale} />
+            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+              <div>
+                <p className={labelClass}>
+                  {pick(locale, "Санал хүсэлт", "Send a message")}
+                </p>
+                <h3 className="mt-2 font-display text-2xl text-on-strong">
+                  {pick(locale, "Танд юугаар туслах вэ?", "How can we help?")}
+                </h3>
+              </div>
+              <p className="t-small max-w-[19rem] text-pretty text-on-strong-muted">
+                {pick(
+                  locale,
+                  "Мэдээллээ үлдээгээрэй. Бид тантай эргэн холбогдоно.",
+                  "Leave your details and our team will get back to you.",
                 )}
-              </Reveal>
-            );
-          })}
-        </div>
-
-        {/* message form — same ambient dot field, larger radius for the
-            bigger card */}
-        <Reveal delay={0.15} className="mt-4">
-          <div className="relative overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-card p-8 md:p-10">
-            <div className="pointer-events-none absolute inset-0 z-0">
-              <DotField
-                dotRadius={1.2}
-                dotSpacing={16}
-                cursorRadius={220}
-                cursorForce={0.06}
-                bulgeStrength={30}
-                glowRadius={170}
-                gradientFrom="rgba(111,191,163,0.35)"
-                gradientTo="rgba(74,157,129,0.12)"
-                glowColor="#6fbfa3"
-              />
+              </p>
             </div>
 
-            <p className={`relative z-10 ${labelClass}`}>
-              {pick(locale, "Санал хүсэлт", "Send a message")}
-            </p>
-
-            <div className="relative z-10 mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label className={labelClass} htmlFor="c-name">
                   {pick(locale, "Овог нэр", "Full name")}
                 </label>
                 <input
                   id="c-name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  name="name"
+                  required
                   className={fieldClass}
                   placeholder={pick(locale, "Таны нэр", "Your name")}
                 />
@@ -176,21 +165,21 @@ export function Contact() {
                 </label>
                 <input
                   id="c-phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  name="phone"
+                  required
                   className={fieldClass}
                   placeholder="99XX XXXX"
                 />
               </div>
-              <div className="md:col-span-1">
+              <div className="md:col-span-2">
                 <label className={labelClass} htmlFor="c-msg">
                   {pick(locale, "Санал хүсэлт", "Message")}
                 </label>
                 <textarea
                   id="c-msg"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  rows={1}
+                  name="feedback"
+                  required
+                  rows={3}
                   className={`${fieldClass} resize-none`}
                   placeholder={pick(
                     locale,
@@ -201,20 +190,36 @@ export function Contact() {
               </div>
             </div>
 
-            <a
-              href={mailtoHref}
-              className="group relative z-10 mt-8 inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-[0.95rem] font-medium text-accent-contrast transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:brightness-110"
-            >
-              {pick(locale, "Илгээх", "Submit")}
-              <span
-                aria-hidden
-                className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+            <div className="mt-5 flex flex-wrap items-center gap-4">
+              <button
+                type="submit"
+                disabled={pending}
+                className="cta-button cta-button-solid cta-button-on-dark group inline-flex min-h-14 w-fit min-w-[12.5rem] items-center justify-between gap-4 rounded-[1.1rem] border border-accent-on-dark/70 bg-accent-on-dark px-4 py-2.5 text-[1.05rem] font-semibold leading-none text-[color:var(--ink-900)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-wait disabled:opacity-60 md:min-w-[13rem] md:px-5 md:text-[1.15rem]"
               >
-                →
-              </span>
-            </a>
-          </div>
-        </Reveal>
+                <span className="relative z-10">
+                  {pending
+                    ? pick(locale, "Илгээж байна…", "Sending…")
+                    : pick(locale, "Илгээх", "Submit")}
+                </span>
+                <span
+                  aria-hidden
+                  className="cta-arrow relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.7rem] leading-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5"
+                >
+                  <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
+                </span>
+              </button>
+              {state.message && (
+                <p
+                  aria-live="polite"
+                  className={`t-small ${state.ok ? "text-accent-on-dark" : "text-red-300"}`}
+                >
+                  {state.message}
+                </p>
+              )}
+            </div>
+          </form>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

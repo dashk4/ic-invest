@@ -20,6 +20,10 @@ export interface ParticleShapeProps {
   color?: string;
   highlightColor?: string;
   scatter?: number;
+  /** How particles choose their starting positions before gathering. */
+  scatterMode?: "radial" | "random";
+  /** Extra canvas space around the shape so scatter is not clipped. */
+  scatterPadding?: number;
   gatherDuration?: number;
   stagger?: number;
   pointerRepel?: number;
@@ -76,6 +80,8 @@ const ParticleShape = ({
   color = "#ffffff",
   highlightColor = "#8b5cf6",
   scatter = 180,
+  scatterMode = "radial",
+  scatterPadding = 0,
   gatherDuration = 1600,
   stagger = 420,
   pointerRepel = 40,
@@ -109,6 +115,9 @@ const ParticleShape = ({
     let reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     let width = 0;
     let height = 0;
+    let shapeWidth = 0;
+    let shapeHeight = 0;
+    let scatterInset = 0;
     let dpr = 1;
 
     const pointer = { active: false, x: 0, y: 0, smoothX: 0, smoothY: 0 };
@@ -121,10 +130,17 @@ const ParticleShape = ({
 
       particles.forEach((particle) => {
         if (fromScatter) {
-          const angle = particle.seed * Math.PI * 2;
-          const distance = spread * (0.35 + particle.depth * 0.75);
-          particle.x = particle.targetX + Math.cos(angle) * distance + (particle.depth - 0.5) * spread * 0.55;
-          particle.y = particle.targetY + Math.sin(angle) * distance + (particle.seed - 0.5) * spread * 0.55;
+          if (scatterMode === "random") {
+            // Re-roll on every gather so a refresh/click feels organic rather
+            // than making the particles follow the same visible cloud.
+            particle.x = Math.random() * width;
+            particle.y = Math.random() * height;
+          } else {
+            const angle = particle.seed * Math.PI * 2;
+            const distance = spread * (0.35 + particle.depth * 0.75);
+            particle.x = particle.targetX + Math.cos(angle) * distance + (particle.depth - 0.5) * spread * 0.55;
+            particle.y = particle.targetY + Math.sin(angle) * distance + (particle.seed - 0.5) * spread * 0.55;
+          }
         }
         particle.startX = particle.x;
         particle.startY = particle.y;
@@ -220,15 +236,23 @@ const ParticleShape = ({
     const sampleShape = async (): Promise<void> => {
       const currentBuild = ++buildId;
       const rect = container.getBoundingClientRect();
-      width = Math.floor(rect.width);
-      height = Math.floor(rect.height);
-      if (width <= 0 || height <= 0) return;
+      shapeWidth = Math.floor(rect.width);
+      shapeHeight = Math.floor(rect.height);
+      if (shapeWidth <= 0 || shapeHeight <= 0) return;
+
+      scatterInset = Math.max(0, Math.ceil(scatterPadding));
+      width = shapeWidth + scatterInset * 2;
+      height = shapeHeight + scatterInset * 2;
 
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.max(1, Math.floor(width * dpr));
       canvas.height = Math.max(1, Math.floor(height * dpr));
-      canvas.style.width = "100%";
-      canvas.style.height = "100%";
+      canvas.style.left = `${-scatterInset}px`;
+      canvas.style.top = `${-scatterInset}px`;
+      canvas.style.right = "auto";
+      canvas.style.bottom = "auto";
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       const offscreen = document.createElement("canvas");
@@ -237,8 +261,8 @@ const ParticleShape = ({
 
       const padding = 4;
       const scale = Math.min(
-        (width - padding * 2) / viewBox.w,
-        (height - padding * 2) / viewBox.h
+        (shapeWidth - padding * 2) / viewBox.w,
+        (shapeHeight - padding * 2) / viewBox.h
       );
       const offW = Math.max(1, Math.round(viewBox.w * scale + padding * 2));
       const offH = Math.max(1, Math.round(viewBox.h * scale + padding * 2));
@@ -264,8 +288,8 @@ const ParticleShape = ({
           const alpha = imageData.data[(y * offW + x) * 4 + 3];
           if (alpha > 40) {
             targets.push({
-              x: width / 2 - offW / 2 + x,
-              y: height / 2 - offH / 2 + y,
+              x: scatterInset + shapeWidth / 2 - offW / 2 + x,
+              y: scatterInset + shapeHeight / 2 - offH / 2 + y,
               alpha: alpha / 255,
             });
           }
@@ -285,8 +309,14 @@ const ParticleShape = ({
         const particleColor = baseRgb && highlightRgb ? rgbToCss(mixRgb(baseRgb, highlightRgb, blend)) : color;
         const angle = seed * Math.PI * 2;
         const distance = (reducedMotion ? 0 : scatter) * (0.35 + depth * 0.75);
-        const startX = target.x + Math.cos(angle) * distance + (seed - 0.5) * scatter * 0.45;
-        const startY = target.y + Math.sin(angle) * distance + (depth - 0.9) * scatter * 0.45;
+        const startX =
+          scatterMode === "random"
+            ? Math.random() * width
+            : target.x + Math.cos(angle) * distance + (seed - 0.5) * scatter * 0.45;
+        const startY =
+          scatterMode === "random"
+            ? Math.random() * height
+            : target.y + Math.sin(angle) * distance + (depth - 0.9) * scatter * 0.45;
 
         return {
           x: reducedMotion ? target.x : startX,
@@ -391,16 +421,18 @@ const ParticleShape = ({
     idleDrift,
     trigger,
     glow,
+    scatterMode,
+    scatterPadding,
   ]);
 
   return (
     <div
       ref={containerRef}
-      className={`relative block h-full w-full touch-none overflow-hidden ${className}`}
+      className={`relative block h-full w-full touch-none overflow-visible ${className}`}
       style={style}
       aria-hidden
     >
-      <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" aria-hidden="true" />
+      <canvas ref={canvasRef} className="absolute block" aria-hidden="true" />
       {label && <span className="sr-only">{label}</span>}
     </div>
   );

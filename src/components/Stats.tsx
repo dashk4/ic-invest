@@ -1,14 +1,18 @@
 "use client";
 
-import { Layers, ShieldCheck, Users } from "lucide-react";
+import { BarChart3, Layers, Users } from "lucide-react";
 import { Counter } from "./ui/Counter";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { useLocale, pick } from "@/lib/locale";
 
-const STATS = [
+export type OverviewStats = {
+  activeFunds: number;
+  professionals: number;
+  portfolioPositions: number;
+};
+
+const STAT_COPY = [
   {
-    value: 5,
-    raw: false,
     icon: Layers,
     mn: "Идэвхтэй хөрөнгө оруулалтын сан",
     en: "Active investment funds",
@@ -16,8 +20,6 @@ const STATS = [
     subEn: "Private, exchange-traded and open-ended",
   },
   {
-    value: 10,
-    raw: false,
     icon: Users,
     mn: "Мэргэжлийн баг, ТУЗ-ийн хамт",
     en: "Professionals, board included",
@@ -25,18 +27,17 @@ const STATS = [
     subEn: "Across investment, risk and finance",
   },
   {
-    value: 2022,
-    raw: true,
-    icon: ShieldCheck,
-    mn: "СЗХ-ны тусгай зөвшөөрөл авсан",
-    en: "Licensed by the FRC",
-    subMn: "Гэрчилгээ №309/41, 2022.04.06",
-    subEn: "Certificate No. 309/41, issued 6 April 2022",
+    icon: BarChart3,
+    mn: "Багцын хөрөнгө оруулалт",
+    en: "Portfolio positions",
+    subMn: "Админы системд бүртгэлтэй байршуулалт",
+    subEn: "Positions published in the admin system",
   },
 ];
 
-export function Stats() {
+export function Stats({ stats }: { stats: OverviewStats }) {
   const { locale } = useLocale();
+  const values = [stats.activeFunds, stats.professionals, stats.portfolioPositions];
 
   return (
     <section className="theme-fade relative overflow-hidden bg-surface">
@@ -63,7 +64,7 @@ export function Stats() {
         </div>
 
         <RevealGroup className="mt-10 grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
-          {STATS.map((s, index) => {
+          {STAT_COPY.map((s, index) => {
             const Icon = s.icon;
             return (
               <RevealItem
@@ -88,7 +89,7 @@ export function Stats() {
 
                 <div className="relative mt-auto pt-12">
                   <div className="t-numeral text-5xl text-fg md:text-[4rem]">
-                    {s.raw ? s.value : <Counter value={s.value} />}
+                    <Counter value={values[index]} />
                   </div>
                   <p className="t-small mt-4 max-w-[24ch] text-pretty text-fg-muted">
                     {pick(locale, s.mn, s.en)}

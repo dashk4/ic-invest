@@ -3,11 +3,11 @@
 import Image from "next/image";
 import { useLocale, pick } from "@/lib/locale";
 import { RollText } from "./ui/RollText";
+import { TradingViewTickerTape } from "./TradingViewTickerTape";
 
 const LINKS = [
   { mn: "Бидний тухай", en: "About us", href: "/about" },
   { mn: "Хөрөнгө оруулалтын сан", en: "Our funds", href: "/#funds" },
-  { mn: "Судалгаа", en: "Insights", href: "/#insights" },
   { mn: "Хамт олон", en: "Our team", href: "/about#team" },
   { mn: "Холбоо барих", en: "Contact", href: "/#contact" },
 ];
@@ -21,7 +21,8 @@ export function Footer() {
   const { locale } = useLocale();
 
   return (
-    <footer className="theme-fade bg-surface-deep pt-20 pb-10 text-on-strong">
+    <footer className="footer-with-ticker theme-fade bg-surface-deep pt-20 pb-10 text-on-strong">
+      <TradingViewTickerTape />
       <div className="container-page">
         <div className="grid grid-cols-1 gap-12 border-b border-[color:var(--c-line-strong)] pb-14 lg:grid-cols-12">
           <div className="lg:col-span-5">

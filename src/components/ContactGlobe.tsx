@@ -33,6 +33,7 @@ const DESTINATIONS = [
 
 const JADE = "#6fbfa3";
 const JADE_DEEP = "#4a9d81";
+const BRAND_RED = "#da2128";
 
 const ARCS = DESTINATIONS.flatMap((d, i) => [
   {
@@ -42,7 +43,7 @@ const ARCS = DESTINATIONS.flatMap((d, i) => [
     endLat: d.lat,
     endLng: d.lng,
     arcAlt: 0.2 + (i % 3) * 0.12,
-    color: i % 2 ? JADE : JADE_DEEP,
+    color: i % 3 === 0 ? BRAND_RED : i % 2 ? JADE : JADE_DEEP,
   },
   {
     order: i + 1,
@@ -128,7 +129,7 @@ export function ContactGlobe() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none relative aspect-square w-full max-w-[540px] overflow-hidden"
+      className="pointer-events-none relative aspect-square w-full overflow-hidden"
     >
       {ready ? (
         <World globeConfig={CONFIG} data={ARCS} frameloop={inView ? "always" : "never"} />
