@@ -7,7 +7,7 @@ export async function Careers() {
   if (jobs.length === 0) return null;
 
   return (
-    <section id="workplace" className="theme-fade section-y bg-surface-alt">
+    <section id="workplace" className="theme-fade min-h-svh bg-surface-alt pb-24 pt-36 md:pt-44">
       <div className="container-page max-w-3xl">
         <p className="eyebrow text-accent">Ажлын байр</p>
         <h2 className="t-h2 mt-4 max-w-xl text-balance text-fg">

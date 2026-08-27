@@ -145,7 +145,7 @@ export const NAV: NavEntry[] = [
       {
         mn: "Ажлын байр",
         en: "Job offer",
-        href: "/#workplace",
+        href: "/careers",
         icon: Briefcase,
       },
     ],

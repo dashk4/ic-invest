@@ -3,7 +3,6 @@ import { Hero } from "@/components/Hero";
 import { Stats } from "@/components/Stats";
 import { Funds } from "@/components/Funds";
 import { Contact } from "@/components/Contact";
-import { Careers } from "@/components/Careers";
 import { Footer } from "@/components/Footer";
 import { FUNDS, getFundFacts, getObjective, getOverviewStats, numericValue } from "@/lib/api";
 import { FUND_LABEL_EN } from "@/lib/fundI18n";
@@ -35,7 +34,6 @@ export default async function Home() {
         <Stats stats={stats} />
         <Funds />
         <Contact />
-        <Careers />
       </main>
       <Footer />
     </>
