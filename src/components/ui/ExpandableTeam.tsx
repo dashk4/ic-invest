@@ -81,7 +81,10 @@ export function ExpandableTeam({ locale }: { locale: Locale }) {
               aria-modal="true"
               className="flex w-full max-w-[540px] flex-col overflow-hidden rounded-3xl border hairline bg-surface shadow-2xl md:max-h-[90vh]"
             >
-              <motion.div layoutId={`image-${active.mn}-${id}`} className="relative h-[24rem] w-full shrink-0">
+              <motion.div
+                layoutId={`image-${active.mn}-${id}`}
+                className="relative h-[24rem] w-full shrink-0"
+              >
                 <Image
                   src={active.photo}
                   alt={pick(locale, active.mn, active.en)}
@@ -93,41 +96,27 @@ export function ExpandableTeam({ locale }: { locale: Locale }) {
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[color:var(--c-surface)] to-transparent" />
               </motion.div>
 
-              <div className="flex items-start justify-between gap-4 p-6 pt-2">
-                <div className="min-w-0">
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.12 }}
-                    className="eyebrow text-accent"
-                  >
-                    {pick(locale, active.groupMn, active.groupEn)}
-                  </motion.p>
-                  <motion.h3
-                    layoutId={`title-${active.mn}-${id}`}
-                    className="font-display mt-2 text-3xl leading-tight text-fg"
-                  >
-                    {pick(locale, active.mn, active.en)}
-                  </motion.h3>
-                  <motion.p
-                    layoutId={`role-${active.mn}-${id}`}
-                    className="t-small mt-1 text-fg-muted"
-                  >
-                    {pick(locale, active.mnTitle, active.enTitle)}
-                  </motion.p>
-                </div>
-
-                <motion.a
+              <div className="p-6 pt-2">
+                <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.15 }}
-                  href="https://ic-invest.mn/mn/about#member"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="eyebrow shrink-0 rounded-full bg-accent px-5 py-3 text-accent-contrast transition-[filter] duration-300 hover:brightness-110"
+                  transition={{ delay: 0.12 }}
+                  className="eyebrow text-accent"
                 >
-                  {pick(locale, "Танилцах", "Profile")}
-                </motion.a>
+                  {pick(locale, active.groupMn, active.groupEn)}
+                </motion.p>
+                <motion.h3
+                  layoutId={`title-${active.mn}-${id}`}
+                  className="font-display mt-2 text-3xl leading-tight text-fg"
+                >
+                  {pick(locale, active.mn, active.en)}
+                </motion.h3>
+                <motion.p
+                  layoutId={`role-${active.mn}-${id}`}
+                  className="t-small mt-1 text-fg-muted"
+                >
+                  {pick(locale, active.mnTitle, active.enTitle)}
+                </motion.p>
               </div>
 
               {pick(locale, active.bioMn, active.bioEn) && (
@@ -174,9 +163,6 @@ export function ExpandableTeam({ locale }: { locale: Locale }) {
                         className="object-cover object-top grayscale transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
                       />
                       <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[color:var(--ink-900)]/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                      <span className="eyebrow pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full bg-[color:var(--ink-900)]/80 px-4 py-2 text-[color:var(--bone-100)] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                        {pick(locale, "Танилцах", "Profile")}
-                      </span>
                     </motion.div>
 
                     <motion.p
