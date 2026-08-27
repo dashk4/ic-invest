@@ -194,6 +194,25 @@ export async function getNews(page = 1, lang = "mn") {
   return json?.listdata?.data ?? [];
 }
 
+/**
+ * There's no single-article endpoint (checked: /api/news/{id}, /api/news/
+ * show/{id}, /api/content/{id} all 404) — /api/news/get already returns each
+ * item's full HTML body (not a teaser; NewsGrid's cards truncate it
+ * themselves via excerpt()), so a detail page just needs to find the right
+ * item across the same paginated list. There are only ~5 pages of content
+ * today, so this stays cheap, and each page fetch is independently cached
+ * via getNews's own revalidate.
+ */
+export async function getNewsById(id: number, lang = "mn"): Promise<NewsItem | null> {
+  for (let page = 1; page <= 10; page++) {
+    const items = await getNews(page, lang);
+    if (items.length === 0) return null;
+    const match = items.find((item) => item.id === id);
+    if (match) return match;
+  }
+  return null;
+}
+
 export async function getObjective(sid: number) {
   const json = await safeJson<{ data: Objective | null }>(
     `${BASE}/api/objective/${sid}`

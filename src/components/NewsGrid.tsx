@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Reveal } from "./ui/Reveal";
-import { ScrollBeam } from "./ui/ScrollBeam";
 import { useLocale, pick } from "@/lib/locale";
 import type { NewsItem } from "@/lib/api";
+
+const MotionLink = motion.create(Link);
 
 const MN_MONTHS = [
   "1-р сар", "2-р сар", "3-р сар", "4-р сар", "5-р сар", "6-р сар",
@@ -44,38 +46,37 @@ export function NewsGrid({ mn, en }: { mn: NewsItem[]; en: NewsItem[] }) {
   }
 
   return (
-    <div className="mt-16 max-w-3xl">
-      {/* chronological list, so this is where the scroll-beam actually
-          means something — a timeline of real dated posts, not a grid */}
-      <ScrollBeam>
-        <div className="space-y-2">
-          {news.slice(0, 6).map((item, i) => (
-            <motion.a
-              key={item.id}
-              href={`https://ic-invest.mn/${locale}/content/${item.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative block border-b hairline py-8 pl-10"
-            >
-              <span
-                aria-hidden
-                className="absolute -left-[6.5px] top-9 h-3.5 w-3.5 rounded-full border-2 border-accent bg-surface"
-              />
-              <span className="eyebrow text-fg-subtle">
-                {formatDate(item.created_at ?? item.publish_date, locale)}
-              </span>
-              <h3 className="t-h3 mt-2 text-balance text-fg">{item.title}</h3>
-              <p className="t-small mt-2 max-w-prose text-pretty text-fg-muted">
-                {item.content}
-              </p>
-            </motion.a>
-          ))}
-        </div>
-      </ScrollBeam>
+    <div className="mt-12 grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {news.slice(0, 6).map((item, i) => (
+        <MotionLink
+          key={item.id}
+          href={`/news/${item.id}`}
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+          className="surface-card group flex min-h-[21rem] flex-col rounded-[1.5rem] p-7 transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-accent/40 md:p-8"
+        >
+          <div className="flex items-center gap-2.5">
+            <span aria-hidden className="brand-signal h-2 w-2 rounded-full" />
+            <span className="eyebrow text-fg-subtle">
+              {formatDate(item.created_at ?? item.publish_date, locale)}
+            </span>
+          </div>
+          <h3 className="mt-7 line-clamp-4 text-balance font-display text-[1.35rem] leading-[1.28] text-fg md:text-[1.5rem]">
+            {item.title}
+          </h3>
+          <p className="t-small mt-4 line-clamp-3 text-pretty text-fg-muted">
+            {item.content}
+          </p>
+          <span
+            aria-hidden
+            className="brand-card-arrow mt-auto flex h-10 w-10 translate-y-1 items-center justify-center self-end rounded-full transition-all duration-500 group-hover:translate-x-1"
+          >
+            →
+          </span>
+        </MotionLink>
+      ))}
     </div>
   );
 }
