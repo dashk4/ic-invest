@@ -66,8 +66,8 @@ export function Contact() {
               <SplitReveal
                 text={pick(
                   locale,
-                  "Хамтран ажиллахад бэлэн үү",
-                  "Ready to work together",
+                  "Хамтран ажиллах боломж",
+                  "A chance to work together",
                 )}
               />
             </h2>
@@ -75,8 +75,8 @@ export function Contact() {
               <p className="t-body mt-5 max-w-xl text-pretty text-on-strong-muted">
                 {pick(
                   locale,
-                  "Улаанбаатараас дэлхийн хөрөнгийн зах зээл рүү — Инвескор Глобал Кью ETF нь Насдак дээр бүртгэлтэй хамгийн том компаниудад хөрөнгө оруулдаг.",
-                  "From Ulaanbaatar to the world's capital markets — the Invescore Global Q ETF invests in the largest companies listed on Nasdaq.",
+                  "Монголын хөрөнгийн зах зээлээс эхлээд дэлхийн хөрөнгийн зах зээл хүртэл тантай хамт.",
+                  "From Mongolia's capital market to the world's, with you every step.",
                 )}
               </p>
             </Reveal>
@@ -134,14 +134,14 @@ export function Contact() {
                   {pick(locale, "Санал хүсэлт", "Send a message")}
                 </p>
                 <h3 className="mt-2 font-display text-2xl text-on-strong">
-                  {pick(locale, "Танд юугаар туслах вэ?", "How can we help?")}
+                  {pick(locale, "Санал хүсэлт", "Send a message")}
                 </h3>
               </div>
               <p className="t-small max-w-[19rem] text-pretty text-on-strong-muted">
                 {pick(
                   locale,
-                  "Мэдээллээ үлдээгээрэй. Бид тантай эргэн холбогдоно.",
-                  "Leave your details and our team will get back to you.",
+                  "Таны мэдээллийг хүлээн авч, эргэн холбогдоно.",
+                  "We'll receive your details and get back to you.",
                 )}
               </p>
             </div>
@@ -183,8 +183,8 @@ export function Contact() {
                   className={`${fieldClass} resize-none`}
                   placeholder={pick(
                     locale,
-                    "Бидэнд юугаар туслах вэ?",
-                    "How can we help?",
+                    "Бидэнд илгээх санал хүсэлт",
+                    "Your message to us",
                   )}
                 />
               </div>

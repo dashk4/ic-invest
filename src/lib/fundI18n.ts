@@ -4,4 +4,5 @@ export const FUND_LABEL_EN: Record<number, string> = {
   4: "Exchange-traded fund (ETF)",
   5: "Open-end mutual fund",
   6: "Private investment fund",
+  7: "Open-end mutual fund",
 };

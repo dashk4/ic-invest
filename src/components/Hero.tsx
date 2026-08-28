@@ -1,32 +1,15 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Reveal } from "./ui/Reveal";
-import { Counter } from "./ui/Counter";
 import { Button } from "./ui/Button";
 import ParticleShape from "./ui/ParticleShape";
 import { Meteors } from "./ui/Meteors";
 import { BRAND_CHECKMARK_PATH, BRAND_CHECKMARK_VIEWBOX, BRAND_RED } from "@/lib/brandMark";
-import { useLocale, pick, type Locale } from "@/lib/locale";
+import { useLocale, pick } from "@/lib/locale";
 
-function formatInt(n: number) {
-  return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-export function Hero({
-  heroFund,
-}: {
-  heroFund: {
-    name: string;
-    code: string;
-    categoryMn: string;
-    categoryEn: string;
-    nav: number | null;
-    units: number | null;
-  };
-}) {
+export function Hero() {
   const { locale } = useLocale();
 
   return (
@@ -49,7 +32,7 @@ export function Hero({
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-70" style={{ background: BRAND_RED }} />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ background: BRAND_RED }} />
               </span>
-              Инвескор Ассет Менежмент ҮЦК
+              Инвескор Ассет Менежмент ХХК
             </motion.p>
 
             <h1 key={locale + "-h1"} className="t-display mt-8 max-w-xl text-balance">
@@ -59,28 +42,26 @@ export function Hero({
                 text={pick(locale, "Хөрөнгө оруулалтын", "Your journey,")}
               />
               <br />
-              <span style={{ color: BRAND_RED }}>
-                <SplitReveal
-                  trigger="mount"
-                  delay={0.3}
-                  text={pick(locale, "мэргэшсэн удирдлага", "our expertise")}
-                />
-              </span>
+              <SplitReveal
+                trigger="mount"
+                delay={0.3}
+                text={pick(locale, "мэргэшсэн удирдлага", "our expertise")}
+              />
             </h1>
 
             <Reveal delay={0.5}>
               <p className="t-body mt-7 max-w-md text-pretty text-on-strong-muted">
                 {pick(
                   locale,
-                  "Монголын хөрөнгийн зах зээлд мэргэжлийн удирдлага, судалгаанд суурилсан хөрөнгө оруулалтын шийдэл.",
-                  "Professional management and research-driven investment solutions for Mongolia's capital market.",
+                  "Хөрөнгийн зах зээлийн судалгаанд суурилсан, хөрөнгө оруулалтын мэргэжлийн удирдлага санал болгож байна.",
+                  "We offer professional investment management built on capital market research.",
                 )}
               </p>
             </Reveal>
 
             <Reveal delay={0.62} className="mt-10 flex flex-wrap items-center gap-4">
               <Button href="/#funds" onDark>
-                {pick(locale, "Сангуудыг үзэх", "Explore our funds")}
+                {pick(locale, "Сангийн жагсаалт", "Fund list")}
               </Button>
               <Button href="/calculator" variant="ghost" onDark>
                 {pick(locale, "Тооцоолуур ашиглах", "Try the calculator")}
@@ -142,92 +123,7 @@ export function Hero({
           </motion.div>
         </div>
       </div>
-
-      <DataRail
-        locale={locale}
-        name={heroFund.name}
-        code={heroFund.code}
-        categoryMn={heroFund.categoryMn}
-        categoryEn={heroFund.categoryEn}
-        nav={heroFund.nav}
-        units={heroFund.units}
-      />
     </section>
-  );
-}
-
-function DataRail({
-  locale,
-  name,
-  code,
-  categoryMn,
-  categoryEn,
-  nav,
-  units,
-}: {
-  locale: Locale;
-  name: string;
-  code: string;
-  categoryMn: string;
-  categoryEn: string;
-  nav: number | null;
-  units: number | null;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-      className="hero-data-rail relative z-10 mt-14"
-    >
-      <div className="container-page">
-        <div className="grid grid-cols-2 gap-3 border-t border-[color:var(--c-line-strong)] pt-6 md:grid-cols-4 md:gap-4">
-          <RailCell label={pick(locale, "Сан", "Fund")}>
-            <span className="flex items-center gap-2 text-[0.95rem] font-medium text-on-strong">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-on-dark opacity-70" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-on-dark" />
-              </span>
-              {code}
-            </span>
-          </RailCell>
-
-          <RailCell label={pick(locale, "Нэгжийн цэвэр үнэ цэн", "Net asset value / unit")}>
-            <span className="t-numeral text-2xl text-on-strong">
-              {nav != null ? <Counter value={nav} decimals={2} /> : "—"}
-              <span className="ml-1 text-base text-on-strong-subtle">₮</span>
-            </span>
-          </RailCell>
-
-          <RailCell label={pick(locale, "Гаргасан нэгж", "Units outstanding")}>
-            <span className="t-numeral text-2xl text-on-strong">
-              {units != null ? formatInt(units) : "—"}
-            </span>
-          </RailCell>
-
-          <RailCell label={pick(locale, "Ангилал", "Category")}>
-            <span className="text-[0.95rem] font-medium text-on-strong">
-              {pick(locale, categoryMn, categoryEn)}
-            </span>
-          </RailCell>
-        </div>
-
-        {name && (
-          <p className="mt-4 border-t border-[color:var(--c-line-strong)] pt-4 text-[0.8rem] text-on-strong-subtle">
-            {name}
-          </p>
-        )}
-      </div>
-    </motion.div>
-  );
-}
-
-function RailCell({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-[color:var(--c-line-strong)] bg-white/[0.03] px-5 py-5 transition-colors duration-500 hover:border-accent-on-dark/35 md:px-6">
-      <p className="eyebrow text-on-strong-subtle">{label}</p>
-      <div className="mt-3">{children}</div>
-    </div>
   );
 }
 

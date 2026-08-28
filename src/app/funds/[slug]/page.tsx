@@ -157,6 +157,7 @@ export default async function FundPage({
     logoWidth: meta.logoWidth,
     logoHeight: meta.logoHeight,
     logoOnDark: meta.logoOnDark ?? false,
+    logoScale: meta.logoScale ?? 1,
     facts,
     externalSite: meta.externalSite,
     otherFunds,

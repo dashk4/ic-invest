@@ -8,7 +8,7 @@ import { SectionHead } from "./ui/SectionHead";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { ExpandableTeam } from "./ui/ExpandableTeam";
-import { ALL_MEMBERS, TEAM } from "@/lib/team";
+import { ALL_MEMBERS } from "@/lib/team";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -23,18 +23,9 @@ export function About() {
           eyebrow={pick(locale, "Бидний тухай", "About us")}
           title={pick(
             locale,
-            "Монголын хөрөнгийн зах зээлд шилдэг туршлага",
-            "International best practice, brought to Mongolia"
+            "Монголын хөрөнгийн зах зээлд шинэлэг бүтээгдэхүүн, шилдэг хөрөнгийн удирдлага",
+            "Innovative products and best-in-class asset management for Mongolia's capital market"
           )}
-          aside={
-            <p className="t-body max-w-sm text-pretty text-fg-muted">
-              {pick(
-                locale,
-                "Харилцагчдадаа үр өгөөж авчрахын төлөө өдөр бүр өөрсдийн мэдлэг, чадвар, туршлагаа хурцалсаар байх мэргэжлийн баг.",
-                "A professional team sharpening its knowledge, skill and experience every day to deliver value to our clients."
-              )}
-            </p>
-          }
         />
 
         {/* anchors for the "Бидний тухай" submenu */}
@@ -50,8 +41,8 @@ export function About() {
             title={pick(locale, "Алсын хараа", "Vision")}
             description={pick(
               locale,
-              "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурласан, инновац шингээсэн үйлчилгээг хүргэж, зах зээлийг тэргүүлэгч.",
-              "Lead the market by delivering innovative services built around each investor's financial goals."
+              "Хөрөнгө оруулагчдын зорилго, эрсдэлийн түвшинд хамгийн тохиромжтой хөрөнгө оруулалтыг санал болгох мэдлэг туршлагатай, чадварлаг баг хамт олон.",
+              "A knowledgeable, capable team recommending the investment best suited to each investor's goals and risk tolerance."
             )}
           />
 
@@ -74,7 +65,7 @@ export function About() {
             title={pick(locale, "Итгэмжтэй байдал", "Managing with trust")}
             description={pick(
               locale,
-              "Харилцагч, хамтрагч нартаа ил тод, шударга, урт хугацааны итгэлцлийг бий болгоно.",
+              "Харилцагч, хамтрагчиддаа ил тод, шударга, урт хугацааны итгэлцэл бий болгоно.",
               "Transparency, fairness and enduring trust with clients and partners."
             )}
           />
@@ -93,7 +84,7 @@ export function About() {
 
           <BentoGridItem
             index={4}
-            header={<BoardHeader locale={locale} />}
+            header={<ImpactHeader />}
             icon={<Leaf className="h-4 w-4 text-accent" strokeWidth={1.7} />}
             title={pick(locale, "Нөлөөллийн хөрөнгө оруулалт", "Impact investing")}
             description={pick(
@@ -184,8 +175,8 @@ function VisionHeader({ locale }: { locale: Locale }) {
       <p className="relative m-auto max-w-[22ch] px-6 text-center font-display text-[1.4rem] leading-snug text-on-strong">
         {pick(
           locale,
-          "Зах зээлийг тэргүүлэгч байх",
-          "Leading the market"
+          "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурласан, инновац шингээсэн үйлчилгээг хүргэж, зах зээлийг тэргүүлэгч",
+          "Lead the market by delivering innovative services built around each investor's financial goals"
         )}
       </p>
     </HeaderShell>
@@ -305,39 +296,39 @@ function GrowthHeader() {
   );
 }
 
-/** Three board portraits, fanned out until hover straightens them. */
-function BoardHeader({ locale }: { locale: Locale }) {
-  const board = TEAM[0].members;
-  const tilt = [
-    { initial: { x: 14, rotate: -6 }, hover: { x: 0, rotate: 0 } },
-    { initial: { x: 0, rotate: 0 }, hover: { x: 0, rotate: 0 } },
-    { initial: { x: -14, rotate: 6 }, hover: { x: 0, rotate: 0 } },
-  ];
+/** Concentric rings rippling outward from a core mark — impact spreading beyond the initial investment. */
+function ImpactHeader() {
+  const rings = [0, 1, 2, 3];
 
   return (
     <motion.div
       initial="initial"
+      whileInView="animate"
       whileHover="hover"
-      className="relative flex h-full min-h-[6rem] w-full flex-1 items-center gap-2 overflow-hidden rounded-xl bg-surface-sunken/60 p-3"
+      viewport={{ once: true }}
+      className="relative flex h-full min-h-[6rem] w-full flex-1 items-center justify-center overflow-hidden rounded-xl bg-surface-sunken/60"
     >
       <span className="bg-dots pointer-events-none absolute inset-0 text-fg-subtle opacity-30" />
-      {board.map((m, i) => (
-        <motion.div
-          key={m.mn}
-          variants={tilt[i]}
-          transition={{ duration: 0.4, ease: EASE }}
-          className={`relative flex h-full w-1/3 flex-col items-center justify-center gap-2 rounded-xl border hairline bg-surface p-2 ${
-            i === 1 ? "z-20" : "z-10"
-          }`}
-        >
-          <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
-            <Image src={m.photo} alt="" fill sizes="40px" className="object-cover object-top" />
-          </span>
-          <p className="text-center text-[0.62rem] leading-tight text-fg-muted">
-            {pick(locale, m.mnTitle, m.enTitle)}
-          </p>
-        </motion.div>
+      {rings.map((i) => (
+        <motion.span
+          key={i}
+          variants={{
+            initial: { scale: 0.3, opacity: 0 },
+            animate: {
+              scale: 1,
+              opacity: [0, 0.5, 0],
+              transition: { duration: 2.6, delay: i * 0.55, repeat: Infinity, ease: EASE },
+            },
+            hover: { transition: { duration: 1.4, delay: i * 0.15 } },
+          }}
+          className="absolute h-24 w-24 rounded-full border"
+          style={{ borderColor: "color-mix(in srgb, var(--c-accent) 55%, transparent)" }}
+        />
       ))}
+      <span
+        className="relative h-3.5 w-3.5 rounded-full"
+        style={{ background: "var(--c-accent)" }}
+      />
     </motion.div>
   );
 }

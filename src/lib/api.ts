@@ -141,6 +141,12 @@ export const FUNDS = [
     label: "Хувийн хөрөнгө оруулалтын сан",
     href: "https://ic-invest.mn/mn/service/6",
   },
+  {
+    sid: 7,
+    code: "PHS",
+    label: "Хамтын нээлттэй хөрөнгө оруулалтын сан",
+    href: "https://ic-invest.mn/mn/service/7",
+  },
 ] as const;
 
 function stripHtml(html: string): string {
@@ -314,8 +320,6 @@ export async function getFundDocuments(
 
 /** Overview values used by the homepage, derived only from published API data. */
 export async function getOverviewStats() {
-  const portfolios = await Promise.all(FUNDS.map((fund) => getPortfolio(fund.sid)));
-
   return {
     // Every service in FUNDS is active per the admin dashboard (5 today) —
     // two of them just don't have an objective/{sid} record filled in yet,
@@ -326,6 +330,5 @@ export async function getOverviewStats() {
     // endpoints only have a handful of names populated across all 5 funds
     // and badly undercount the real team.
     professionals: ALL_MEMBERS.length,
-    portfolioPositions: portfolios.reduce((total, p) => total + p.length, 0),
   };
 }

@@ -16,14 +16,21 @@
 export type FundDetailMeta = {
   sid: number;
   slug: string;
-  logo: string;
-  logoWidth: number;
-  logoHeight: number;
+  /** Undefined until a real brand mark is supplied — the detail page falls
+   *  back to a typographic treatment of the fund name rather than showing
+   *  the wrong logo or a placeholder image. */
+  logo?: string;
+  logoWidth?: number;
+  logoHeight?: number;
   /** true when the asset itself is light/white and reads directly on the
    *  dark banner — those show at full size with no backing plate. Logos
    *  with dark ink in the mark (checked by sampling pixel luminance) keep
    *  the light plate behind them or they'd disappear. */
   logoOnDark?: boolean;
+  /** Some source marks sit inside a lot of transparent margin, so at the
+   *  shared frame size they read smaller than the others — bump this to
+   *  scale just that logo up without touching the source asset. */
+  logoScale?: number;
   externalSite?: string;
   nameFallback?: { mn: string; en: string };
   descriptionFallback?: { mn: string; en: string };
@@ -46,6 +53,7 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logoWidth: 612,
     logoHeight: 408,
     logoOnDark: true,
+    logoScale: 1.4,
   },
   {
     sid: 4,
@@ -75,14 +83,27 @@ export const FUND_DETAILS: FundDetailMeta[] = [
   {
     sid: 6,
     slug: "veq",
-    logo: "/brand/pocket-fund.png",
-    logoWidth: 1006,
-    logoHeight: 248,
-    logoOnDark: true,
+    // pocket-fund.png was mistakenly assigned here — that mark belongs to
+    // the Pocket Хуримтлал fund below. No real Vertikor Equity logo asset
+    // exists yet, so the detail page falls back to typography instead of
+    // showing the wrong mark.
     nameFallback: { mn: '"Вертикор Экъюти" хувийн ХОС', en: "Vertikor Equity private fund" },
     descriptionFallback: {
       mn: "Вертикор Экъюти хувийн хөрөнгө оруулалтын сан нь хувьцаа, өрийн хэрэгсэл болон бусад санхүүгийн хэрэгслүүдэд хөрөнгө оруулах, Сангийн хөрөнгийг эрсдэл, өгөөжийн оновчтой түвшинд идэвхтэйгээр удирдан хөрөнгө оруулагч нарт боломжит хамгийн өндөр өгөөжийг хүртээхэд оршино.",
       en: "Vertikor Equity private fund invests in equities, debt instruments and other financial instruments, actively managing the fund's assets at an optimal balance of risk and return to deliver investors the highest return possible.",
+    },
+  },
+  {
+    sid: 7,
+    slug: "pocket",
+    logo: "/brand/pocket-fund.png",
+    logoWidth: 1006,
+    logoHeight: 248,
+    logoOnDark: true,
+    nameFallback: { mn: "Покет Хуримтлал Хамтын Нээлттэй Сан", en: "Pocket Savings open-end mutual fund" },
+    descriptionFallback: {
+      mn: "Покет Хуримтлал сан нь Тогтмол хуримтлалын дадалтай хөрөнгө оруулагчдын хөрөнгийг технологийн дэвшил, шинэлэг шийдлээр мэргэжлийн түвшинд удирдаж, ухаалгаар өсгөх зорилготой сан юм. Бид технологийн давуу талыг ашиглан хөрөнгө оруулалтыг илүү энгийн, хүртээмжтэй, ойлгомжтой болгож, таны өнөөдрийн хуримтлалыг ирээдүйн санхүүгийн боломж болгоход тусална.",
+      en: "The Pocket Savings fund manages the assets of investors with a habit of regular saving at a professional level using technological advances and innovative solutions, growing them intelligently. We use the advantages of technology to make investing simpler, more accessible and easier to understand, helping turn your saving today into financial opportunity tomorrow.",
     },
   },
 ];

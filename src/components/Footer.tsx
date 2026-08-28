@@ -36,14 +36,14 @@ export function Footer() {
             <p className="t-body mt-6 max-w-xs text-pretty text-on-strong-muted">
               {pick(
                 locale,
-                "Таны итгэмжит хамтрагч — “Инвескор Ассет Менежмент ҮЦК” ХХК.",
-                "Your trusted partner — Invescore Asset Management SC LLC."
+                "Таны хөрөнгө оруулалтын хамтрагч/зөвлөх — “Инвескор Ассет Менежмент” ХХК.",
+                "Your investment partner/advisor — Invescore Asset Management LLC."
               )}
             </p>
           </div>
 
           <nav className="lg:col-span-4">
-            <p className="eyebrow text-on-strong-subtle">{pick(locale, "Хуудсууд", "Pages")}</p>
+            <p className="eyebrow text-on-strong-subtle">{pick(locale, "Хуудас", "Pages")}</p>
             <ul className="mt-6 space-y-3">
               {LINKS.map((l) => (
                 <li key={l.href}>
@@ -91,7 +91,7 @@ export function Footer() {
         <div className="mt-8 flex flex-col gap-3 text-[0.8rem] text-on-strong-subtle sm:flex-row sm:justify-between">
           <p>
             © {new Date().getFullYear()}{" "}
-            {pick(locale, "Зохиогчийн эрх хуулиар хамгаалагдсан.", "All rights reserved.")}
+            {pick(locale, "Зохиогчийн эрхийн хуулиар хамгаалагдсан.", "All rights reserved.")}
           </p>
           <p>
             {pick(

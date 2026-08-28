@@ -10,13 +10,13 @@ export function FundsHeading() {
     <SectionHead
       onDark
       eyebrow={pick(locale, "Хөрөнгө оруулалтын боломж", "Investment opportunities")}
-      title={pick(locale, "Хөрөнгө оруулалтын сангууд", "Our funds")}
+      title={pick(locale, "Хөрөнгө оруулалтын сан", "Our funds")}
       aside={
         <p className="t-body max-w-sm text-pretty text-on-strong-muted">
           {pick(
             locale,
-            "Хувийн болон хамтын хөрөнгө оруулалтын сангуудаас өөрийн зорилгод тохирсон стратегийг сонгоно уу.",
-            "Choose the strategy that fits your goals from our private and collective investment funds."
+            "Хөрөнгө оруулалтын зорилго, хугацаанд тохирох хөрөнгө оруулалтын санг сонгоно уу.",
+            "Choose the investment fund that fits your goals and time horizon."
           )}
         </p>
       }

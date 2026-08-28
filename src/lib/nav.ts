@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   TrendingUp,
   Users,
+  Wallet,
 } from "lucide-react";
 
 /**
@@ -24,9 +25,9 @@ export type NavChild = {
   fundMeta?: {
     categoryMn: string;
     categoryEn: string;
-    logo: string;
-    logoWidth: number;
-    logoHeight: number;
+    logo?: string;
+    logoWidth?: number;
+    logoHeight?: number;
   };
 };
 
@@ -122,6 +123,16 @@ export const NAV: NavEntry[] = [
         fundMeta: {
           categoryMn: "Хувийн хөрөнгө оруулалтын сан",
           categoryEn: "Private investment fund",
+        },
+      },
+      {
+        mn: "Покет Хуримтлал",
+        en: "Pocket Savings",
+        href: "/funds/pocket",
+        icon: Wallet,
+        fundMeta: {
+          categoryMn: "Хамтын нээлттэй хөрөнгө оруулалтын сан",
+          categoryEn: "Open-end mutual fund",
           logo: "/brand/pocket-fund.png",
           logoWidth: 1006,
           logoHeight: 248,

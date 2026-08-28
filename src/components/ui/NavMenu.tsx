@@ -56,14 +56,20 @@ function FundMenuCard({ child, locale }: { child: NavChild; locale: Locale }) {
       className="group/card flex min-h-32 items-center gap-4 rounded-2xl border border-white/[0.09] bg-white/[0.025] p-3 transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-accent-on-dark/35 hover:bg-accent-on-dark/[0.065] hover:shadow-[0_18px_38px_-28px_rgba(111,191,163,0.85)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-on-dark/70"
     >
       <span className="relative flex h-[92px] w-[132px] shrink-0 items-center justify-center overflow-hidden rounded-xl border border-black/[0.08] bg-[#f4f1eb] px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
-        <Image
-          src={meta.logo}
-          alt={`${pick(locale, child.mn, child.en)} logo`}
-          width={meta.logoWidth}
-          height={meta.logoHeight}
-          sizes="132px"
-          className="h-auto max-h-[68px] w-full object-contain transition-transform duration-500 ease-out group-hover/card:scale-[1.08]"
-        />
+        {meta.logo ? (
+          <Image
+            src={meta.logo}
+            alt={`${pick(locale, child.mn, child.en)} logo`}
+            width={meta.logoWidth}
+            height={meta.logoHeight}
+            sizes="132px"
+            className="h-auto max-h-[68px] w-full object-contain transition-transform duration-500 ease-out group-hover/card:scale-[1.08]"
+          />
+        ) : (
+          <span className="text-center font-display text-[0.82rem] leading-snug text-[color:var(--ink-900)]">
+            {pick(locale, child.mn, child.en)}
+          </span>
+        )}
       </span>
 
       <span className="min-w-0 flex-1">

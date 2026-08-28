@@ -90,10 +90,11 @@ export type FundDetailData = {
   blurbEn: string;
   descriptionMn: string;
   descriptionEn: string;
-  logo: string;
-  logoWidth: number;
-  logoHeight: number;
+  logo?: string;
+  logoWidth?: number;
+  logoHeight?: number;
   logoOnDark: boolean;
+  logoScale: number;
   facts: FundFactRow[];
   externalSite?: string;
   otherFunds: { slug: string; name: string; nameEn: string; code: string }[];
@@ -407,7 +408,17 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
 
           <div className="mt-14 grid max-w-6xl items-center gap-12 lg:grid-cols-[1fr_0.82fr] lg:gap-20">
             <Reveal delay={0.05} className="order-2 lg:order-2">
-              {fund.logoOnDark ? (
+              {!fund.logo ? (
+                // no brand mark supplied yet for this fund — a clean
+                // typographic treatment instead of a placeholder image or
+                // (worse) another fund's logo
+                <div className="relative flex h-[18rem] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-accent-on-dark/25 bg-[radial-gradient(circle_at_50%_45%,rgba(111,191,163,0.16),rgba(255,255,255,0.025)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.25)] p-10">
+                  <span aria-hidden className="absolute right-7 top-7 font-display text-5xl text-on-strong/[0.06]">{String(fund.index + 1).padStart(2, "0")}</span>
+                  <p className="relative text-balance text-center font-display text-[1.9rem] leading-tight text-on-strong">
+                    {fund.name}
+                  </p>
+                </div>
+              ) : fund.logoOnDark ? (
                 <div className="relative flex h-[18rem] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-accent-on-dark/25 bg-[radial-gradient(circle_at_50%_45%,rgba(111,191,163,0.16),rgba(255,255,255,0.025)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.25)]">
                   <span aria-hidden className="absolute right-7 top-7 font-display text-5xl text-on-strong/[0.06]">{String(fund.index + 1).padStart(2, "0")}</span>
                   <Image
@@ -416,6 +427,7 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
                     fill
                     sizes="576px"
                     className="object-contain object-center p-10"
+                    style={fund.logoScale !== 1 ? { transform: `scale(${fund.logoScale})` } : undefined}
                   />
                 </div>
               ) : (

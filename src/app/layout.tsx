@@ -22,9 +22,9 @@ const manrope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "IC Asset Management | Инвескор Ассет Менежмент ҮЦК",
+  title: "IC Asset Management | Инвескор Ассет Менежмент ХХК",
   description:
-    "Монголын хөрөнгийн зах зээлд мэргэжлийн удирдлага, судалгаанд суурилсан хөрөнгө оруулалтын шийдэл хүргэдэг Инвескор Ассет Менежмент ҮЦК.",
+    "Монголын хөрөнгийн зах зээлд мэргэжлийн удирдлага, судалгаанд суурилсан хөрөнгө оруулалтын шийдэл хүргэдэг Инвескор Ассет Менежмент ХХК.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

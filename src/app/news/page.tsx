@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Мэдээ, мэдээлэл | IC Asset Management",
   description:
-    "Инвескор Ассет Менежмент ҮЦК-ийн сүүлийн үеийн мэдээ, мэдээлэл болон судалгаа.",
+    "Инвескор Ассет Менежмент ХХК-ийн сүүлийн үеийн мэдээ, мэдээлэл болон судалгаа.",
 };
 
 export default function NewsPage() {

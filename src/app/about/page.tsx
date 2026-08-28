@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Бидний тухай | IC Asset Management",
   description:
-    "Инвескор Ассет Менежмент ҮЦК — алсын хараа, үнэт зүйл, төлөөлөн удирдах зөвлөл болон хамт олон.",
+    "Инвескор Ассет Менежмент ХХК — алсын хараа, үнэт зүйл, төлөөлөн удирдах зөвлөл болон хамт олон.",
 };
 
 export default function AboutPage() {

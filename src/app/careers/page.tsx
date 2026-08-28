@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Ажлын байр | IC Asset Management",
-  description: "Инвескор Ассет Менежмент ҮЦК-д санал болгож буй ажлын байрнууд.",
+  description: "Инвескор Ассет Менежмент ХХК-д санал болгож буй ажлын байрнууд.",
 };
 
 export default function CareersPage() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Layers, Users } from "lucide-react";
+import { Layers, Users } from "lucide-react";
 import { Counter } from "./ui/Counter";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { useLocale, pick } from "@/lib/locale";
@@ -8,36 +8,28 @@ import { useLocale, pick } from "@/lib/locale";
 export type OverviewStats = {
   activeFunds: number;
   professionals: number;
-  portfolioPositions: number;
 };
 
 const STAT_COPY = [
   {
     icon: Layers,
-    mn: "Идэвхтэй хөрөнгө оруулалтын сан",
-    en: "Active investment funds",
-    subMn: "Хувийн, биржээр арилжаалагддаг, хамтын нээлттэй",
-    subEn: "Private, exchange-traded and open-ended",
+    mn: "Хөрөнгө оруулалтын сан",
+    en: "Investment funds",
+    subMn: "Хамтын нээлттэй, Хувийн",
+    subEn: "Open-ended and private",
   },
   {
     icon: Users,
-    mn: "Мэргэжлийн баг, ТУЗ-ийн хамт",
-    en: "Professionals, board included",
-    subMn: "Хөрөнгө оруулалт, эрсдэл, санхүүгийн чиглэлээр",
-    subEn: "Across investment, risk and finance",
-  },
-  {
-    icon: BarChart3,
-    mn: "Багцын хөрөнгө оруулалт",
-    en: "Portfolio positions",
-    subMn: "Админы системд бүртгэлтэй байршуулалт",
-    subEn: "Positions published in the admin system",
+    mn: "ТУЗ, Гүйцэтгэх удирдлага, Мэргэжлийн баг",
+    en: "Board, executive and professional team",
+    subMn: "Хөрөнгө оруулалт, Санхүү, Эрсдэлийн удирдлагын мэргэжлийн туршлага",
+    subEn: "Experienced in investment, finance and risk management",
   },
 ];
 
 export function Stats({ stats }: { stats: OverviewStats }) {
   const { locale } = useLocale();
-  const values = [stats.activeFunds, stats.professionals, stats.portfolioPositions];
+  const values = [stats.activeFunds, stats.professionals];
 
   return (
     <section className="theme-fade relative overflow-hidden bg-surface">
@@ -49,21 +41,21 @@ export function Stats({ stats }: { stats: OverviewStats }) {
               {pick(locale, "Товч танилцуулга", "At a glance")}
             </p>
             <h2 className="mt-4 max-w-[18ch] font-display text-3xl leading-tight text-fg md:text-4xl">
-              {pick(locale, "Биднийг илэрхийлэх гол үзүүлэлтүүд", "The figures behind our work")}
+              {pick(locale, "Гол үзүүлэлт", "Key figures")}
             </h2>
           </Reveal>
           <Reveal delay={0.08} className="lg:col-span-5 lg:col-start-8">
             <p className="t-body max-w-lg text-pretty text-fg-muted lg:justify-self-end">
               {pick(
                 locale,
-                "Туршлага, мэргэжлийн баг, зохицуулалттай үйл ажиллагааг нэг дороос.",
-                "Experience, a professional team and regulated operations at a glance.",
+                "Зохицуулалттай, ил тод байдал & Мэргэжлийн, туршлагатай баг",
+                "Regulated, transparent operations & a professional, experienced team",
               )}
             </p>
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-10 grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
+        <RevealGroup className="mt-10 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
           {STAT_COPY.map((s, index) => {
             const Icon = s.icon;
             return (
@@ -91,10 +83,10 @@ export function Stats({ stats }: { stats: OverviewStats }) {
                   <div className="t-numeral text-5xl text-fg md:text-[4rem]">
                     <Counter value={values[index]} />
                   </div>
-                  <p className="t-small mt-4 max-w-[24ch] text-pretty text-fg-muted">
+                  <p className="t-small mt-4 max-w-[28ch] text-pretty text-fg-muted">
                     {pick(locale, s.mn, s.en)}
                   </p>
-                  <p className="mt-2 max-w-[26ch] text-pretty text-[0.8rem] text-fg-subtle">
+                  <p className="mt-2 max-w-[30ch] text-pretty text-[0.8rem] text-fg-subtle">
                     {pick(locale, s.subMn, s.subEn)}
                   </p>
                 </div>
