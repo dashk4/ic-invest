@@ -14,12 +14,14 @@ export function SectionHead({
   aside,
   onDark = false,
   align = "split",
+  titleClassName = "",
 }: {
   eyebrow: string;
   title: string;
   aside?: ReactNode;
   onDark?: boolean;
   align?: "split" | "center";
+  titleClassName?: string;
 }) {
   const eyebrowColor = onDark ? "text-accent-on-dark" : "text-accent";
   const titleColor = onDark ? "text-on-strong" : "text-fg";
@@ -30,7 +32,7 @@ export function SectionHead({
         <Reveal>
           <p className={`eyebrow ${eyebrowColor}`}>{eyebrow}</p>
         </Reveal>
-        <h2 className={`t-h2 mt-6 text-balance ${titleColor}`}>
+        <h2 className={`t-h2 mt-6 text-balance ${titleColor} ${titleClassName}`}>
           <SplitReveal text={title} />
         </h2>
         {aside && <Reveal delay={0.12}>{aside}</Reveal>}
@@ -44,7 +46,7 @@ export function SectionHead({
         <Reveal>
           <p className={`eyebrow ${eyebrowColor}`}>{eyebrow}</p>
         </Reveal>
-        <h2 className={`t-h2 mt-6 text-balance ${titleColor}`}>
+        <h2 className={`t-h2 mt-6 text-balance ${titleColor} ${titleClassName}`}>
           <SplitReveal text={title} />
         </h2>
       </div>

@@ -17,15 +17,19 @@ export function About() {
   const { locale } = useLocale();
 
   return (
-    <section id="about" className="theme-fade bg-surface-alt pb-[clamp(6rem,12vh,10rem)] pt-36 md:pt-44">
+    <section
+      id="about"
+      className="theme-fade bg-surface-alt pb-[clamp(6rem,12vh,10rem)] pt-36 md:pt-44"
+    >
       <div className="container-page">
         <SectionHead
           eyebrow={pick(locale, "Бидний тухай", "About us")}
           title={pick(
             locale,
             "Монголын хөрөнгийн зах зээлд шинэлэг бүтээгдэхүүн, шилдэг хөрөнгийн удирдлага",
-            "Innovative products and best-in-class asset management for Mongolia's capital market"
+            "Innovative products and best-in-class asset management for Mongolia's capital market",
           )}
+          titleClassName="!text-[clamp(1.75rem,3vw,2.75rem)]"
         />
 
         {/* anchors for the "Бидний тухай" submenu */}
@@ -42,7 +46,7 @@ export function About() {
             description={pick(
               locale,
               "Хөрөнгө оруулагчдын зорилго, эрсдэлийн түвшинд хамгийн тохиромжтой хөрөнгө оруулалтыг санал болгох мэдлэг туршлагатай, чадварлаг баг хамт олон.",
-              "A knowledgeable, capable team recommending the investment best suited to each investor's goals and risk tolerance."
+              "A knowledgeable, capable team recommending the investment best suited to each investor's goals and risk tolerance.",
             )}
           />
 
@@ -54,19 +58,24 @@ export function About() {
             description={pick(
               locale,
               "Монголын хөрөнгийн зах зээлд шилдэг туршлага нэвтрүүлж, мэдлэг чадвараа хурцалж байх мэргэжлийн баг.",
-              "Professionals introducing industry best practice into the Mongolian capital market."
+              "Professionals introducing industry best practice into the Mongolian capital market.",
             )}
           />
 
           <BentoGridItem
             index={2}
             header={<TrustHeader />}
-            icon={<HandshakeIcon className="h-4 w-4 text-accent" strokeWidth={1.7} />}
+            icon={
+              <HandshakeIcon
+                className="h-4 w-4 text-accent"
+                strokeWidth={1.7}
+              />
+            }
             title={pick(locale, "Итгэмжтэй байдал", "Managing with trust")}
             description={pick(
               locale,
               "Харилцагч, хамтрагчиддаа ил тод, шударга, урт хугацааны итгэлцэл бий болгоно.",
-              "Transparency, fairness and enduring trust with clients and partners."
+              "Transparency, fairness and enduring trust with clients and partners.",
             )}
           />
 
@@ -74,11 +83,15 @@ export function About() {
             index={3}
             header={<GrowthHeader />}
             icon={<Sprout className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-            title={pick(locale, "Тогтвортой хөгжил", "Sustainability at its core")}
+            title={pick(
+              locale,
+              "Тогтвортой хөгжил",
+              "Sustainability at its core",
+            )}
             description={pick(
               locale,
               "Байгаль орчин, нийгэмд ээлтэй, урт хугацааны хамтын ажиллагаанд суурилан ажиллана.",
-              "Environmentally and socially responsible long-term investing."
+              "Environmentally and socially responsible long-term investing.",
             )}
           />
 
@@ -86,22 +99,32 @@ export function About() {
             index={4}
             header={<ImpactHeader />}
             icon={<Leaf className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-            title={pick(locale, "Нөлөөллийн хөрөнгө оруулалт", "Impact investing")}
+            title={pick(
+              locale,
+              "Нөлөөллийн хөрөнгө оруулалт",
+              "Impact investing",
+            )}
             description={pick(
               locale,
               "Байгаль орчин, нийгэм, засаглалын үзүүлэлтүүдэд эерэг нөлөөлөл үзүүлэх нөлөөллийн хөрөнгө оруулалтын стратегийг хэрэгжүүлэгч.",
-              "Integrating financial analysis with environmental, social and governance insight to find solutions that deliver both performance and tangible impact."
+              "Integrating financial analysis with environmental, social and governance insight to find solutions that deliver both performance and tangible impact.",
             )}
           />
         </BentoGrid>
 
         <div id="team" className="mt-24 scroll-mt-28 border-t hairline pt-16">
           <Reveal>
-            <p className="eyebrow text-accent">{pick(locale, "Хамт олон", "Our team")}</p>
+            <p className="eyebrow text-accent">
+              {pick(locale, "Хамт олон", "Our team")}
+            </p>
           </Reveal>
           <h3 className="t-h2 mt-6 max-w-[16ch] text-balance text-fg">
             <SplitReveal
-              text={pick(locale, "Манай хамт олон", "The people behind the capital")}
+              text={pick(
+                locale,
+                "Манай хамт олон",
+                "The people behind the capital",
+              )}
             />
           </h3>
           <Reveal delay={0.12}>
@@ -109,7 +132,7 @@ export function About() {
               {pick(
                 locale,
                 "Нэр дээр дарж дэлгэрэнгүй танилцана уу.",
-                "Select a name to see the full profile."
+                "Select a name to see the full profile.",
               )}
             </p>
           </Reveal>
@@ -172,11 +195,11 @@ function VisionHeader({ locale }: { locale: Locale }) {
         />
       </svg>
 
-      <p className="relative m-auto max-w-[22ch] px-6 text-center font-display text-[1.4rem] leading-snug text-on-strong">
+      <p className="relative m-auto max-w-[30ch] px-6 text-center font-display text-[1.05rem] leading-snug text-on-strong">
         {pick(
           locale,
           "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурласан, инновац шингээсэн үйлчилгээг хүргэж, зах зээлийг тэргүүлэгч",
-          "Lead the market by delivering innovative services built around each investor's financial goals"
+          "Lead the market by delivering innovative services built around each investor's financial goals",
         )}
       </p>
     </HeaderShell>
@@ -250,8 +273,14 @@ function TrustHeader() {
           key={i}
           variants={{
             initial: { width: 0 },
-            animate: { width: `${w}%`, transition: { duration: 0.7, delay: i * 0.08, ease: EASE } },
-            hover: { width: ["0%", `${w}%`], transition: { duration: 1.4, delay: i * 0.05 } },
+            animate: {
+              width: `${w}%`,
+              transition: { duration: 0.7, delay: i * 0.08, ease: EASE },
+            },
+            hover: {
+              width: ["0%", `${w}%`],
+              transition: { duration: 1.4, delay: i * 0.05 },
+            },
           }}
           className="relative h-2.5 rounded-full"
           style={{
@@ -283,8 +312,14 @@ function GrowthHeader() {
           key={i}
           variants={{
             initial: { height: "8%" },
-            animate: { height: `${h}%`, transition: { duration: 0.8, delay: i * 0.07, ease: EASE } },
-            hover: { height: `${Math.min(100, h + 8)}%`, transition: { duration: 0.4 } },
+            animate: {
+              height: `${h}%`,
+              transition: { duration: 0.8, delay: i * 0.07, ease: EASE },
+            },
+            hover: {
+              height: `${Math.min(100, h + 8)}%`,
+              transition: { duration: 0.4 },
+            },
           }}
           className="relative flex-1 rounded-t-md"
           style={{
@@ -317,12 +352,19 @@ function ImpactHeader() {
             animate: {
               scale: 1,
               opacity: [0, 0.5, 0],
-              transition: { duration: 2.6, delay: i * 0.55, repeat: Infinity, ease: EASE },
+              transition: {
+                duration: 2.6,
+                delay: i * 0.55,
+                repeat: Infinity,
+                ease: EASE,
+              },
             },
             hover: { transition: { duration: 1.4, delay: i * 0.15 } },
           }}
           className="absolute h-24 w-24 rounded-full border"
-          style={{ borderColor: "color-mix(in srgb, var(--c-accent) 55%, transparent)" }}
+          style={{
+            borderColor: "color-mix(in srgb, var(--c-accent) 55%, transparent)",
+          }}
         />
       ))}
       <span
