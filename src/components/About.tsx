@@ -1,14 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { Eye, HandshakeIcon, Leaf, Sprout, Users } from "lucide-react";
+import { HandshakeIcon, Leaf, Sprout } from "lucide-react";
 import { BentoGrid, BentoGridItem } from "./ui/BentoGrid";
 import { SectionHead } from "./ui/SectionHead";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { ExpandableTeam } from "./ui/ExpandableTeam";
-import { ALL_MEMBERS } from "@/lib/team";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -26,91 +24,92 @@ export function About() {
           eyebrow={pick(locale, "Бидний тухай", "About us")}
           title={pick(
             locale,
-            "Монголын хөрөнгийн зах зээлд шинэлэг бүтээгдэхүүн, шилдэг хөрөнгийн удирдлага",
-            "Innovative products and best-in-class asset management for Mongolia's capital market",
+            "Монголын хөрөнгийн зах зээлийн түүчээлэгч",
+            "Mongolia's capital market pioneer",
           )}
           titleClassName="!text-[clamp(1.75rem,3vw,2.75rem)]"
         />
 
-        {/* anchors for the "Бидний тухай" submenu */}
-        <div id="vision" className="scroll-mt-28" />
-        <div id="philosophy" className="scroll-mt-28" />
+        <div id="vision" className="mt-16 scroll-mt-28">
+          <Reveal>
+            <p className="eyebrow text-accent">
+              {pick(locale, "Алсын хараа", "Vision")}
+            </p>
+          </Reveal>
+          <div className="mt-6 grid gap-6 lg:grid-cols-12 lg:items-center">
+            <div className="h-72 overflow-hidden rounded-2xl border hairline lg:col-span-7 lg:h-80">
+              <VisionHeader locale={locale} />
+            </div>
+            <div className="lg:col-span-5">
+              <p className="t-body text-pretty text-fg-muted">
+                {pick(
+                  locale,
+                  "Хөрөнгө оруулагчдын зорилго, эрсдэлийн түвшинд хамгийн тохиромжтой хөрөнгө оруулалтыг санал болгох мэдлэг туршлагатай, чадварлаг баг хамт олон.",
+                  "A knowledgeable, capable team recommending the investment best suited to each investor's goals and risk tolerance.",
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
 
-        <BentoGrid className="mt-16">
-          <BentoGridItem
-            index={0}
-            className="md:col-span-2"
-            header={<VisionHeader locale={locale} />}
-            icon={<Eye className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-            title={pick(locale, "Алсын хараа", "Vision")}
-            description={pick(
-              locale,
-              "Хөрөнгө оруулагчдын зорилго, эрсдэлийн түвшинд хамгийн тохиромжтой хөрөнгө оруулалтыг санал болгох мэдлэг туршлагатай, чадварлаг баг хамт олон.",
-              "A knowledgeable, capable team recommending the investment best suited to each investor's goals and risk tolerance.",
-            )}
-          />
+        <div id="philosophy" className="mt-24 scroll-mt-28">
+          <Reveal>
+            <p className="eyebrow text-accent">
+              {pick(locale, "Үнэт зүйл", "Values")}
+            </p>
+          </Reveal>
 
-          <BentoGridItem
-            index={1}
-            header={<TeamStackHeader locale={locale} />}
-            icon={<Users className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-            title={pick(locale, "Чадварлаг баг", "A dedicated team")}
-            description={pick(
-              locale,
-              "Монголын хөрөнгийн зах зээлд шилдэг туршлага нэвтрүүлж, мэдлэг чадвараа хурцалж байх мэргэжлийн баг.",
-              "Professionals introducing industry best practice into the Mongolian capital market.",
-            )}
-          />
+          <BentoGrid className="mt-6">
+            <BentoGridItem
+              index={0}
+              header={<TrustHeader />}
+              icon={
+                <HandshakeIcon
+                  className="h-4 w-4 text-accent"
+                  strokeWidth={1.7}
+                />
+              }
+              title={pick(locale, "Найдвартай байдал", "Managing with trust")}
+              description={pick(
+                locale,
+                "Харилцагч, хамтрагчиддаа ил тод, шударга, урт хугацааны итгэлцэл бий болгоно.",
+                "Transparency, fairness and enduring trust with clients and partners.",
+              )}
+            />
 
-          <BentoGridItem
-            index={2}
-            header={<TrustHeader />}
-            icon={
-              <HandshakeIcon
-                className="h-4 w-4 text-accent"
-                strokeWidth={1.7}
-              />
-            }
-            title={pick(locale, "Итгэмжтэй байдал", "Managing with trust")}
-            description={pick(
-              locale,
-              "Харилцагч, хамтрагчиддаа ил тод, шударга, урт хугацааны итгэлцэл бий болгоно.",
-              "Transparency, fairness and enduring trust with clients and partners.",
-            )}
-          />
+            <BentoGridItem
+              index={1}
+              header={<GrowthHeader />}
+              icon={<Sprout className="h-4 w-4 text-accent" strokeWidth={1.7} />}
+              title={pick(
+                locale,
+                "Тогтвортой хөгжил",
+                "Sustainability at its core",
+              )}
+              description={pick(
+                locale,
+                "Байгаль орчин, нийгэмд ээлтэй, урт хугацааны хамтын ажиллагаанд суурилан ажиллана.",
+                "Environmentally and socially responsible long-term investing.",
+              )}
+            />
 
-          <BentoGridItem
-            index={3}
-            header={<GrowthHeader />}
-            icon={<Sprout className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-            title={pick(
-              locale,
-              "Тогтвортой хөгжил",
-              "Sustainability at its core",
-            )}
-            description={pick(
-              locale,
-              "Байгаль орчин, нийгэмд ээлтэй, урт хугацааны хамтын ажиллагаанд суурилан ажиллана.",
-              "Environmentally and socially responsible long-term investing.",
-            )}
-          />
-
-          <BentoGridItem
-            index={4}
-            header={<ImpactHeader />}
-            icon={<Leaf className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-            title={pick(
-              locale,
-              "Нөлөөллийн хөрөнгө оруулалт",
-              "Impact investing",
-            )}
-            description={pick(
-              locale,
-              "Байгаль орчин, нийгэм, засаглалын үзүүлэлтүүдэд эерэг нөлөөлөл үзүүлэх нөлөөллийн хөрөнгө оруулалтын стратегийг хэрэгжүүлэгч.",
-              "Integrating financial analysis with environmental, social and governance insight to find solutions that deliver both performance and tangible impact.",
-            )}
-          />
-        </BentoGrid>
+            <BentoGridItem
+              index={2}
+              header={<ImpactHeader />}
+              icon={<Leaf className="h-4 w-4 text-accent" strokeWidth={1.7} />}
+              title={pick(
+                locale,
+                "Нөлөөллийн хөрөнгө оруулалт",
+                "Impact investing",
+              )}
+              description={pick(
+                locale,
+                "Байгаль орчин, нийгэм, засаглалын үзүүлэлтүүдэд эерэг нөлөөлөл үзүүлэх нөлөөллийн хөрөнгө оруулалтын стратегийг хэрэгжүүлэгч.",
+                "Integrating financial analysis with environmental, social and governance insight to find solutions that deliver both performance and tangible impact.",
+              )}
+            />
+          </BentoGrid>
+        </div>
 
         <div id="team" className="mt-24 scroll-mt-28 border-t hairline pt-16">
           <Reveal>
@@ -127,16 +126,6 @@ export function About() {
               )}
             />
           </h3>
-          <Reveal delay={0.12}>
-            <p className="t-body mt-6 max-w-sm text-pretty text-fg-muted">
-              {pick(
-                locale,
-                "Нэр дээр дарж дэлгэрэнгүй танилцана уу.",
-                "Select a name to see the full profile.",
-              )}
-            </p>
-          </Reveal>
-
           <ExpandableTeam locale={locale} />
         </div>
       </div>
@@ -198,61 +187,11 @@ function VisionHeader({ locale }: { locale: Locale }) {
       <p className="relative m-auto max-w-[30ch] px-6 text-center font-display text-[1.05rem] leading-snug text-on-strong">
         {pick(
           locale,
-          "Хөрөнгө оруулагчдын санхүүгийн зорилгод тулгуурласан, инновац шингээсэн үйлчилгээг хүргэж, зах зээлийг тэргүүлэгч",
-          "Lead the market by delivering innovative services built around each investor's financial goals",
+          "Хөрөнгө оруулагчдын санхүүгийн зорилгод нийцсэн, инновацлаг санхүүгийн шийдэл",
+          "Innovative financial solutions matched to each investor's financial goals",
         )}
       </p>
     </HeaderShell>
-  );
-}
-
-/**
- * Chat-style stack: rounded bubbles with the middle one narrow and pushed
- * right, shearing apart on hover. Sized to the header box — at the original
- * padding the third bubble was clipped.
- */
-function TeamStackHeader({ locale }: { locale: Locale }) {
-  const rows = [ALL_MEMBERS[5], ALL_MEMBERS[8], ALL_MEMBERS[9]];
-  const shift = {
-    initial: { x: 0 },
-    animate: { x: 10, rotate: 3, transition: { duration: 0.2 } },
-  };
-  const shiftBack = {
-    initial: { x: 0 },
-    animate: { x: -10, rotate: -3, transition: { duration: 0.2 } },
-  };
-
-  return (
-    <motion.div
-      initial="initial"
-      whileHover="animate"
-      className="relative flex h-full min-h-[6rem] w-full flex-1 flex-col justify-center gap-1.5 overflow-hidden rounded-xl bg-surface-sunken/60 p-2 text-fg-subtle"
-    >
-      <span className="bg-dots pointer-events-none absolute inset-0 opacity-30" />
-
-      {rows.map((m, i) => (
-        <motion.div
-          key={m.mn}
-          variants={i === 1 ? shiftBack : shift}
-          className={`relative flex items-center gap-2.5 rounded-full border hairline bg-surface p-1 ${
-            i === 1 ? "ml-auto w-3/4" : "w-full"
-          }`}
-        >
-          <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full">
-            <Image
-              src={m.photo}
-              alt=""
-              fill
-              sizes="24px"
-              className="object-cover object-top grayscale transition-all duration-700 group-hover/bento:grayscale-0"
-            />
-          </span>
-          <span className="truncate pr-1 text-[0.68rem] text-fg-muted">
-            {pick(locale, m.mnTitle, m.enTitle)}
-          </span>
-        </motion.div>
-      ))}
-    </motion.div>
   );
 }
 

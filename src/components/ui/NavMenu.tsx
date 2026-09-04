@@ -55,7 +55,13 @@ function FundMenuCard({ child, locale }: { child: NavChild; locale: Locale }) {
       href={child.href}
       className="group/card flex min-h-32 items-center gap-4 rounded-2xl border border-white/[0.09] bg-white/[0.025] p-3 transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-accent-on-dark/35 hover:bg-accent-on-dark/[0.065] hover:shadow-[0_18px_38px_-28px_rgba(111,191,163,0.85)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-on-dark/70"
     >
-      <span className="relative flex h-[92px] w-[132px] shrink-0 items-center justify-center overflow-hidden rounded-xl border border-black/[0.08] bg-[#f4f1eb] px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+      <span
+        className={`relative flex h-[92px] w-[132px] shrink-0 items-center justify-center overflow-hidden rounded-xl px-3 ${
+          meta.logoOnDark
+            ? "border border-white/[0.09] bg-[color:var(--ink-900)]"
+            : "border border-black/[0.08] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]"
+        }`}
+      >
         {meta.logo ? (
           <Image
             src={meta.logo}
@@ -108,7 +114,7 @@ function FundsMegaMenu({ entry, locale }: { entry: NavEntry; locale: Locale }) {
           </p>
         </div>
         <span className="whitespace-nowrap text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-on-strong-muted">
-          05 {pick(locale, "сан", "funds")}
+          06 {pick(locale, "сан", "funds")}
         </span>
       </div>
 
@@ -221,31 +227,28 @@ function MenuItem({
       </a>
 
       {active !== null && isOpen && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={transition}
-        >
-          {/* the published component offsets by 1.2rem; here that gap sits
-              outside the nav and drops the hover, so the padding carries it */}
-          <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-5">
-            <motion.div
-              layoutId="active"
-              transition={transition}
-              /* solid rather than translucent: over the light theme's page
-                 surface even 5% transmission let headings ghost through */
-              className="overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-[color:var(--ink-900)] shadow-[0_24px_60px_-20px_rgb(0_0_0/0.7)]"
-            >
-              <motion.div layout className="h-full w-max">
-                {entry.key === "funds" ? (
-                  <FundsMegaMenu entry={entry} locale={locale} />
-                ) : (
-                  <CompactMenu entry={entry} locale={locale} />
-                )}
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
+        <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-5">
+          {/* no shared layoutId across menu items: a morph animation between
+              differently-sized panels (compact list vs. the wide funds mega
+              menu) made the content visibly reflow mid-transition */}
+          <motion.div
+            key={entry.key}
+            initial={{ opacity: 0, scale: 0.94, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={transition}
+            /* solid rather than translucent: over the light theme's page
+               surface even 5% transmission let headings ghost through */
+            className="overflow-hidden rounded-2xl border border-[color:var(--c-line-strong)] bg-[color:var(--ink-900)] shadow-[0_24px_60px_-20px_rgb(0_0_0/0.7)]"
+          >
+            <div className="h-full w-max">
+              {entry.key === "funds" ? (
+                <FundsMegaMenu entry={entry} locale={locale} />
+              ) : (
+                <CompactMenu entry={entry} locale={locale} />
+              )}
+            </div>
+          </motion.div>
+        </div>
       )}
     </div>
   );

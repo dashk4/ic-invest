@@ -1,6 +1,6 @@
 /**
  * Team roster as grouped on ic-invest.mn/mn/about — three categories, not two.
- * Portraits are the site's own, downscaled to WebP under /public/team.
+ * Portraits are stored under /public/team and referenced by each member.
  */
 export type Member = {
   mn: string;
@@ -68,7 +68,7 @@ export const TEAM: TeamGroup[] = [
         mnTitle: "Хөрөнгө оруулалт хариуцсан захирал",
         en: "Nyambayar Enkhbat",
         enTitle: "Head of Investment",
-        photo: "/team/nyambaa.png",
+        photo: "/team/nyambayar-enkhbat.png",
       },
     ],
   },
@@ -110,6 +110,13 @@ export const TEAM: TeamGroup[] = [
         en: "Gonchigbold Unenbat",
         enTitle: "Investment Manager",
         photo: "/team/gonchigbold-unenbat.webp",
+      },
+      {
+        mn: "Б. Мөнхжин",
+        mnTitle: "Хөрөнгө оруулалтын менежер",
+        en: "Munkhjin",
+        enTitle: "Investment Manager",
+        photo: "/team/munkhjin.png",
       },
     ],
   },

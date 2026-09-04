@@ -35,6 +35,14 @@ export type FundDetailMeta = {
   nameFallback?: { mn: string; en: string };
   descriptionFallback?: { mn: string; en: string };
   staticFacts?: { mn: string; en: string; value: string }[];
+  /**
+   * Who to show under "Сангийн менежмент" on this fund's page. Supplied
+   * directly by the company rather than the CMS's fundmanagers/
+   * committeemanagers endpoints — those cover only a couple of funds and
+   * still list a person no longer with the company (checked against the
+   * live team roster in lib/team.ts).
+   */
+  advisor?: { name: string; title: string; titleEn: string; photo: string };
 };
 
 export const FUND_DETAILS: FundDetailMeta[] = [
@@ -45,6 +53,12 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logoWidth: 1311,
     logoHeight: 560,
     logoOnDark: true,
+    advisor: {
+      name: "Г. Амарбаатар",
+      title: "Хөрөнгө оруулалтын зөвлөх",
+      titleEn: "Investment Advisor",
+      photo: "/team/amarbaatar-ganbaatar.webp",
+    },
   },
   {
     sid: 3,
@@ -54,6 +68,12 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logoHeight: 408,
     logoOnDark: true,
     logoScale: 1.4,
+    advisor: {
+      name: "Г. Амарбаатар",
+      title: "Хөрөнгө оруулалтын зөвлөх",
+      titleEn: "Investment Advisor",
+      photo: "/team/amarbaatar-ganbaatar.webp",
+    },
   },
   {
     sid: 4,
@@ -62,6 +82,12 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     logoWidth: 3000,
     logoHeight: 800,
     logoOnDark: true,
+    advisor: {
+      name: "Ү. Гончигболд",
+      title: "Хөрөнгө оруулалтын зөвлөх",
+      titleEn: "Investment Advisor",
+      photo: "/team/gonchigbold-unenbat.webp",
+    },
   },
   {
     sid: 5,
@@ -76,21 +102,32 @@ export const FUND_DETAILS: FundDetailMeta[] = [
       mn: 'И Эс Пи Ирээдүй хамтын хөрөнгө оруулалтын сан нь ажил олгогч байгууллага болон тэдгээрийн ажилтнуудад зориулсан хуримтлалын сан бөгөөд ажилтнуудын санхүүгийн тогтвортой байдлыг дэмжих, урт хугацааны хуримтлал бий болгох зорилготой юм.\n\n"Инвескор Ассет Менежмент" ХХК-ийн үүсгэн байгуулсан "И Эс Пи Ирээдүй Хамтын ХОС" ХХК нь Санхүүгийн зохицуулах хорооны 2025 оны 10 дугаар сарын 24-ний өдрийн №424 дүгээр тогтоолоор нэгж эрхээ олон нийтэд санал болгох зөвшөөрөл авсны дагуу анхдагч зах зээлийн арилжааг албан ёсоор нээлээ.',
       en: "The E-Fund is a collective savings and investment fund for employer organizations and their staff, built to support employees' financial stability and long-term savings.\n\nEstablished by Invescore Asset Management LLC, \"И Эс Пи Ирээдүй Хамтын ХОС\" LLC received approval from the Financial Regulatory Commission (Resolution No. 424, 24 October 2025) to offer its units to the public, and formally opened primary-market trading.",
     },
-    staticFacts: [
-      { mn: "Анхдагч арилжааны хугацаа", en: "Primary offering window", value: "2025.10.29 – 2025.11.29" },
-    ],
+    advisor: {
+      name: "О. Насанжаргал",
+      title: "Хөрөнгө оруулалтын зөвлөх",
+      titleEn: "Investment Advisor",
+      photo: "/team/nasanjargal-odsuren.webp",
+    },
   },
   {
     sid: 6,
     slug: "veq",
-    // pocket-fund.png was mistakenly assigned here — that mark belongs to
-    // the Pocket Хуримтлал fund below. No real Vertikor Equity logo asset
-    // exists yet, so the detail page falls back to typography instead of
-    // showing the wrong mark.
+    // real mark, confirmed by the user — white ink, reads directly on the
+    // dark banner with no backing plate.
+    logo: "/brand/Tsagaan%20hevtee@300x.png",
+    logoWidth: 1436,
+    logoHeight: 373,
+    logoOnDark: true,
     nameFallback: { mn: '"Вертикор Экъюти" хувийн ХОС', en: "Vertikor Equity private fund" },
     descriptionFallback: {
       mn: "Вертикор Экъюти хувийн хөрөнгө оруулалтын сан нь хувьцаа, өрийн хэрэгсэл болон бусад санхүүгийн хэрэгслүүдэд хөрөнгө оруулах, Сангийн хөрөнгийг эрсдэл, өгөөжийн оновчтой түвшинд идэвхтэйгээр удирдан хөрөнгө оруулагч нарт боломжит хамгийн өндөр өгөөжийг хүртээхэд оршино.",
       en: "Vertikor Equity private fund invests in equities, debt instruments and other financial instruments, actively managing the fund's assets at an optimal balance of risk and return to deliver investors the highest return possible.",
+    },
+    advisor: {
+      name: "Ү. Гончигболд",
+      title: "Хөрөнгө оруулалтын зөвлөх",
+      titleEn: "Investment Advisor",
+      photo: "/team/gonchigbold-unenbat.webp",
     },
   },
   {
@@ -104,6 +141,12 @@ export const FUND_DETAILS: FundDetailMeta[] = [
     descriptionFallback: {
       mn: "Покет Хуримтлал сан нь Тогтмол хуримтлалын дадалтай хөрөнгө оруулагчдын хөрөнгийг технологийн дэвшил, шинэлэг шийдлээр мэргэжлийн түвшинд удирдаж, ухаалгаар өсгөх зорилготой сан юм. Бид технологийн давуу талыг ашиглан хөрөнгө оруулалтыг илүү энгийн, хүртээмжтэй, ойлгомжтой болгож, таны өнөөдрийн хуримтлалыг ирээдүйн санхүүгийн боломж болгоход тусална.",
       en: "The Pocket Savings fund manages the assets of investors with a habit of regular saving at a professional level using technological advances and innovative solutions, growing them intelligently. We use the advantages of technology to make investing simpler, more accessible and easier to understand, helping turn your saving today into financial opportunity tomorrow.",
+    },
+    advisor: {
+      name: "Ү. Гончигболд",
+      title: "Хөрөнгө оруулалтын зөвлөх",
+      titleEn: "Investment Advisor",
+      photo: "/team/gonchigbold-unenbat.webp",
     },
   },
 ];

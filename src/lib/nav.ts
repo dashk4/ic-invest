@@ -28,6 +28,9 @@ export type NavChild = {
     logo?: string;
     logoWidth?: number;
     logoHeight?: number;
+    /** true when the logo is white ink with no dark elements — the menu
+     *  card's usual light backing plate would make it disappear. */
+    logoOnDark?: boolean;
   };
 };
 
@@ -123,6 +126,10 @@ export const NAV: NavEntry[] = [
         fundMeta: {
           categoryMn: "Хувийн хөрөнгө оруулалтын сан",
           categoryEn: "Private investment fund",
+          logo: "/brand/Tsagaan%20hevtee@300x.png",
+          logoOnDark: true,
+          logoWidth: 1436,
+          logoHeight: 373,
         },
       },
       {

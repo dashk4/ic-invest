@@ -7,10 +7,8 @@ import {
   excerpt,
   FUNDS,
   getApproach,
-  getCommitteeManagers,
   getFundDocuments,
   getFundFacts,
-  getFundManagers,
   getObjective,
   getPartners,
   getPerformance,
@@ -56,11 +54,9 @@ export default async function FundPage({
   const fund = FUNDS.find((f) => f.sid === meta?.sid);
   if (!meta || !fund) notFound();
 
-  const [objective, apiFacts, managers, committeeManagers, portfolio, portfolioChart, performance, approach, partners, documents, serviceNews, otherObjectives] = await Promise.all([
+  const [objective, apiFacts, portfolio, portfolioChart, performance, approach, partners, documents, serviceNews, otherObjectives] = await Promise.all([
     getObjective(meta.sid),
     getFundFacts(meta.sid),
-    getFundManagers(meta.sid),
-    getCommitteeManagers(meta.sid),
     getPortfolio(meta.sid),
     getPortfolioChart(meta.sid),
     getPerformance(meta.sid),
@@ -125,7 +121,6 @@ export default async function FundPage({
     const otherMeta = FUND_DETAILS.find((item) => item.sid === sid)!;
     return {
       slug: otherMeta.slug,
-      code: other.code,
       name: otherObjective?.name ?? otherMeta.nameFallback?.mn ?? other.label,
       nameEn: otherObjective?.name ?? otherMeta.nameFallback?.en ?? other.label,
     };
@@ -160,10 +155,9 @@ export default async function FundPage({
     logoScale: meta.logoScale ?? 1,
     facts,
     externalSite: meta.externalSite,
+    advisor: meta.advisor,
     otherFunds,
     live: {
-      managers,
-      committeeManagers,
       portfolio,
       portfolioChart,
       performance,

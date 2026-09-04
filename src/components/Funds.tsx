@@ -8,11 +8,10 @@ import { FundsList, type FundCardData } from "./FundsList";
 import { FundsHeading } from "./FundsHeading";
 
 export async function Funds() {
-  // Every fund in FUNDS is a real, admin-active service (5 today) — the
+  // Every fund in FUNDS is a real, admin-active service (6 today) — the
   // admin's own objective/{sid} record just hasn't been filled in yet for
   // two of them (sid 5 and 6), which used to get misread as "not published"
-  // and silently dropped the card entirely (admin showed 5 active funds,
-  // the site showed 3). FUND_DETAILS' fallback name/description covers that
+  // and silently dropped the card entirely. FUND_DETAILS' fallback name/description covers that
   // gap with real content sourced elsewhere (sid 5's own launch
   // announcement; sid 6's copy supplied directly) rather than hiding the fund.
   const funds: FundCardData[] = await Promise.all(

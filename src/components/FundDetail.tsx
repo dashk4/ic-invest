@@ -2,17 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  BarChart3,
-  Briefcase,
-  ExternalLink,
-  FileText,
-  PieChart,
-  ShieldCheck,
-  TrendingUp,
-  Users,
-} from "lucide-react";
+import { ArrowLeft, BarChart3, ExternalLink, FileText } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { Counter } from "./ui/Counter";
@@ -21,9 +11,7 @@ import { useLocale, pick } from "@/lib/locale";
 import {
   excerpt,
   type ApproachItem,
-  type CommitteeManager,
   type FundDocument,
-  type FundManager,
   type NewsItem,
   type PartnerItem,
   type PerformanceItem,
@@ -33,8 +21,8 @@ import {
   uploadUrl,
 } from "@/lib/api";
 import { FundCalculator } from "./FundCalculator";
+import { CMS_BASE } from "@/lib/config";
 
-const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users, PieChart];
 const MN_MONTHS = [
   "1-р сар",
   "2-р сар",
@@ -67,8 +55,6 @@ const EN_MONTHS = [
 export type FundFactRow = { labelMn: string; labelEn: string; value: string; numeric: number | null };
 
 export type FundLiveData = {
-  managers: FundManager[];
-  committeeManagers: CommitteeManager[];
   portfolio: PortfolioItem[];
   portfolioChart: PortfolioChart | null;
   performance: PerformanceItem[];
@@ -97,7 +83,8 @@ export type FundDetailData = {
   logoScale: number;
   facts: FundFactRow[];
   externalSite?: string;
-  otherFunds: { slug: string; name: string; nameEn: string; code: string }[];
+  advisor?: { name: string; title: string; titleEn: string; photo: string };
+  otherFunds: { slug: string; name: string; nameEn: string }[];
   live: FundLiveData;
 };
 
@@ -118,24 +105,15 @@ function formatNumber(value: number | string | null | undefined) {
   return number.toLocaleString("en-US");
 }
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
-
 function FundLiveSections({ fund }: { fund: FundDetailData }) {
   const { locale } = useLocale();
   const live = fund.live;
-  const people = [...live.managers, ...live.committeeManagers];
+  const advisor = fund.advisor;
   const hasPortfolio = live.portfolio.length > 0 || Boolean(live.portfolioChart?.labels?.length);
   const hasPerformance = live.performance.length > 0 || live.approach.length > 0;
   const hasResources = live.partners.length > 0 || live.documents.length > 0 || live.serviceNews.length > 0;
 
-  if (people.length === 0 && !hasPortfolio && !hasPerformance && !hasResources) return null;
+  if (!advisor && !hasPortfolio && !hasPerformance && !hasResources) return null;
 
   const chart = live.portfolioChart;
   const chartLabels = chart?.labels ?? [];
@@ -147,7 +125,7 @@ function FundLiveSections({ fund }: { fund: FundDetailData }) {
   return (
     <section className="theme-fade border-t hairline bg-surface">
       <div className="container-page space-y-20 py-20 md:py-24">
-        {people.length > 0 && (
+        {advisor && (
           <section>
             <Reveal>
               <p className="eyebrow text-accent">{pick(locale, "Удирдлагын баг", "Management team")}</p>
@@ -156,37 +134,25 @@ function FundLiveSections({ fund }: { fund: FundDetailData }) {
               </h2>
             </Reveal>
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {people.map((person, index) => {
-                const image = uploadUrl(person.image);
-                return (
-                  <Reveal key={`${person.id}-${index}`} delay={index * 0.05}>
-                    <article className="h-full rounded-2xl border border-[color:var(--c-line)] bg-card p-5">
-                      <div className="flex items-center gap-4">
-                        {image ? (
-                          <Image
-                            src={image}
-                            alt={person.fullname}
-                            width={56}
-                            height={56}
-                            className="h-14 w-14 rounded-full object-cover"
-                          />
-                        ) : (
-                          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-accent/15 font-display text-sm text-accent">
-                            {initials(person.fullname)}
-                          </span>
-                        )}
-                        <div className="min-w-0">
-                          <h3 className="font-display text-[1rem] text-fg">{person.fullname}</h3>
-                          <p className="eyebrow mt-1 text-fg-subtle">{person.position}</p>
-                        </div>
-                      </div>
-                      {person.description && (
-                        <p className="t-small mt-5 text-fg-muted">{excerpt(person.description, 180)}</p>
-                      )}
-                    </article>
-                  </Reveal>
-                );
-              })}
+              <Reveal>
+                <article className="h-full rounded-2xl border border-[color:var(--c-line)] bg-card p-5">
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={advisor.photo}
+                      alt={advisor.name}
+                      width={56}
+                      height={56}
+                      className="h-14 w-14 rounded-full object-cover"
+                    />
+                    <div className="min-w-0">
+                      <h3 className="font-display text-[1rem] text-fg">{advisor.name}</h3>
+                      <p className="eyebrow mt-1 text-fg-subtle">
+                        {pick(locale, advisor.title, advisor.titleEn)}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
             </div>
           </section>
         )}
@@ -298,7 +264,7 @@ function FundLiveSections({ fund }: { fund: FundDetailData }) {
                   {live.documents.map((document) => (
                     <a
                       key={document.id}
-                      href={`https://ic-invest.mn/mn/service/document/download/${document.id}`}
+                      href={`${CMS_BASE}/mn/service/document/download/${document.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-center gap-3 rounded-xl border border-[color:var(--c-line)] bg-card p-4 transition-colors hover:border-accent/40"
@@ -374,7 +340,9 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
     .map((paragraph) => excerpt(paragraph, 900))
     .filter(Boolean);
   const blurb = pick(locale, fund.blurbMn, fund.blurbEn);
-  const Icon = ICONS[fund.index % ICONS.length];
+  // Only funds with real unit-price data (Pocket, E-Fund) get a calculator —
+  // the others have nothing for it to compute against.
+  const hasCalculator = fund.slug === "pocket" || fund.slug === "mf";
 
   return (
     <>
@@ -452,11 +420,7 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
             </Reveal>
 
             <div className="order-1 lg:order-1">
-            <div className="flex items-center gap-2.5">
-              <Icon className="h-4 w-4 text-accent-on-dark" strokeWidth={1.8} />
-              <p className="eyebrow text-accent-on-dark">{fund.code}</p>
-            </div>
-            <h1 className="t-h2 mt-5 max-w-2xl text-balance text-on-strong">
+            <h1 className="t-h2 max-w-2xl text-balance text-on-strong">
               <SplitReveal text={fund.name} />
             </h1>
             <Reveal delay={0.12}>
@@ -503,20 +467,22 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
             >
               {pick(locale, "Холбоо барих", "Contact us")}
             </Link>
-            <Link
-              href="#calculator"
-              className="rounded-lg border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-all duration-500 hover:-translate-y-0.5 hover:border-accent-on-dark hover:bg-white/[0.04]"
-            >
-              {pick(locale, "Тооцоолуур", "Calculator")}
-            </Link>
+            {hasCalculator && (
+              <Link
+                href="#calculator"
+                className="rounded-lg border border-[color:var(--c-line-strong)] px-7 py-3 text-[0.9rem] font-medium text-on-strong transition-all duration-500 hover:-translate-y-0.5 hover:border-accent-on-dark hover:bg-white/[0.04]"
+              >
+                {pick(locale, "Тооцоолуур", "Calculator")}
+              </Link>
+            )}
             {fund.externalSite && (
               <a
                 href={`https://${fund.externalSite}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 px-3 py-3 text-[0.9rem] text-on-strong-muted transition-colors duration-300 hover:text-accent-on-dark"
+                className="group inline-flex items-center gap-2 rounded-lg border border-accent-on-dark/40 bg-accent-on-dark/10 px-7 py-3 text-[0.9rem] font-medium text-accent-on-dark transition-all duration-500 hover:-translate-y-0.5 hover:border-accent-on-dark hover:bg-accent-on-dark/[0.18]"
               >
-                {fund.externalSite}
+                {pick(locale, "Дэлгэрэнгүй", "Learn more")}
                 <ExternalLink className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             )}
@@ -557,11 +523,8 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
                       href={`/funds/${f.slug}`}
                       className="group flex items-center justify-between gap-4 rounded-xl border border-[color:var(--c-line-strong)] bg-surface-alt/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface-alt"
                     >
-                      <span>
-                        <span className="eyebrow block text-fg-subtle">{f.code}</span>
-                        <span className="t-small mt-1 block max-w-[22ch] text-pretty text-fg">
-                          {pick(locale, f.name, f.nameEn)}
-                        </span>
+                      <span className="t-small block max-w-[22ch] text-pretty text-fg">
+                        {pick(locale, f.name, f.nameEn)}
                       </span>
                       <span
                         aria-hidden
@@ -620,13 +583,15 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
 
       <FundLiveSections fund={fund} />
 
-      <FundCalculator
-        fund={{
-          name: fund.name,
-          code: fund.code,
-          nav: fund.facts.find((fact) => fact.numeric != null)?.numeric ?? null,
-        }}
-      />
+      {hasCalculator && (
+        <FundCalculator
+          fund={{
+            name: fund.name,
+            code: fund.code,
+            nav: fund.facts.find((fact) => fact.numeric != null)?.numeric ?? null,
+          }}
+        />
+      )}
     </>
   );
 }

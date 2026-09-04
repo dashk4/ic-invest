@@ -75,26 +75,26 @@ export function ExpandableTeam({ locale }: { locale: Locale }) {
             </motion.button>
 
             <motion.div
-              layoutId={`card-${active.mn}-${id}`}
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: 8 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               ref={ref}
               role="dialog"
               aria-modal="true"
               className="flex w-full max-w-[540px] flex-col overflow-hidden rounded-3xl border hairline bg-surface shadow-2xl md:max-h-[90vh]"
             >
-              <motion.div
-                layoutId={`image-${active.mn}-${id}`}
-                className="relative h-[24rem] w-full shrink-0"
-              >
+              <div className="relative h-[24rem] w-full shrink-0 overflow-hidden rounded-t-3xl bg-transparent">
                 <Image
                   src={active.photo}
                   alt={pick(locale, active.mn, active.en)}
                   fill
                   sizes="540px"
-                  className="object-cover object-top"
+                  className="h-full w-full object-cover object-top"
                   priority
                 />
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[color:var(--c-surface)] to-transparent" />
-              </motion.div>
+              </div>
 
               <div className="p-6 pt-2">
                 <motion.p
@@ -106,13 +106,11 @@ export function ExpandableTeam({ locale }: { locale: Locale }) {
                   {pick(locale, active.groupMn, active.groupEn)}
                 </motion.p>
                 <motion.h3
-                  layoutId={`title-${active.mn}-${id}`}
                   className="font-display mt-2 text-3xl leading-tight text-fg"
                 >
                   {pick(locale, active.mn, active.en)}
                 </motion.h3>
                 <motion.p
-                  layoutId={`role-${active.mn}-${id}`}
                   className="t-small mt-1 text-fg-muted"
                 >
                   {pick(locale, active.mnTitle, active.enTitle)}
@@ -145,34 +143,32 @@ export function ExpandableTeam({ locale }: { locale: Locale }) {
               {group.members.map((m) => (
                 <li key={m.mn}>
                   <motion.button
-                    layoutId={`card-${m.mn}-${id}`}
                     onClick={() =>
                       setActive({ ...m, groupMn: group.mn, groupEn: group.en })
                     }
                     className="group block w-full text-left"
                   >
-                    <motion.div
-                      layoutId={`image-${m.mn}-${id}`}
-                      className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface-sunken ring-1 ring-[color:var(--c-line)] transition-all duration-500 group-hover:ring-accent"
-                    >
-                      <Image
-                        src={m.photo}
-                        alt={pick(locale, m.mn, m.en)}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-cover object-top grayscale transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
-                      />
-                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[color:var(--ink-900)]/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                    </motion.div>
+                    {/* Keep the clipping on a stable wrapper so every portrait
+                        stays inside the same rounded frame. */}
+                    <div className="overflow-hidden rounded-2xl ring-1 ring-[color:var(--c-line)] transition-all duration-500 group-hover:ring-accent">
+                      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-transparent">
+                        <Image
+                          src={m.photo}
+                          alt={pick(locale, m.mn, m.en)}
+                          fill
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          className="h-full w-full object-cover object-top grayscale transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
+                        />
+                        <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[color:var(--ink-900)]/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      </div>
+                    </div>
 
                     <motion.p
-                      layoutId={`title-${m.mn}-${id}`}
                       className="font-display mt-4 text-[1.25rem] leading-snug text-fg"
                     >
                       {pick(locale, m.mn, m.en)}
                     </motion.p>
                     <motion.p
-                      layoutId={`role-${m.mn}-${id}`}
                       className="t-small mt-1 text-pretty text-fg-muted"
                     >
                       {pick(locale, m.mnTitle, m.enTitle)}

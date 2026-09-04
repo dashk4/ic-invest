@@ -44,7 +44,7 @@ export function Header() {
               alt="IC Asset Management"
               width={132}
               height={41}
-              className="h-7 w-auto transition-opacity duration-700 md:h-[1.9rem]"
+              className="h-8 w-auto transition-opacity duration-700 md:h-[2.15rem]"
               priority
             />
           </Link>

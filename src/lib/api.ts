@@ -1,6 +1,6 @@
-import { ALL_MEMBERS } from "@/lib/team";
+import { CMS_BASE } from "@/lib/config";
 
-const BASE = "https://ic-invest.mn";
+const BASE = CMS_BASE;
 const REVALIDATE_SECONDS = 3600;
 
 export type NewsItem = {
@@ -30,19 +30,6 @@ export type FundFact = {
   last_text: string;
   updated_at: string;
 };
-
-export type FundManager = {
-  id: number;
-  service_id: number;
-  type: string;
-  fullname: string;
-  position: string;
-  description: string;
-  image: string | null;
-  is_active: number;
-};
-
-export type CommitteeManager = FundManager;
 
 export type PortfolioItem = {
   id: number;
@@ -115,37 +102,37 @@ export const FUNDS = [
     sid: 1,
     code: "MBS",
     label: "Хувийн хөрөнгө оруулалтын сан",
-    href: "https://ic-invest.mn/mn/service/1",
+    href: `${CMS_BASE}/mn/service/1`,
   },
   {
     sid: 3,
     code: "RIC",
     label: "Хувийн хөрөнгө оруулалтын сан",
-    href: "https://ic-invest.mn/mn/service/3",
+    href: `${CMS_BASE}/mn/service/3`,
   },
   {
     sid: 4,
     code: "ETF",
     label: "Хамтын биржээр арилжаалагддаг сан",
-    href: "https://ic-invest.mn/mn/service/4",
+    href: `${CMS_BASE}/mn/service/4`,
   },
   {
     sid: 5,
     code: "MF",
     label: "Хамтын нээлттэй хөрөнгө оруулалтын сан",
-    href: "https://ic-invest.mn/mn/service/5",
+    href: `${CMS_BASE}/mn/service/5`,
   },
   {
     sid: 6,
     code: "VEQ",
     label: "Хувийн хөрөнгө оруулалтын сан",
-    href: "https://ic-invest.mn/mn/service/6",
+    href: `${CMS_BASE}/mn/service/6`,
   },
   {
     sid: 7,
     code: "PHS",
     label: "Хамтын нээлттэй хөрөнгө оруулалтын сан",
-    href: "https://ic-invest.mn/mn/service/7",
+    href: `${CMS_BASE}/mn/service/7`,
   },
 ] as const;
 
@@ -253,20 +240,6 @@ export async function getServiceNews(sid: number) {
   return json?.listdata?.data ?? [];
 }
 
-export async function getFundManagers(sid: number) {
-  const json = await safeJson<{ data: FundManager[] }>(
-    `${BASE}/api/fundmanagers/${sid}`,
-  );
-  return json?.data ?? [];
-}
-
-export async function getCommitteeManagers(sid: number) {
-  const json = await safeJson<{ data: CommitteeManager[] }>(
-    `${BASE}/api/committeemanagers/${sid}`,
-  );
-  return json?.data ?? [];
-}
-
 export async function getPortfolio(sid: number) {
   const json = await safeJson<{ listdata: PortfolioItem[] }>(
     `${BASE}/api/portfolio/${sid}`,
@@ -321,14 +294,9 @@ export async function getFundDocuments(
 /** Overview values used by the homepage, derived only from published API data. */
 export async function getOverviewStats() {
   return {
-    // Every service in FUNDS is active per the admin dashboard (5 today) —
-    // two of them just don't have an objective/{sid} record filled in yet,
-    // which isn't the same thing as inactive (see Funds.tsx, same distinction).
+    // Every service in FUNDS is active per the admin dashboard (6 today) —
+    // some just don't have an objective/{sid} record filled in yet, which
+    // isn't the same thing as inactive (see Funds.tsx, same distinction).
     activeFunds: FUNDS.length,
-    // ALL_MEMBERS is the same real board + management + team roster already
-    // shown on the About page. The fundmanagers/committeemanagers CMS
-    // endpoints only have a handful of names populated across all 5 funds
-    // and badly undercount the real team.
-    professionals: ALL_MEMBERS.length,
   };
 }

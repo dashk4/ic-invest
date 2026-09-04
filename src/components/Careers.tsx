@@ -11,7 +11,7 @@ export async function Careers() {
       <div className="container-page max-w-3xl">
         <p className="eyebrow text-accent">Ажлын байр</p>
         <h2 className="t-h2 mt-4 max-w-xl text-balance text-fg">
-          Танд санал болгож буй ажлын байрнууд
+          Танд санал болгож буй ажлын байр
         </h2>
 
         <CareersList jobs={jobs} />

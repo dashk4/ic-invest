@@ -58,11 +58,10 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
               className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-accent-on-dark/0 blur-3xl transition-colors duration-700 group-hover:bg-accent-on-dark/20"
             />
 
-            <div className="relative flex items-center justify-between">
+            <div className="relative flex items-center">
               <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.04] text-accent-on-dark transition-colors duration-500 group-hover:border-accent-on-dark/40 group-hover:bg-accent-on-dark/10">
                 <Icon className="h-[19px] w-[19px]" strokeWidth={1.7} />
               </span>
-              <span className="eyebrow text-on-strong-subtle">{f.code}</span>
             </div>
 
             <h3 className="t-h3 relative mt-6 text-on-strong">{f.name}</h3>

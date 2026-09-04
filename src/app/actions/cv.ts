@@ -1,6 +1,8 @@
 "use server";
 
-const BASE_URL = "https://ic-invest.mn";
+import { CMS_BASE } from "@/lib/config";
+
+const BASE_URL = CMS_BASE;
 
 export type CvState = {
   ok: boolean;

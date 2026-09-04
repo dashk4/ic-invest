@@ -14,7 +14,10 @@ const LINKS = [
 
 const SOCIAL = [
   { label: "Facebook", href: "https://www.facebook.com/profile.php?id=100083224807975" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/invescore-asset-management-llc/" },
+  { label: "LinkedIn", href: "https://mn.linkedin.com/company/invescoreamc" },
+  // no company Instagram profile yet — points at instagram.com generically
+  // until a real handle exists, then swap in that profile URL.
+  { label: "Instagram", href: "https://www.instagram.com/" },
 ];
 
 export function Footer() {
@@ -34,11 +37,7 @@ export function Footer() {
               className="h-8 w-auto"
             />
             <p className="t-body mt-6 max-w-xs text-pretty text-on-strong-muted">
-              {pick(
-                locale,
-                "Таны хөрөнгө оруулалтын хамтрагч/зөвлөх — “Инвескор Ассет Менежмент” ХХК.",
-                "Your investment partner/advisor — Invescore Asset Management LLC."
-              )}
+              {pick(locale, "Таны хөрөнгө оруулалтын зөвлөх.", "Your investment advisor.")}
             </p>
           </div>
 
