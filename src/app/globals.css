@@ -611,6 +611,26 @@ section[id] {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
+/* Pure-CSS entrance for the hero: it has to be visible on first paint even
+   before React hydrates and Framer Motion takes over, so on a slow
+   connection the headline isn't sitting invisible (or, for SplitReveal,
+   translated fully out of its clipped wrapper) for however long JS takes to
+   load. Runs automatically off the stylesheet — no JS dependency at all. */
+@keyframes fade-up-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -619,6 +639,7 @@ section[id] {
   .drift,
   .drift-slow,
   .animate-meteor,
+  .animate-fade-up,
   .border-glow::before {
     animation: none;
   }

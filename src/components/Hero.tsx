@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SplitReveal } from "./ui/SplitReveal";
-import { Reveal } from "./ui/Reveal";
 import { Button } from "./ui/Button";
 import ParticleShape from "./ui/ParticleShape";
 import { Meteors } from "./ui/Meteors";
@@ -22,51 +20,58 @@ export function Hero() {
       <div className="container-page relative z-10 flex flex-1 flex-col justify-center pb-16 pt-6">
         <div className="grid grid-cols-1 items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
           <div className="lg:col-span-8">
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="eyebrow inline-flex items-center gap-2.5 rounded-full border border-[color:var(--c-line-strong)] bg-white/[0.04] px-4 py-2 text-accent-on-dark"
+            {/*
+              Plain CSS animation (globals.css: .animate-fade-up), not
+              Framer Motion, for everything above the fold: this content has
+              to be visible on first paint, before React ever hydrates. A
+              motion.* component with initial={{opacity:0}} SSRs that
+              invisible state straight into the HTML, so on a slow
+              connection the whole hero — headline included — sat blank for
+              however long JS took to load and hydrate. A stylesheet
+              animation runs the moment the browser paints, no JS required.
+            */}
+            <p
+              className="animate-fade-up eyebrow inline-flex items-center gap-2.5 rounded-full border border-[color:var(--c-line-strong)] bg-white/[0.04] px-4 py-2 text-accent-on-dark"
             >
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-70" style={{ background: BRAND_RED }} />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ background: BRAND_RED }} />
               </span>
               Инвескор Ассет Менежмент ХХК
-            </motion.p>
+            </p>
 
-            <h1 key={locale + "-h1"} className="t-display mt-8 max-w-xl text-balance">
-              <SplitReveal
-                trigger="mount"
-                delay={0.12}
-                text={pick(locale, "Хөрөнгө оруулалтын", "Your journey,")}
-              />
+            <h1
+              key={locale + "-h1"}
+              className="animate-fade-up t-display mt-8 max-w-xl text-balance"
+              style={{ animationDelay: "120ms" }}
+            >
+              {pick(locale, "Хөрөнгө оруулалтын", "Your journey,")}
               <br />
-              <SplitReveal
-                trigger="mount"
-                delay={0.3}
-                text={pick(locale, "мэргэшсэн удирдлага", "our expertise")}
-              />
+              {pick(locale, "мэргэшсэн удирдлага", "our expertise")}
             </h1>
 
-            <Reveal delay={0.5}>
-              <p className="t-body mt-7 max-w-md text-pretty text-on-strong-muted">
-                {pick(
-                  locale,
-                  "Хөрөнгийн зах зээлийн судалгаанд суурилсан, хөрөнгө оруулалтын мэргэжлийн удирдлага санал болгож байна.",
-                  "We offer professional investment management built on capital market research.",
-                )}
-              </p>
-            </Reveal>
+            <p
+              className="animate-fade-up t-body mt-7 max-w-md text-pretty text-on-strong-muted"
+              style={{ animationDelay: "260ms" }}
+            >
+              {pick(
+                locale,
+                "Хөрөнгийн зах зээлийн судалгаанд суурилсан, хөрөнгө оруулалтын мэргэжлийн удирдлага санал болгож байна.",
+                "We offer professional investment management built on capital market research.",
+              )}
+            </p>
 
-            <Reveal delay={0.62} className="mt-10 flex flex-wrap items-center gap-4">
+            <div
+              className="animate-fade-up mt-10 flex flex-wrap items-center gap-4"
+              style={{ animationDelay: "340ms" }}
+            >
               <Button href="/#funds" onDark>
                 {pick(locale, "Сангийн жагсаалт", "Fund list")}
               </Button>
               <Button href="/calculator" variant="ghost" onDark>
                 {pick(locale, "Тооцоолуур ашиглах", "Try the calculator")}
               </Button>
-            </Reveal>
+            </div>
           </div>
 
           <motion.div

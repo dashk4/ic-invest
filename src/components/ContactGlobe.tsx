@@ -88,27 +88,44 @@ function GlobePlaceholder() {
 }
 
 export function ContactGlobe() {
-  // Fine to pay the download + WebGL build eagerly, off-screen: it's a small
-  // decorative scene on a page whose whole point is to be scrolled through.
+  // Downloading eagerly on page load (the previous approach) put this 1MB+
+  // bundle in direct bandwidth contention with the rest of the page — on a
+  // slow connection that meant fonts, images and the page's own JS all lost
+  // out to a 3D globe nobody had scrolled to yet. There's also no reliable
+  // way to detect "slow connection" and skip the eager fetch selectively:
+  // the Network Information API (navigator.connection) doesn't exist in
+  // Safari/WebKit at all, so a connection-aware branch would silently never
+  // trigger for a large share of mobile visitors. Loading once the section
+  // is actually approaching — not immediately, not only once fully in view —
+  // is the one strategy that behaves the same for everyone.
   const [ready, setReady] = useState(false);
-  // But actually RUNNING the scene (r3f's render loop + OrbitControls'
-  // autoRotate, which rides on it) is a different cost, and a continuously
-  // rendering canvas turned out to periodically disturb page layout enough
-  // to snap the scroll position back — reported as scroll "catching" and
-  // reversing direction while reading the News section, well before Contact
-  // was ever in view. Confirmed by bisection: the disturbance tracked with
-  // the render loop running, not with the one-time mount, and not with
-  // Lenis. So the render loop itself now only runs while this section is
-  // actually near the viewport — mounted and pre-built the whole time, but
-  // inert until there's a reason for it to be moving.
+  // Actually RUNNING the scene (r3f's render loop + OrbitControls'
+  // autoRotate, which rides on it) is a further, separate cost, and a
+  // continuously rendering canvas turned out to periodically disturb page
+  // layout enough to snap the scroll position back — reported as scroll
+  // "catching" and reversing direction while reading the News section, well
+  // before Contact was ever in view. Confirmed by bisection: the disturbance
+  // tracked with the render loop running, not with the one-time mount, and
+  // not with Lenis. So the render loop itself only runs while this section
+  // is actually near the viewport — built ahead of time, but inert until
+  // there's a reason for it to be moving.
   const [inView, setInView] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
-    idle(() => {
-      loadGlobe().then(() => setReady(true));
-    });
+    const el = ref.current;
+    if (!el) return;
+    // Generous positive margin: start the download+build well before the
+    // section is on screen, so it's typically ready by the time a normally
+    // paced scroll gets there, without competing with the initial page load.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) loadGlobe().then(() => setReady(true));
+      },
+      { rootMargin: "800px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
