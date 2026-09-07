@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "lenis/dist/lenis.css";
 
 /*
   IC Asset Management design system. Warm paper and jade keep the interface
@@ -119,10 +118,7 @@
 }
 
 html {
-  /* Lenis (SmoothScroll.tsx) owns scroll smoothing, anchors included — native
-     smooth-behavior running at the same time fought it frame to frame and
-     produced a stutter/catch feeling, sometimes stalling scroll entirely. */
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   color-scheme: light;
 }
 

@@ -4,7 +4,6 @@ import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider, THEME_NO_FLASH_SCRIPT } from "@/lib/theme";
 import { LocaleProvider } from "@/lib/locale";
-import { SmoothScroll } from "@/components/SmoothScroll";
 
 const manrope = localFont({
   src: [
@@ -51,10 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {THEME_NO_FLASH_SCRIPT}
         </Script>
         <ThemeProvider>
-          <LocaleProvider>
-            <SmoothScroll />
-            {children}
-          </LocaleProvider>
+          <LocaleProvider>{children}</LocaleProvider>
         </ThemeProvider>
       </body>
     </html>
