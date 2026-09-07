@@ -35,6 +35,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${manrope.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-surface text-fg">
+        {/*
+          Next/React hoists <link> tags rendered anywhere in the tree into
+          <head>. These two origins are on the critical path for a slow
+          connection: cms.ic-invest.mn is where every fund/news image and
+          all live CMS data comes from, and the TradingView ticker tape sits
+          in the footer of every page. Without a hint, the DNS lookup + TLS
+          handshake for each only starts once the browser parses the actual
+          <img>/<iframe> tag referencing it; preconnect does that work in
+          parallel with everything else instead of adding it in sequence.
+        */}
+        <link rel="preconnect" href="https://cms.ic-invest.mn" />
+        <link rel="preconnect" href="https://www.tradingview-widget.com" />
         <Script id="theme-no-flash" strategy="beforeInteractive">
           {THEME_NO_FLASH_SCRIPT}
         </Script>

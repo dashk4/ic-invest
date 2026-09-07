@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         pathname: "/upload/**",
       },
     ],
+    // Default is 60s, which re-checks the CMS on almost every unique visit.
+    // Fund logos, team photos and news images change rarely — matches this
+    // site's existing 1h data-staleness tolerance (see REVALIDATE_SECONDS
+    // in lib/api.ts) rather than inventing a separate policy.
+    minimumCacheTTL: 3600,
   },
 };
 
