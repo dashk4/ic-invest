@@ -9,7 +9,6 @@ import { NAV } from "@/lib/nav";
 import { ThemeToggle } from "./ui/ThemeToggle";
 import { LocaleToggle } from "./ui/LocaleToggle";
 import { NavMenu } from "./ui/NavMenu";
-import { RollText } from "./ui/RollText";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -54,16 +53,6 @@ export function Header() {
           <div className="hidden shrink-0 items-center gap-2.5 lg:flex">
             <LocaleToggle light />
             <ThemeToggle light />
-            <a
-              href="https://system.ic-invest.mn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group overflow-hidden whitespace-nowrap rounded-full border border-[color:var(--c-line-strong)] px-5 py-2.5 text-[0.75rem] font-bold tracking-[0.06em] text-on-strong transition-colors duration-500 hover:border-accent-on-dark"
-            >
-              <RollText hoverClassName="text-accent-on-dark">
-                {pick(locale, "Нэвтрэх", "Login")}
-              </RollText>
-            </a>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
@@ -140,15 +129,6 @@ export function Header() {
                     )}
                   </motion.div>
                 ))}
-
-                <a
-                  href="https://system.ic-invest.mn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 w-fit rounded-full bg-accent px-6 py-3 text-[0.8rem] font-bold tracking-[0.04em] text-accent-contrast"
-                >
-                  {pick(locale, "Нэвтрэх", "Login")}
-                </a>
               </div>
             </motion.div>
           )}

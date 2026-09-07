@@ -54,7 +54,7 @@ export default async function FundPage({
   const fund = FUNDS.find((f) => f.sid === meta?.sid);
   if (!meta || !fund) notFound();
 
-  const [objective, apiFacts, portfolio, portfolioChart, performance, approach, partners, documents, serviceNews, otherObjectives] = await Promise.all([
+  const [objective, apiFacts, portfolio, portfolioChart, performance, approach, partners, documents, serviceNews] = await Promise.all([
     getObjective(meta.sid),
     getFundFacts(meta.sid),
     getPortfolio(meta.sid),
@@ -64,12 +64,6 @@ export default async function FundPage({
     getPartners(meta.sid),
     getFundDocuments(meta.sid),
     getServiceNews(meta.sid),
-    Promise.all(
-      FUNDS.filter((other) => other.sid !== meta.sid).map(async (other) => ({
-        sid: other.sid,
-        objective: await getObjective(other.sid),
-      })),
-    ),
   ]);
 
   // Cyrillic-content check: this site is entirely Mongolian-language, so a
@@ -116,16 +110,6 @@ export default async function FundPage({
     (item) => hasCyrillic(item.name) || hasCyrillic(item.text),
   );
 
-  const otherFunds = otherObjectives.map(({ sid, objective: otherObjective }) => {
-    const other = FUNDS.find((item) => item.sid === sid)!;
-    const otherMeta = FUND_DETAILS.find((item) => item.sid === sid)!;
-    return {
-      slug: otherMeta.slug,
-      name: otherObjective?.name ?? otherMeta.nameFallback?.mn ?? other.label,
-      nameEn: otherObjective?.name ?? otherMeta.nameFallback?.en ?? other.label,
-    };
-  });
-
   const name = objective?.name ?? meta.nameFallback?.mn ?? fund.label;
   const descriptionMn = objective?.text ?? meta.descriptionFallback?.mn ?? "";
   const descriptionEn = objective?.text
@@ -156,7 +140,6 @@ export default async function FundPage({
     facts,
     externalSite: meta.externalSite,
     advisor: meta.advisor,
-    otherFunds,
     live: {
       portfolio,
       portfolioChart,

@@ -84,7 +84,6 @@ export type FundDetailData = {
   facts: FundFactRow[];
   externalSite?: string;
   advisor?: { name: string; title: string; titleEn: string; photo: string };
-  otherFunds: { slug: string; name: string; nameEn: string }[];
   live: FundLiveData;
 };
 
@@ -313,14 +312,22 @@ function FundLiveSections({ fund }: { fund: FundDetailData }) {
                   <h2 className="t-h3 mt-4 text-fg">{pick(locale, "Сангийн мэдээ", "Fund news")}</h2>
                 </Reveal>
                 <div className="mt-7 space-y-3">
+                  {/* /api/servicenews returns the same articles as the main
+                      news feed, so each card opens its full article page. */}
                   {live.serviceNews.map((item) => (
-                    <article key={item.id} className="rounded-xl border border-[color:var(--c-line)] bg-card p-4">
+                    <Link
+                      key={item.id}
+                      href={`/news/${item.id}`}
+                      className="group block rounded-xl border border-[color:var(--c-line)] bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40"
+                    >
                       <p className="eyebrow text-fg-subtle">
                         {item.published_at || item.created_at ? formatDate(item.published_at ?? item.created_at ?? "", locale) : ""}
                       </p>
-                      <h3 className="mt-2 line-clamp-2 font-display text-[0.95rem] leading-snug text-fg">{item.title}</h3>
-                      <p className="t-small mt-2 line-clamp-3 text-fg-muted">{excerpt(item.content, 150)}</p>
-                    </article>
+                      <h3 className="font-news mt-2 line-clamp-2 text-[0.95rem] leading-snug text-fg transition-colors duration-300 group-hover:text-accent">
+                        {item.title}
+                      </h3>
+                      <p className="font-news t-small mt-2 line-clamp-3 text-fg-muted">{excerpt(item.content, 150)}</p>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -515,29 +522,6 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
 
             <div className="lg:col-span-4">
               <Reveal delay={0.1}>
-                <p className="eyebrow text-fg-subtle">{pick(locale, "Бусад сангууд", "Other funds")}</p>
-                <div className="mt-6 flex flex-col gap-3">
-                  {fund.otherFunds.map((f) => (
-                    <Link
-                      key={f.slug}
-                      href={`/funds/${f.slug}`}
-                      className="group flex items-center justify-between gap-4 rounded-xl border border-[color:var(--c-line-strong)] bg-surface-alt/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface-alt"
-                    >
-                      <span className="t-small block max-w-[22ch] text-pretty text-fg">
-                        {pick(locale, f.name, f.nameEn)}
-                      </span>
-                      <span
-                        aria-hidden
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border hairline text-fg-subtle transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:border-accent group-hover:text-accent"
-                      >
-                        →
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </Reveal>
-
-              <Reveal delay={0.2} className="mt-3">
                 <div className="relative overflow-hidden rounded-xl border border-[color:var(--c-line-strong)] bg-card p-7">
                   <div className="pointer-events-none absolute inset-0 z-0">
                     <DotField

@@ -194,6 +194,14 @@ body {
   line-height: 1.6;
 }
 
+/* News-only serif treatment — headlines and body copy on the news cards and
+   article pages read as Times New Roman, distinct from the rest of the
+   site's Manrope. Real Times New Roman isn't shipped as a web font, so this
+   is the system font itself with matching serif fallbacks. */
+.font-news {
+  font-family: "Times New Roman", Times, "Liberation Serif", serif;
+}
+
 .t-numeral {
   font-family: var(--font-display);
   font-weight: 600;

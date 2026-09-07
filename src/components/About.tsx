@@ -6,7 +6,7 @@ import { BentoGrid, BentoGridItem } from "./ui/BentoGrid";
 import { SectionHead } from "./ui/SectionHead";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
-import { ExpandableTeam } from "./ui/ExpandableTeam";
+import { TeamGrid } from "./ui/TeamGrid";
 import { useLocale, pick, type Locale } from "@/lib/locale";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -126,7 +126,7 @@ export function About() {
               )}
             />
           </h3>
-          <ExpandableTeam locale={locale} />
+          <TeamGrid locale={locale} />
         </div>
       </div>
     </section>

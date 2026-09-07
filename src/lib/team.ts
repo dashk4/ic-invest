@@ -9,13 +9,12 @@ export type Member = {
   enTitle: string;
   photo: string;
   /**
-   * Short profile shown in the expanded card. Deliberately empty: these are
-   * real, named people and ic-invest.mn publishes no bios for them, so there
-   * is nothing to source this from. The card omits the block when unset —
-   * fill these in from the company's own copy rather than inventing one.
+   * Zoom applied to the portrait inside its 4:5 card frame, anchored to the
+   * top edge. The photos come from different shoots and frame their subject
+   * at different distances; this pulls the odd one out back in line with the
+   * rest of the grid. Leave unset when the source already matches.
    */
-  bioMn?: string;
-  bioEn?: string;
+  photoZoom?: number;
 };
 
 export type TeamGroup = {
@@ -69,6 +68,10 @@ export const TEAM: TeamGroup[] = [
         en: "Nyambayar Enkhbat",
         enTitle: "Head of Investment",
         photo: "/team/nyambayar-enkhbat.png",
+        // shot further back than the portrait beside it, so the subject
+        // reads noticeably smaller in-frame at the same crop — pull in to
+        // match Mungunzul's scale rather than zooming her tighter still.
+        photoZoom: 1.25,
       },
     ],
   },

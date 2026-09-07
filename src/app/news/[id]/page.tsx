@@ -47,17 +47,22 @@ export default async function NewsArticlePage({
       <Header />
       <main>
         <section className="theme-fade min-h-svh bg-surface pb-24 pt-36 md:pt-44">
-          <div className="container-page max-w-3xl">
-            <Link href="/news" className="group inline-flex items-center gap-3 text-fg-subtle">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border hairline transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-x-1 group-hover:border-accent group-hover:text-accent">
-                <ArrowLeft className="h-4 w-4" strokeWidth={1.8} />
-              </span>
-              <span className="eyebrow transition-colors duration-300 group-hover:text-accent">
-                Мэдээ, мэдээлэл
-              </span>
-            </Link>
+          {/* max-w-3xl has to sit on an inner wrapper: .container-page is
+              unlayered CSS, so its own max-width beats the utility class and
+              the article ran the full page width. */}
+          <div className="container-page">
+            <div className="mx-auto max-w-3xl">
+              <Link href="/news" className="group inline-flex items-center gap-3 text-fg-subtle">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border hairline transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-x-1 group-hover:border-accent group-hover:text-accent">
+                  <ArrowLeft className="h-4 w-4" strokeWidth={1.8} />
+                </span>
+                <span className="eyebrow transition-colors duration-300 group-hover:text-accent">
+                  Мэдээ, мэдээлэл
+                </span>
+              </Link>
 
-            <NewsArticle itemMn={itemMn} itemEn={itemEn} />
+              <NewsArticle itemMn={itemMn} itemEn={itemEn} />
+            </div>
           </div>
         </section>
       </main>
