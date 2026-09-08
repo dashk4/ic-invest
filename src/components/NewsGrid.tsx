@@ -63,10 +63,10 @@ export function NewsGrid({ mn, en }: { mn: NewsItem[]; en: NewsItem[] }) {
               {formatDate(item.created_at ?? item.publish_date, locale)}
             </span>
           </div>
-          <h3 className="font-news mt-7 line-clamp-4 text-balance text-[1.35rem] leading-[1.28] text-fg md:text-[1.5rem]">
+          <h3 className="mt-7 line-clamp-4 text-balance text-[1.35rem] leading-[1.28] text-fg md:text-[1.5rem]">
             {item.title}
           </h3>
-          <p className="font-news t-small mt-4 line-clamp-3 text-pretty text-fg-muted">
+          <p className="t-small mt-4 line-clamp-3 text-pretty text-fg-muted">
             {item.content}
           </p>
           <span

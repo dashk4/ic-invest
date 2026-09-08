@@ -51,7 +51,7 @@ export function NewsArticle({
       {dateValue && <p className="eyebrow mt-10 text-accent">{formatDate(dateValue, locale)}</p>}
       {/* t-h3, not the t-h2 a page title would normally take: CMS headlines
           run long and in Cyrillic caps they filled the whole viewport. */}
-      <h1 className="font-news t-h3 mt-4 text-balance text-fg">{item.title}</h1>
+      <h1 className="t-h3 mt-4 text-balance text-fg">{item.title}</h1>
 
       {item.pictureUrl && (
         <div className="relative mt-10 aspect-[16/9] w-full overflow-hidden rounded-2xl border hairline">
@@ -60,7 +60,7 @@ export function NewsArticle({
       )}
 
       <div
-        className="prose-news font-news mt-10 max-w-none text-justify t-small text-fg [&_a]:text-accent [&_a]:underline [&_a]:decoration-accent/40 [&_a:hover]:decoration-accent [&_li]:mt-1 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_p+p]:mt-4 [&_strong]:font-semibold [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6"
+        className="prose-news mt-10 max-w-none text-justify t-small text-fg [&_a]:text-accent [&_a]:underline [&_a]:decoration-accent/40 [&_a:hover]:decoration-accent [&_li]:mt-1 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_p+p]:mt-4 [&_strong]:font-semibold [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6"
         dangerouslySetInnerHTML={{ __html: item.content }}
       />
     </>

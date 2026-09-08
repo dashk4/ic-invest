@@ -323,10 +323,10 @@ function FundLiveSections({ fund }: { fund: FundDetailData }) {
                       <p className="eyebrow text-fg-subtle">
                         {item.published_at || item.created_at ? formatDate(item.published_at ?? item.created_at ?? "", locale) : ""}
                       </p>
-                      <h3 className="font-news mt-2 line-clamp-2 text-[0.95rem] leading-snug text-fg transition-colors duration-300 group-hover:text-accent">
+                      <h3 className="mt-2 line-clamp-2 text-[0.95rem] leading-snug text-fg transition-colors duration-300 group-hover:text-accent">
                         {item.title}
                       </h3>
-                      <p className="font-news t-small mt-2 line-clamp-3 text-fg-muted">{excerpt(item.content, 150)}</p>
+                      <p className="t-small mt-2 line-clamp-3 text-fg-muted">{excerpt(item.content, 150)}</p>
                     </Link>
                   ))}
                 </div>
