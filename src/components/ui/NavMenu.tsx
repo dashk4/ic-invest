@@ -40,6 +40,7 @@ function getHash() {
 function isCurrentEntry(entry: NavEntry, pathname: string, hash: string) {
   if (entry.key === "home") return pathname === "/" && (!hash || hash === "#top");
   if (entry.key === "about") return pathname.startsWith("/about");
+  if (entry.key === "services") return pathname.startsWith("/services");
   if (entry.key === "funds") return pathname.startsWith("/funds") || hash === "#funds";
   if (entry.key === "news") return pathname.startsWith("/news");
   if (entry.key === "contact") return pathname === "/" && hash === "#contact";

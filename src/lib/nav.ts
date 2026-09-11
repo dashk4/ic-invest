@@ -1,8 +1,10 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Briefcase,
+  Compass,
   Eye,
   Gem,
+  Landmark,
   MessageSquare,
   PieChart,
   ShieldCheck,
@@ -61,6 +63,26 @@ export const NAV: NavEntry[] = [
     ],
   },
   {
+    key: "services",
+    mn: "Үйлчилгээ",
+    en: "Services",
+    href: "/services",
+    children: [
+      {
+        mn: "Хөрөнгө оруулалтын мэргэшсэн зөвлөх үйлчилгээ",
+        en: "Professional Investment Advisory",
+        href: "/services/investment-advisory",
+        icon: Compass,
+      },
+      {
+        mn: "Үнэт цаас итгэмжлэх удирдах",
+        en: "Securities Trust Management",
+        href: "/services/securities-trust",
+        icon: Landmark,
+      },
+    ],
+  },
+  {
     key: "funds",
     mn: "Хөрөнгө оруулалтын сан",
     en: "Investment funds",
@@ -68,7 +90,7 @@ export const NAV: NavEntry[] = [
     children: [
       {
         mn: "Мобисан",
-        en: "Mobisan",
+        en: "Mobi Fund",
         href: "/funds/mbs",
         icon: Briefcase,
         fundMeta: {
@@ -120,7 +142,7 @@ export const NAV: NavEntry[] = [
       },
       {
         mn: '"Вертикор Экъюти"',
-        en: "Vertikor Equity",
+        en: "VertiCore Equity",
         href: "/funds/veq",
         icon: PieChart,
         fundMeta: {
@@ -134,7 +156,7 @@ export const NAV: NavEntry[] = [
       },
       {
         mn: "Покет Хуримтлал",
-        en: "Pocket Savings",
+        en: "Pocket Fund",
         href: "/funds/pocket",
         icon: Wallet,
         fundMeta: {
