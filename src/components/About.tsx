@@ -1,15 +1,38 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { HandshakeIcon, Leaf, Sprout } from "lucide-react";
-import { BentoGrid, BentoGridItem } from "./ui/BentoGrid";
+import { HandshakeIcon, ImageIcon, Leaf, Sprout } from "lucide-react";
 import { SectionHead } from "./ui/SectionHead";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
 import { TeamGrid } from "./ui/TeamGrid";
-import { useLocale, pick, type Locale } from "@/lib/locale";
+import { useLocale, pick } from "@/lib/locale";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+const INTRO_PARAGRAPHS: { mn: string; en: string }[] = [
+  {
+    mn: "Инвескор Ассет Менежмент ХХК нь хөрөнгө оруулагчдын санхүүгийн зорилго, урт хугацааны үнэ цэнийг дэмжих мэргэжлийн хөрөнгө оруулалтын шийдлийг бий болгож, хөрөнгийн үр ашигтай удирдах чиглэлээр үйл ажиллагаа явуулдаг хөрөнгө оруулалтын менежментийн компани юм.",
+    en: "Invescore Asset Management LLC is an asset management company that builds professional investment solutions supporting investors' financial goals and long-term value, focused on managing capital efficiently.",
+  },
+  {
+    mn: "Бид 2022 онд Санхүүгийн зохицуулах хорооноос хөрөнгө оруулалтын менежментийн үйл ажиллагаа эрхлэх тусгай зөвшөөрөл авч, Монгол Улсын хөрөнгийн зах зээлд мэргэжлийн, ил тод, хариуцлагатай хөрөнгө оруулалтын менежментийн үйлчилгээг хөгжүүлэх зорилгоор үйл ажиллагаагаа өргөжүүлэн ажиллаж байна.",
+    en: "In 2022, we received a license from the Financial Regulatory Commission to operate as an asset management company, and have since been expanding our operations to develop professional, transparent and accountable asset management services for Mongolia's capital market.",
+  },
+  {
+    mn: "Бид хөрөнгө оруулагчдын хэрэгцээ, эрсдэлийн түвшин болон санхүүгийн зорилгод нийцсэн хөрөнгө оруулалтын бүтээгдэхүүн, шийдлийг хөгжүүлэхийн зэрэгцээ дотоод, гадаадын хөрөнгийн зах зээлийн боломжийг Монголын хөрөнгө оруулагчдад хүртээмжтэй хүргэхийг зорьдог.",
+    en: "Alongside developing investment products and solutions matched to each investor's needs, risk tolerance and financial goals, we aim to make domestic and international capital market opportunities accessible to Mongolian investors.",
+  },
+  {
+    mn: 'Энэ хүрээнд 2023 онд Монголын анхны биржээр арилжаалагддаг хөрөнгө оруулалтын сан болох "Инвескор Глобал Кью" санг зах зээлд нэвтрүүлж, Монголын хөрөнгө оруулагчдад дэлхийн тэргүүлэх компаниудад дотоодын хөрөнгийн зах зээлээр дамжуулан хөрөнгө оруулах шинэ боломжийг бий болгосон.',
+    en: 'In 2023, we launched "Invescore Global Q" — Mongolia\'s first exchange-traded fund — giving Mongolian investors a new way to invest in the world\'s leading companies through the domestic capital market.',
+  },
+  {
+    mn: "Өнөөдөр Инвескор Ассет Менежмент нь хамтын болон хувийн хөрөнгө оруулалтын сангуудыг удирдан, хөрөнгө оруулагчдын хэрэгцээнд нийцсэн бүтээгдэхүүн, үйлчилгээг хөгжүүлэхийн зэрэгцээ хөрөнгө оруулалтын судалгаа, эрсдэлийн удирдлага, мэргэжлийн засаглалд тулгуурласан хөрөнгө удирдлагын тогтолцоог тасралтгүй бэхжүүлэн ажиллаж байна.",
+    en: "Today, Invescore Asset Management manages both mutual and private investment funds, developing products and services matched to investors' needs while continuously strengthening an asset management system built on investment research, risk management and professional governance.",
+  },
+  {
+    mn: "Бидний зорилго бол хөрөнгө оруулагчдын итгэлийг урт хугацаанд хадгалж, эрсдэл болон өгөөжийн зохистой тэнцвэрийг хангах замаар тогтвортой үнэ цэнийг бий болгох, Монголын хөрөнгө оруулалтын салбарын хөгжилд бодит хувь нэмэр оруулах явдал юм.",
+    en: "Our goal is to earn investors' trust for the long term, create sustainable value by maintaining a sound balance between risk and return, and make a real contribution to the development of Mongolia's investment industry.",
+  },
+];
 
 export function About() {
   const { locale } = useLocale();
@@ -30,25 +53,52 @@ export function About() {
           titleClassName="!text-[clamp(1.75rem,3vw,2.75rem)]"
         />
 
-        <div id="vision" className="mt-16 scroll-mt-28">
+        <div className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="space-y-5 lg:col-span-7">
+            {INTRO_PARAGRAPHS.map((p, i) => (
+              <Reveal key={i} delay={i * 0.05}>
+                <p className="t-body text-pretty text-fg-muted">
+                  {pick(locale, p.mn, p.en)}
+                </p>
+              </Reveal>
+            ))}
+            <Reveal delay={INTRO_PARAGRAPHS.length * 0.05}>
+              <p className="font-display text-pretty text-[1.1rem] text-fg">
+                {pick(
+                  locale,
+                  "Таны зорилго. Бидний туршлага. Хамтын үнэ цэнэ.",
+                  "Your goals. Our experience. Shared value.",
+                )}
+              </p>
+            </Reveal>
+          </div>
+
+          {/* Real office photo pending — placeholder keeps the two-column
+              layout balanced until one is supplied. */}
+          <Reveal delay={0.1} className="lg:col-span-5">
+            <div className="flex aspect-[4/5] w-full items-center justify-center rounded-2xl border hairline bg-surface-sunken/60 lg:h-full lg:aspect-auto">
+              <ImageIcon
+                className="h-8 w-8 text-fg-subtle/40"
+                strokeWidth={1.3}
+              />
+            </div>
+          </Reveal>
+        </div>
+
+        <div id="vision" className="mt-24 scroll-mt-28">
           <Reveal>
             <p className="eyebrow text-accent">
               {pick(locale, "Алсын хараа", "Vision")}
             </p>
           </Reveal>
-          <div className="mt-6 grid gap-6 lg:grid-cols-12 lg:items-center">
-            <div className="h-72 overflow-hidden rounded-2xl border hairline lg:col-span-7 lg:h-80">
-              <VisionHeader locale={locale} />
-            </div>
-            <div className="lg:col-span-5">
-              <p className="t-body text-pretty text-fg-muted">
-                {pick(
-                  locale,
-                  "Хөрөнгө оруулагчдын зорилго, эрсдэлийн түвшинд хамгийн тохиромжтой хөрөнгө оруулалтыг санал болгох мэдлэг туршлагатай, чадварлаг баг хамт олон.",
-                  "A knowledgeable, capable team recommending the investment best suited to each investor's goals and risk tolerance.",
-                )}
-              </p>
-            </div>
+          <div className="mt-6 max-w-3xl border-l-2 border-accent/40 pl-6 md:pl-8">
+            <p className="t-lead text-pretty text-fg">
+              {pick(
+                locale,
+                "Хөрөнгө оруулагчдын зорилго, эрсдэлийн түвшинд хамгийн тохиромжтой хөрөнгө оруулалтыг санал болгох мэдлэг туршлагатай, чадварлаг баг хамт олон.",
+                "A knowledgeable, capable team recommending the investment best suited to each investor's goals and risk tolerance.",
+              )}
+            </p>
           </div>
         </div>
 
@@ -59,56 +109,49 @@ export function About() {
             </p>
           </Reveal>
 
-          <BentoGrid className="mt-6">
-            <BentoGridItem
-              index={0}
-              header={<TrustHeader />}
-              icon={
-                <HandshakeIcon
-                  className="h-4 w-4 text-accent"
-                  strokeWidth={1.7}
-                />
-              }
-              title={pick(locale, "Найдвартай байдал", "Managing with trust")}
-              description={pick(
-                locale,
-                "Харилцагч, хамтрагчиддаа ил тод, шударга, урт хугацааны итгэлцэл бий болгоно.",
-                "Transparency, fairness and enduring trust with clients and partners.",
-              )}
-            />
+          <div className="mt-10 grid gap-10 md:grid-cols-3 md:divide-x md:divide-[color:var(--c-line)]">
+            <Reveal delay={0} className="md:pr-8 lg:pr-10">
+              <HandshakeIcon className="h-5 w-5 text-accent" strokeWidth={1.6} />
+              <h3 className="font-display mt-4 text-[1.1rem] text-fg">
+                {pick(locale, "Найдвартай байдал", "Managing with trust")}
+              </h3>
+              <p className="t-small mt-3 text-pretty text-fg-muted">
+                {pick(
+                  locale,
+                  "Харилцагч, хамтрагчиддаа ил тод, шударга, урт хугацааны итгэлцэл бий болгоно.",
+                  "Transparency, fairness and enduring trust with clients and partners.",
+                )}
+              </p>
+            </Reveal>
 
-            <BentoGridItem
-              index={1}
-              header={<GrowthHeader />}
-              icon={<Sprout className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-              title={pick(
-                locale,
-                "Тогтвортой хөгжил",
-                "Sustainability at its core",
-              )}
-              description={pick(
-                locale,
-                "Байгаль орчин, нийгэмд ээлтэй, урт хугацааны хамтын ажиллагаанд суурилан ажиллана.",
-                "Environmentally and socially responsible long-term investing.",
-              )}
-            />
+            <Reveal delay={0.08} className="md:px-8 lg:px-10">
+              <Sprout className="h-5 w-5 text-accent" strokeWidth={1.6} />
+              <h3 className="font-display mt-4 text-[1.1rem] text-fg">
+                {pick(locale, "Тогтвортой хөгжил", "Sustainability at its core")}
+              </h3>
+              <p className="t-small mt-3 text-pretty text-fg-muted">
+                {pick(
+                  locale,
+                  "Байгаль орчин, нийгэмд ээлтэй, урт хугацааны хамтын ажиллагаанд суурилан ажиллана.",
+                  "Environmentally and socially responsible long-term investing.",
+                )}
+              </p>
+            </Reveal>
 
-            <BentoGridItem
-              index={2}
-              header={<ImpactHeader />}
-              icon={<Leaf className="h-4 w-4 text-accent" strokeWidth={1.7} />}
-              title={pick(
-                locale,
-                "Нөлөөллийн хөрөнгө оруулалт",
-                "Impact investing",
-              )}
-              description={pick(
-                locale,
-                "Байгаль орчин, нийгэм, засаглалын үзүүлэлтүүдэд эерэг нөлөөлөл үзүүлэх нөлөөллийн хөрөнгө оруулалтын стратегийг хэрэгжүүлэгч.",
-                "Integrating financial analysis with environmental, social and governance insight to find solutions that deliver both performance and tangible impact.",
-              )}
-            />
-          </BentoGrid>
+            <Reveal delay={0.16} className="md:pl-8 lg:pl-10">
+              <Leaf className="h-5 w-5 text-accent" strokeWidth={1.6} />
+              <h3 className="font-display mt-4 text-[1.1rem] text-fg">
+                {pick(locale, "Нөлөөллийн хөрөнгө оруулалт", "Impact investing")}
+              </h3>
+              <p className="t-small mt-3 text-pretty text-fg-muted">
+                {pick(
+                  locale,
+                  "Байгаль орчин, нийгэм, засаглалын үзүүлэлтүүдэд эерэг нөлөөлөл үзүүлэх нөлөөллийн хөрөнгө оруулалтын стратегийг хэрэгжүүлэгч.",
+                  "Integrating financial analysis with environmental, social and governance insight to find solutions that deliver both performance and tangible impact.",
+                )}
+              </p>
+            </Reveal>
+          </div>
         </div>
 
         <div id="team" className="mt-24 scroll-mt-28 border-t hairline pt-16">
@@ -130,186 +173,5 @@ export function About() {
         </div>
       </div>
     </section>
-  );
-}
-
-/* ---------- animated headers ---------- */
-
-function HeaderShell({
-  children,
-  className = "",
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={`relative flex h-full min-h-[6rem] w-full flex-1 overflow-hidden rounded-xl ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
-
-/** Drifting jade field with the same rising line used in the hero. */
-function VisionHeader({ locale }: { locale: Locale }) {
-  return (
-    <HeaderShell className="bg-surface-strong">
-      <div className="pointer-events-none absolute inset-0">
-        <div
-          className="drift absolute -top-1/3 left-1/4 h-[28rem] w-[28rem] rounded-full opacity-30 blur-[90px]"
-          style={{ background: "var(--jade-400)" }}
-        />
-        <div
-          className="drift-slow absolute bottom-[-40%] right-[5%] h-[22rem] w-[22rem] rounded-full opacity-20 blur-[90px]"
-          style={{ background: "var(--jade-500)" }}
-        />
-      </div>
-
-      <svg
-        viewBox="0 0 600 200"
-        preserveAspectRatio="none"
-        fill="none"
-        className="absolute inset-0 h-full w-full opacity-40"
-        aria-hidden
-      >
-        <motion.path
-          d="M0 165 C 90 150, 150 120, 230 128 S 380 80, 450 55 S 560 22, 600 14"
-          stroke="var(--jade-400)"
-          strokeWidth="1.5"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 2.2, ease: EASE }}
-        />
-      </svg>
-
-      <p className="relative m-auto max-w-[30ch] px-6 text-center font-display text-[1.05rem] leading-snug text-on-strong">
-        {pick(
-          locale,
-          "Хөрөнгө оруулагчдын санхүүгийн зорилгод нийцсэн, инновацлаг санхүүгийн шийдэл",
-          "Innovative financial solutions matched to each investor's financial goals",
-        )}
-      </p>
-    </HeaderShell>
-  );
-}
-
-/** Ledger-like bars that fill in — transparency made visual. */
-function TrustHeader() {
-  const widths = [72, 46, 88, 58, 34];
-  return (
-    <motion.div
-      initial="initial"
-      whileInView="animate"
-      whileHover="hover"
-      viewport={{ once: true }}
-      className="relative flex h-full min-h-[6rem] w-full flex-1 flex-col justify-center gap-2.5 overflow-hidden rounded-xl bg-surface-sunken/60 p-4 text-fg-subtle"
-    >
-      <span className="bg-dots pointer-events-none absolute inset-0 opacity-30" />
-      {widths.map((w, i) => (
-        <motion.span
-          key={i}
-          variants={{
-            initial: { width: 0 },
-            animate: {
-              width: `${w}%`,
-              transition: { duration: 0.7, delay: i * 0.08, ease: EASE },
-            },
-            hover: {
-              width: ["0%", `${w}%`],
-              transition: { duration: 1.4, delay: i * 0.05 },
-            },
-          }}
-          className="relative h-2.5 rounded-full"
-          style={{
-            background:
-              i % 2 === 0
-                ? "color-mix(in srgb, var(--c-accent) 55%, transparent)"
-                : "color-mix(in srgb, var(--c-fg) 16%, transparent)",
-          }}
-        />
-      ))}
-    </motion.div>
-  );
-}
-
-/** Bars growing upward, with a sprout-like curve over them. */
-function GrowthHeader() {
-  const bars = [34, 52, 44, 70, 62, 92];
-  return (
-    <motion.div
-      initial="initial"
-      whileInView="animate"
-      whileHover="hover"
-      viewport={{ once: true }}
-      className="relative flex h-full min-h-[6rem] w-full flex-1 items-end gap-2 overflow-hidden rounded-xl bg-surface-sunken/60 p-4"
-    >
-      <span className="bg-dots pointer-events-none absolute inset-0 text-fg-subtle opacity-30" />
-      {bars.map((h, i) => (
-        <motion.span
-          key={i}
-          variants={{
-            initial: { height: "8%" },
-            animate: {
-              height: `${h}%`,
-              transition: { duration: 0.8, delay: i * 0.07, ease: EASE },
-            },
-            hover: {
-              height: `${Math.min(100, h + 8)}%`,
-              transition: { duration: 0.4 },
-            },
-          }}
-          className="relative flex-1 rounded-t-md"
-          style={{
-            background: `linear-gradient(to top, color-mix(in srgb, var(--c-accent) ${30 + i * 10}%, transparent), color-mix(in srgb, var(--c-accent) 12%, transparent))`,
-          }}
-        />
-      ))}
-    </motion.div>
-  );
-}
-
-/** Concentric rings rippling outward from a core mark — impact spreading beyond the initial investment. */
-function ImpactHeader() {
-  const rings = [0, 1, 2, 3];
-
-  return (
-    <motion.div
-      initial="initial"
-      whileInView="animate"
-      whileHover="hover"
-      viewport={{ once: true }}
-      className="relative flex h-full min-h-[6rem] w-full flex-1 items-center justify-center overflow-hidden rounded-xl bg-surface-sunken/60"
-    >
-      <span className="bg-dots pointer-events-none absolute inset-0 text-fg-subtle opacity-30" />
-      {rings.map((i) => (
-        <motion.span
-          key={i}
-          variants={{
-            initial: { scale: 0.3, opacity: 0 },
-            animate: {
-              scale: 1,
-              opacity: [0, 0.5, 0],
-              transition: {
-                duration: 2.6,
-                delay: i * 0.55,
-                repeat: Infinity,
-                ease: EASE,
-              },
-            },
-            hover: { transition: { duration: 1.4, delay: i * 0.15 } },
-          }}
-          className="absolute h-24 w-24 rounded-full border"
-          style={{
-            borderColor: "color-mix(in srgb, var(--c-accent) 55%, transparent)",
-          }}
-        />
-      ))}
-      <span
-        className="relative h-3.5 w-3.5 rounded-full"
-        style={{ background: "var(--c-accent)" }}
-      />
-    </motion.div>
   );
 }
