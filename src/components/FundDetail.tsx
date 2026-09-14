@@ -427,7 +427,7 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
             </Reveal>
 
             <div className="order-1 lg:order-1">
-            <h1 className="t-h2 max-w-2xl text-balance text-on-strong">
+            <h1 className="t-h3 max-w-2xl text-balance text-on-strong">
               <SplitReveal text={fund.name} />
             </h1>
             <Reveal delay={0.12}>

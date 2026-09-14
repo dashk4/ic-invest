@@ -66,8 +66,8 @@ export function Contact() {
               <SplitReveal
                 text={pick(
                   locale,
-                  "Хамтран ажиллах боломж",
-                  "A chance to work together",
+                  "Хөрөнгө оруулалтын хүсэлт илгээх",
+                  "Send an Investment Request",
                 )}
               />
             </h2>
@@ -75,8 +75,8 @@ export function Contact() {
               <p className="t-body mt-5 max-w-xl text-pretty text-on-strong-muted">
                 {pick(
                   locale,
-                  "Монголын хөрөнгийн зах зээлээс эхлээд дэлхийн хөрөнгийн зах зээл хүртэл тантай хамт.",
-                  "From Mongolia's capital market to the world's, with you every step.",
+                  "Манай мэргэжлийн баг тантай холбогдож, таны санхүүгийн зорилго, хөрөнгө оруулалтын хэрэгцээнд нийцэх бүтээгдэхүүн, боломжуудын талаар дэлгэрэнгүй мэдээлэл хүргэнэ.",
+                  "Our professional team will get in touch and share detailed information about products and opportunities matched to your financial goals and investment needs.",
                 )}
               </p>
             </Reveal>

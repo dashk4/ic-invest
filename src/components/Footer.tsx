@@ -37,7 +37,11 @@ export function Footer() {
               className="h-8 w-auto"
             />
             <p className="t-body mt-6 max-w-xs text-pretty text-on-strong-muted">
-              {pick(locale, "Таны хөрөнгө оруулалтын зөвлөх.", "Your investment advisor.")}
+              {pick(
+                locale,
+                "Таны санхүүгийн зорилгод нийцсэн хөрөнгө удирдлага.",
+                "Asset management built around your financial goals.",
+              )}
             </p>
           </div>
 

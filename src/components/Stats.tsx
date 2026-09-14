@@ -43,8 +43,8 @@ export function Stats({ stats }: { stats: OverviewStats }) {
           <h2 className="max-w-[22ch] text-balance font-display text-3xl leading-tight text-fg md:text-4xl">
             {pick(
               locale,
-              "Хөрөнгө оруулалтын мэргэжлийн түнш",
-              "Your professional investment partner",
+              "Хөрөнгө оруулалтын менежментийн компани",
+              "Asset Management Company",
             )}
           </h2>
         </Reveal>

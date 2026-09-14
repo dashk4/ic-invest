@@ -7,30 +7,31 @@ import { SplitReveal } from "./ui/SplitReveal";
 import { TeamGrid } from "./ui/TeamGrid";
 import { useLocale, pick } from "@/lib/locale";
 
+const INTRO_HEADING = {
+  mn: "Таны санхүүгийн зорилгод нийцсэн хөрөнгө удирдлага",
+  en: "Asset Management Built Around Your Financial Goals",
+};
+
 const INTRO_PARAGRAPHS: { mn: string; en: string }[] = [
   {
-    mn: "Инвескор Ассет Менежмент ХХК нь хөрөнгө оруулагчдын санхүүгийн зорилго, урт хугацааны үнэ цэнийг дэмжих мэргэжлийн хөрөнгө оруулалтын шийдлийг бий болгож, хөрөнгийн үр ашигтай удирдах чиглэлээр үйл ажиллагаа явуулдаг хөрөнгө оруулалтын менежментийн компани юм.",
-    en: "Invescore Asset Management LLC is an asset management company that builds professional investment solutions supporting investors' financial goals and long-term value, focused on managing capital efficiently.",
+    mn: '"Инвескор Ассет Менежмент" ХХК нь хөрөнгө оруулагчдын санхүүгийн зорилгод нийцсэн мэргэжлийн хөрөнгө оруулалтын шийдлийг хөгжүүлж, эрсдэл ба өгөөжийн зохистой тэнцвэрт тулгуурлан урт хугацааны үнэ цэн бүтээхийг зорьдог хөрөнгө оруулалтын менежментийн компани юм.',
+    en: "Invescore Asset Management LLC is an asset management company that develops professional investment solutions matched to investors' financial goals, building long-term value on a sound balance of risk and return.",
   },
   {
-    mn: "Бид 2022 онд Санхүүгийн зохицуулах хорооноос хөрөнгө оруулалтын менежментийн үйл ажиллагаа эрхлэх тусгай зөвшөөрөл авч, Монгол Улсын хөрөнгийн зах зээлд мэргэжлийн, ил тод, хариуцлагатай хөрөнгө оруулалтын менежментийн үйлчилгээг хөгжүүлэх зорилгоор үйл ажиллагаагаа өргөжүүлэн ажиллаж байна.",
-    en: "In 2022, we received a license from the Financial Regulatory Commission to operate as an asset management company, and have since been expanding our operations to develop professional, transparent and accountable asset management services for Mongolia's capital market.",
+    mn: "Бид 2022 онд Санхүүгийн зохицуулах хорооноос хөрөнгө оруулалтын менежментийн үйл ажиллагаа эрхлэх тусгай зөвшөөрөл авч, Монголын хөрөнгийн зах зээлд мэргэжлийн, ил тод, хариуцлагатай хөрөнгө удирдлагын үйлчилгээг хөгжүүлэх сууриа тавьсан. Түүнээс хойш дотоодын болон олон улсын хөрөнгийн зах зээлийн боломжийг хөрөнгө оруулагчдад хүргэх бүтээгдэхүүн, үйлчилгээг үе шаттайгаар хөгжүүлэн ажиллаж байна.",
+    en: "In 2022, we received a license from the Financial Regulatory Commission to operate as an asset management company, laying the foundation for professional, transparent and accountable asset management services in Mongolia's capital market. Since then, we have been developing products and services in phases to bring domestic and international capital market opportunities to investors.",
   },
   {
-    mn: "Бид хөрөнгө оруулагчдын хэрэгцээ, эрсдэлийн түвшин болон санхүүгийн зорилгод нийцсэн хөрөнгө оруулалтын бүтээгдэхүүн, шийдлийг хөгжүүлэхийн зэрэгцээ дотоод, гадаадын хөрөнгийн зах зээлийн боломжийг Монголын хөрөнгө оруулагчдад хүртээмжтэй хүргэхийг зорьдог.",
-    en: "Alongside developing investment products and solutions matched to each investor's needs, risk tolerance and financial goals, we aim to make domestic and international capital market opportunities accessible to Mongolian investors.",
+    mn: 'Энэ хүрээнд 2023 онд Монголын анхны биржээр арилжаалагддаг хөрөнгө оруулалтын сан болох "Инвескор Глобал Кью" санг үүсгэн байгуулж, Монголын хөрөнгө оруулагчдад дотоодын хөрөнгийн зах зээлээр дамжуулан дэлхийн тэргүүлэх компаниудад хөрөнгө оруулах боломжийг нээсэн.',
+    en: 'As part of this, in 2023 we established "Invescore Global Q" — Mongolia\'s first exchange-traded fund — opening a way for Mongolian investors to invest in the world\'s leading companies through the domestic capital market.',
   },
   {
-    mn: 'Энэ хүрээнд 2023 онд Монголын анхны биржээр арилжаалагддаг хөрөнгө оруулалтын сан болох "Инвескор Глобал Кью" санг зах зээлд нэвтрүүлж, Монголын хөрөнгө оруулагчдад дэлхийн тэргүүлэх компаниудад дотоодын хөрөнгийн зах зээлээр дамжуулан хөрөнгө оруулах шинэ боломжийг бий болгосон.',
-    en: 'In 2023, we launched "Invescore Global Q" — Mongolia\'s first exchange-traded fund — giving Mongolian investors a new way to invest in the world\'s leading companies through the domestic capital market.',
+    mn: '"Инвескор Ассет Менежмент" нь хамтын болон хувийн хөрөнгө оруулалтын сангуудыг удирдаж, хөрөнгө оруулагчдын хэрэгцээ, эрсдэлийн түвшин, санхүүгийн зорилгод нийцсэн хөрөнгө оруулалтын бүтээгдэхүүн, шийдлийг хөгжүүлэн ажиллаж байна. Бид хөрөнгө оруулалтын судалгаа, эрсдэлийн удирдлага, мэргэжлийн засаглалд тулгуурлан хөрөнгө удирдлагын тогтолцоогоо тасралтгүй бэхжүүлж байна.',
+    en: "Today, Invescore Asset Management manages both mutual and private investment funds, developing investment products and solutions matched to investors' needs, risk tolerance and financial goals. We continuously strengthen our asset management framework, built on investment research, risk management and professional governance.",
   },
   {
-    mn: "Өнөөдөр Инвескор Ассет Менежмент нь хамтын болон хувийн хөрөнгө оруулалтын сангуудыг удирдан, хөрөнгө оруулагчдын хэрэгцээнд нийцсэн бүтээгдэхүүн, үйлчилгээг хөгжүүлэхийн зэрэгцээ хөрөнгө оруулалтын судалгаа, эрсдэлийн удирдлага, мэргэжлийн засаглалд тулгуурласан хөрөнгө удирдлагын тогтолцоог тасралтгүй бэхжүүлэн ажиллаж байна.",
-    en: "Today, Invescore Asset Management manages both mutual and private investment funds, developing products and services matched to investors' needs while continuously strengthening an asset management system built on investment research, risk management and professional governance.",
-  },
-  {
-    mn: "Бидний зорилго бол хөрөнгө оруулагчдын итгэлийг урт хугацаанд хадгалж, эрсдэл болон өгөөжийн зохистой тэнцвэрийг хангах замаар тогтвортой үнэ цэнийг бий болгох, Монголын хөрөнгө оруулалтын салбарын хөгжилд бодит хувь нэмэр оруулах явдал юм.",
-    en: "Our goal is to earn investors' trust for the long term, create sustainable value by maintaining a sound balance between risk and return, and make a real contribution to the development of Mongolia's investment industry.",
+    mn: "Бидний зорилго бол хөрөнгө оруулагчдын урт хугацааны итгэлийг бэхжүүлж, эрсдэл ба өгөөжийн зохистой тэнцвэрт тулгуурлан тогтвортой үнэ цэн бүтээхийн зэрэгцээ Монголын хөрөнгө оруулалтын салбарын хөгжилд бодит хувь нэмэр оруулах явдал юм.",
+    en: "Our goal is to strengthen investors' trust over the long term, create sustainable value grounded in a sound balance of risk and return, and make a real contribution to the development of Mongolia's investment industry.",
   },
 ];
 
@@ -54,23 +55,21 @@ export function About() {
         />
 
         <div className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-16">
-          <div className="space-y-5 lg:col-span-7">
-            {INTRO_PARAGRAPHS.map((p, i) => (
-              <Reveal key={i} delay={i * 0.05}>
-                <p className="t-body text-pretty text-fg-muted">
-                  {pick(locale, p.mn, p.en)}
-                </p>
-              </Reveal>
-            ))}
-            <Reveal delay={INTRO_PARAGRAPHS.length * 0.05}>
-              <p className="font-display text-pretty text-[1.1rem] text-fg">
-                {pick(
-                  locale,
-                  "Таны зорилго. Бидний туршлага. Хамтын үнэ цэнэ.",
-                  "Your goals. Our experience. Shared value.",
-                )}
-              </p>
+          <div className="lg:col-span-7">
+            <Reveal>
+              <h2 className="font-display max-w-2xl text-pretty text-[1.15rem] uppercase leading-snug tracking-wide text-fg md:text-[1.3rem]">
+                {pick(locale, INTRO_HEADING.mn, INTRO_HEADING.en)}
+              </h2>
             </Reveal>
+            <div className="mt-6 space-y-4">
+              {INTRO_PARAGRAPHS.map((p, i) => (
+                <Reveal key={i} delay={0.05 + i * 0.05}>
+                  <p className="t-small text-pretty text-fg-muted">
+                    {pick(locale, p.mn, p.en)}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
           </div>
 
           {/* Real office photo pending — placeholder keeps the two-column
@@ -87,7 +86,7 @@ export function About() {
 
         <div id="vision" className="mt-24 scroll-mt-28">
           <Reveal>
-            <p className="eyebrow text-accent">
+            <p className="eyebrow text-[0.85rem] tracking-[0.14em] text-accent">
               {pick(locale, "Алсын хараа", "Vision")}
             </p>
           </Reveal>
@@ -104,7 +103,7 @@ export function About() {
 
         <div id="philosophy" className="mt-24 scroll-mt-28">
           <Reveal>
-            <p className="eyebrow text-accent">
+            <p className="eyebrow text-[0.85rem] tracking-[0.14em] text-accent">
               {pick(locale, "Үнэт зүйл", "Values")}
             </p>
           </Reveal>

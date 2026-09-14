@@ -10,14 +10,14 @@ const SERVICES = [
   {
     slug: "investment-advisory",
     icon: Compass,
-    mn: "Хөрөнгө оруулалтын мэргэшсэн зөвлөх үйлчилгээ",
-    en: "Professional Investment Advisory",
+    mn: "Хөрөнгө оруулалтын зөвлөх үйлчилгээ",
+    en: "Investment Advisory Service",
   },
   {
     slug: "securities-trust",
     icon: Landmark,
-    mn: "Үнэт цаас итгэмжлэх удирдах",
-    en: "Securities Trust Management",
+    mn: "Үнэт цаас итгэмжлэн удирдах үйлчилгээ",
+    en: "Securities Trust Management Service",
   },
 ];
 

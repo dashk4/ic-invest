@@ -69,14 +69,14 @@ export const NAV: NavEntry[] = [
     href: "/services",
     children: [
       {
-        mn: "Хөрөнгө оруулалтын мэргэшсэн зөвлөх үйлчилгээ",
-        en: "Professional Investment Advisory",
+        mn: "Хөрөнгө оруулалтын зөвлөх үйлчилгээ",
+        en: "Investment Advisory Service",
         href: "/services/investment-advisory",
         icon: Compass,
       },
       {
-        mn: "Үнэт цаас итгэмжлэх удирдах",
-        en: "Securities Trust Management",
+        mn: "Үнэт цаас итгэмжлэн удирдах үйлчилгээ",
+        en: "Securities Trust Management Service",
         href: "/services/securities-trust",
         icon: Landmark,
       },
