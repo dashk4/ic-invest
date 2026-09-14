@@ -1,6 +1,7 @@
 "use client";
 
-import { HandshakeIcon, ImageIcon, Leaf, Sprout } from "lucide-react";
+import Image from "next/image";
+import { HandshakeIcon, Leaf, Sprout } from "lucide-react";
 import { SectionHead } from "./ui/SectionHead";
 import { Reveal } from "./ui/Reveal";
 import { SplitReveal } from "./ui/SplitReveal";
@@ -54,8 +55,8 @@ export function About() {
           titleClassName="!text-[clamp(1.75rem,3vw,2.75rem)]"
         />
 
-        <div className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-7">
+        <div className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-6">
             <Reveal>
               <h2 className="font-display max-w-2xl text-pretty text-[1.15rem] uppercase leading-snug tracking-wide text-fg md:text-[1.3rem]">
                 {pick(locale, INTRO_HEADING.mn, INTRO_HEADING.en)}
@@ -72,13 +73,18 @@ export function About() {
             </div>
           </div>
 
-          {/* Real office photo pending — placeholder keeps the two-column
-              layout balanced until one is supplied. */}
-          <Reveal delay={0.1} className="lg:col-span-5">
-            <div className="flex aspect-[4/5] w-full items-center justify-center rounded-2xl border hairline bg-surface-sunken/60 lg:h-full lg:aspect-auto">
-              <ImageIcon
-                className="h-8 w-8 text-fg-subtle/40"
-                strokeWidth={1.3}
+          <Reveal delay={0.1} className="lg:col-span-6">
+            <div className="group relative aspect-[3/2] w-full overflow-hidden rounded-2xl border hairline bg-surface-sunken">
+              <Image
+                src="/brand/ic-tower-clean.png"
+                alt="IC Tower"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover transition-transform duration-[1600ms] ease-out motion-reduce:transition-none group-hover:scale-[1.045]"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-white/5 opacity-0 transition-opacity duration-700 group-hover:opacity-100 motion-reduce:transition-none"
               />
             </div>
           </Reveal>

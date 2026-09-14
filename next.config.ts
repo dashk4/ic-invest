@@ -7,6 +7,14 @@ const cmsHost = new URL(
 ).hostname;
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      // The rebuilt site keeps its language choice in the browser rather than
+      // in the URL. Send legacy locale-only URLs to the canonical home page.
+      { source: "/en", destination: "/", permanent: true },
+      { source: "/mn", destination: "/", permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       {
