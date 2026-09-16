@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Briefcase, PieChart, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { useLocale, pick } from "@/lib/locale";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const MotionLink = motion.create(Link);
 const ICONS = [Briefcase, ShieldCheck, TrendingUp, Users, PieChart];
@@ -27,6 +28,7 @@ function formatNav(n: number) {
 
 export function FundsList({ funds }: { funds: FundCardData[] }) {
   const { locale } = useLocale();
+  const isMobile = useIsMobile();
 
   return (
     <div className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -38,28 +40,34 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
           <MotionLink
             key={f.sid}
             href={f.href}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="border-glow group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 transition-colors duration-500 hover:border-accent-on-dark/40 hover:bg-white/[0.05] md:p-9"
+            {...(isMobile
+              ? {}
+              : {
+                  initial: { opacity: 0, y: 24 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, margin: "-80px" },
+                  transition: { duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] },
+                })}
+            className={`border-glow group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 md:p-9 ${isMobile ? "" : "transition-colors duration-500 hover:border-accent-on-dark/40 hover:bg-white/[0.05]"}`}
           >
             {/* oversized ghost numeral, purely decorative */}
             <span
               aria-hidden
-              className="t-numeral pointer-events-none absolute -right-3 -top-6 select-none text-[7rem] leading-none text-on-strong/[0.04] transition-colors duration-500 group-hover:text-accent-on-dark/[0.08] md:text-[8.5rem]"
+              className={`t-numeral pointer-events-none absolute -right-3 -top-6 select-none text-[7rem] leading-none text-on-strong/[0.04] md:text-[8.5rem] ${isMobile ? "" : "transition-colors duration-500 group-hover:text-accent-on-dark/[0.08]"}`}
             >
               {String(i + 1).padStart(2, "0")}
             </span>
 
-            {/* soft accent glow that blooms on hover */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-accent-on-dark/0 blur-3xl transition-colors duration-700 group-hover:bg-accent-on-dark/20"
-            />
+            {/* soft accent glow that blooms on hover — desktop only */}
+            {!isMobile && (
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-accent-on-dark/0 blur-3xl transition-colors duration-700 group-hover:bg-accent-on-dark/20"
+              />
+            )}
 
             <div className="relative flex items-center">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.04] text-accent-on-dark transition-colors duration-500 group-hover:border-accent-on-dark/40 group-hover:bg-accent-on-dark/10">
+              <span className={`flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--c-line-strong)] bg-white/[0.04] text-accent-on-dark ${isMobile ? "" : "transition-colors duration-500 group-hover:border-accent-on-dark/40 group-hover:bg-accent-on-dark/10"}`}>
                 <Icon className="h-[19px] w-[19px]" strokeWidth={1.7} />
               </span>
             </div>
@@ -88,7 +96,7 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
               )}
               <span
                 aria-hidden
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--c-line-strong)] text-on-strong-subtle transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:border-accent-on-dark/40 group-hover:text-accent-on-dark"
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--c-line-strong)] text-on-strong-subtle ${isMobile ? "" : "transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:border-accent-on-dark/40 group-hover:text-accent-on-dark"}`}
               >
                 →
               </span>
