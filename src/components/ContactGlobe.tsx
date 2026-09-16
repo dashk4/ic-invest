@@ -148,13 +148,17 @@ export function ContactGlobe() {
     return () => io.disconnect();
   }, [isMobile]);
 
+  // Purely decorative (aria-hidden) even as a static ring, so on mobile it's
+  // not worth the vertical space it takes from the actual contact form.
+  if (isMobile) return null;
+
   return (
     <div
       ref={ref}
       aria-hidden
       className="pointer-events-none relative aspect-square w-full overflow-hidden"
     >
-      {ready && !isMobile ? (
+      {ready ? (
         <World globeConfig={CONFIG} data={ARCS} frameloop={inView ? "always" : "never"} />
       ) : (
         <GlobePlaceholder />

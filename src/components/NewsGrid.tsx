@@ -49,40 +49,61 @@ export function NewsGrid({ mn, en }: { mn: NewsItem[]; en: NewsItem[] }) {
 
   return (
     <div className="mt-12 grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {news.slice(0, 6).map((item, i) => (
-        <MotionLink
-          key={item.id}
-          href={`/news/${item.id}`}
-          {...(isMobile
-            ? {}
-            : {
-                initial: { opacity: 0, y: 22 },
-                whileInView: { opacity: 1, y: 0 },
-                viewport: { once: true, margin: "-80px" },
-                transition: { duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] },
-              })}
-          className="surface-card group flex min-h-[21rem] flex-col rounded-[1.5rem] p-7 transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-accent/40 md:p-8"
-        >
-          <div className="flex items-center gap-2.5">
-            <span aria-hidden className="brand-signal h-2 w-2 rounded-full" />
-            <span className="eyebrow text-fg-subtle">
-              {formatDate(item.created_at ?? item.publish_date, locale)}
+      {news.slice(0, 6).map((item, i) => {
+        const content = (
+          <>
+            <div className="flex items-center gap-2.5">
+              <span aria-hidden className="brand-signal h-2 w-2 rounded-full" />
+              <span className="eyebrow text-fg-subtle">
+                {formatDate(item.created_at ?? item.publish_date, locale)}
+              </span>
+            </div>
+            <h3 className="mt-7 line-clamp-4 text-balance text-[1.35rem] leading-[1.28] text-fg md:text-[1.5rem]">
+              {item.title}
+            </h3>
+            <p className="t-small mt-4 line-clamp-3 text-pretty text-fg-muted">
+              {item.content}
+            </p>
+            <span
+              aria-hidden
+              className="brand-card-arrow mt-auto flex h-10 w-10 translate-y-1 items-center justify-center self-end rounded-full transition-all duration-500 group-hover:translate-x-1"
+            >
+              →
             </span>
-          </div>
-          <h3 className="mt-7 line-clamp-4 text-balance text-[1.35rem] leading-[1.28] text-fg md:text-[1.5rem]">
-            {item.title}
-          </h3>
-          <p className="t-small mt-4 line-clamp-3 text-pretty text-fg-muted">
-            {item.content}
-          </p>
-          <span
-            aria-hidden
-            className="brand-card-arrow mt-auto flex h-10 w-10 translate-y-1 items-center justify-center self-end rounded-full transition-all duration-500 group-hover:translate-x-1"
+          </>
+        );
+
+        // See FundsList for why this is a different element type on mobile
+        // rather than the same MotionLink with animation props withheld —
+        // Framer Motion can leave a not-yet-revealed card frozen at
+        // opacity:0 when whileInView disappears mid-lifecycle instead of
+        // resetting it to visible.
+        if (isMobile) {
+          return (
+            <Link
+              key={item.id}
+              href={`/news/${item.id}`}
+              className="surface-card group flex min-h-[21rem] flex-col rounded-[1.5rem] p-7 md:p-8"
+            >
+              {content}
+            </Link>
+          );
+        }
+
+        return (
+          <MotionLink
+            key={item.id}
+            href={`/news/${item.id}`}
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+            className="surface-card group flex min-h-[21rem] flex-col rounded-[1.5rem] p-7 transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-accent/40 md:p-8"
           >
-            →
-          </span>
-        </MotionLink>
-      ))}
+            {content}
+          </MotionLink>
+        );
+      })}
     </div>
   );
 }

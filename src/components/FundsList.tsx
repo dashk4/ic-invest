@@ -36,20 +36,8 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
         const blurb = pick(locale, f.excerptMn, f.excerptEn);
         const Icon = ICONS[i % ICONS.length];
 
-        return (
-          <MotionLink
-            key={f.sid}
-            href={f.href}
-            {...(isMobile
-              ? {}
-              : {
-                  initial: { opacity: 0, y: 24 },
-                  whileInView: { opacity: 1, y: 0 },
-                  viewport: { once: true, margin: "-80px" },
-                  transition: { duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] },
-                })}
-            className={`border-glow group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 md:p-9 ${isMobile ? "" : "transition-colors duration-500 hover:border-accent-on-dark/40 hover:bg-white/[0.05]"}`}
-          >
+        const content = (
+          <>
             {/* oversized ghost numeral, purely decorative */}
             <span
               aria-hidden
@@ -101,6 +89,40 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
                 →
               </span>
             </div>
+          </>
+        );
+
+        // A mobile visitor gets a plain Link, not MotionLink with its
+        // animation props merely withheld: Framer Motion keeps this same
+        // component instance's last-applied opacity/transform across a
+        // prop change, so a card that hadn't yet scrolled into view when
+        // isMobile flipped true stayed frozen at its initial opacity:0
+        // forever. A different element type forces React to unmount the
+        // old (possibly still-hidden) instance and mount a fresh, unstyled
+        // one instead of patching it in place.
+        if (isMobile) {
+          return (
+            <Link
+              key={f.sid}
+              href={f.href}
+              className="border-glow group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 md:p-9"
+            >
+              {content}
+            </Link>
+          );
+        }
+
+        return (
+          <MotionLink
+            key={f.sid}
+            href={f.href}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="border-glow group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 transition-colors duration-500 hover:border-accent-on-dark/40 hover:bg-white/[0.05] md:p-9"
+          >
+            {content}
           </MotionLink>
         );
       })}
