@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -24,6 +25,12 @@ export function SplitReveal({
   delay?: number;
   className?: string;
 }) {
+  const isMobile = useIsMobile();
+  // Skip the per-word masked-reveal machinery on mobile — it's one motion
+  // instance per word on every heading on the page, for a scroll effect
+  // nobody asked to keep there.
+  if (isMobile) return <span className={className}>{text}</span>;
+
   const words = text.split(" ");
 
   const trigProps =

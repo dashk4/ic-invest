@@ -3,6 +3,7 @@
 // reactbits.dev's DotField, unmodified aside from the "use client" directive
 // above — it has no external dependencies to adapt.
 import { useEffect, useId, useRef, memo } from 'react';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 const TWO_PI = Math.PI * 2;
 
@@ -64,11 +65,16 @@ const DotField = memo(({
   // rendered HTML and the client's first render, or React logs a hydration
   // mismatch on this exact attribute (and bails out of reusing the markup).
   const glowId = `dot-field-glow-${useId()}`;
+  // The whole point of this field is reacting to a mouse cursor, which
+  // doesn't exist on touch devices — mousemove simply never fires there, so
+  // the 60fps canvas redraw was running forever for a visual effect that
+  // could never trigger. Skip the loop entirely and show a plain gradient.
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const glowEl = glowRef.current;
-    if (!canvas) return;
+    if (!canvas || isMobile) return;
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -256,11 +262,23 @@ const DotField = memo(({
       window.removeEventListener('mousemove', onMouseMove);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     rebuildRef.current?.();
   }, [dotRadius, dotSpacing]);
+
+  if (isMobile) {
+    return (
+      <div
+        className="w-full h-full relative"
+        style={{
+          background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})`,
+        }}
+        {...rest}
+      />
+    );
+  }
 
   return (
     <div className="w-full h-full relative" {...rest}>

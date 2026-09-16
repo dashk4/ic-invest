@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 type RevealProps = {
   children: ReactNode;
@@ -18,7 +19,14 @@ export function Reveal({
   className,
   as = "div",
 }: RevealProps) {
+  const isMobile = useIsMobile();
   const Component = motion[as];
+  // On mobile, skip the scroll-triggered fade/translate entirely — it's
+  // pure animation-loop cost with no functional benefit on a phone.
+  if (isMobile) {
+    const Plain = as;
+    return <Plain className={className}>{children}</Plain>;
+  }
   return (
     <Component
       className={className}
@@ -41,6 +49,8 @@ export function RevealGroup({
   className?: string;
   stagger?: number;
 }) {
+  const isMobile = useIsMobile();
+  if (isMobile) return <div className={className}>{children}</div>;
   return (
     <motion.div
       className={className}
@@ -66,6 +76,8 @@ export function RevealItem({
   className?: string;
   y?: number;
 }) {
+  const isMobile = useIsMobile();
+  if (isMobile) return <div className={className}>{children}</div>;
   return (
     <motion.div
       className={className}

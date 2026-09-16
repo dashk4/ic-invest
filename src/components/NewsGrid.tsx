@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Reveal } from "./ui/Reveal";
 import { useLocale, pick } from "@/lib/locale";
+import { useIsMobile } from "@/lib/useIsMobile";
 import type { NewsItem } from "@/lib/api";
 
 const MotionLink = motion.create(Link);
@@ -35,6 +36,7 @@ function formatDate(value: string | undefined, locale: "mn" | "en") {
 
 export function NewsGrid({ mn, en }: { mn: NewsItem[]; en: NewsItem[] }) {
   const { locale } = useLocale();
+  const isMobile = useIsMobile();
   const news = locale === "en" && en.length > 0 ? en : mn;
 
   if (news.length === 0) {
@@ -51,10 +53,14 @@ export function NewsGrid({ mn, en }: { mn: NewsItem[]; en: NewsItem[] }) {
         <MotionLink
           key={item.id}
           href={`/news/${item.id}`}
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+          {...(isMobile
+            ? {}
+            : {
+                initial: { opacity: 0, y: 22 },
+                whileInView: { opacity: 1, y: 0 },
+                viewport: { once: true, margin: "-80px" },
+                transition: { duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] },
+              })}
           className="surface-card group flex min-h-[21rem] flex-col rounded-[1.5rem] p-7 transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-accent/40 md:p-8"
         >
           <div className="flex items-center gap-2.5">

@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 /**
  * three + three-globe + r3f + drei is well over a megabyte, so the globe is
@@ -111,10 +112,15 @@ export function ContactGlobe() {
   // there's a reason for it to be moving.
   const [inView, setInView] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  // three + three-globe is well over a megabyte on top of the WebGL init
+  // cost — on a phone that's exactly the "loads too slowly" complaint, for
+  // a decorative arc animation with no real interaction on touch. Never
+  // fetch or mount it there; a static ring stands in for the section.
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || isMobile) return;
     // Generous positive margin: start the download+build well before the
     // section is on screen, so it's typically ready by the time a normally
     // paced scroll gets there, without competing with the initial page load.
@@ -126,11 +132,11 @@ export function ContactGlobe() {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || isMobile) return;
     // Negative margin on purpose: the render loop should only wake up once
     // the globe is substantially inside the viewport, not just peeking in —
     // that keeps it fully inert for the entire length of the News section
@@ -140,7 +146,7 @@ export function ContactGlobe() {
     });
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [isMobile]);
 
   return (
     <div
@@ -148,7 +154,7 @@ export function ContactGlobe() {
       aria-hidden
       className="pointer-events-none relative aspect-square w-full overflow-hidden"
     >
-      {ready ? (
+      {ready && !isMobile ? (
         <World globeConfig={CONFIG} data={ARCS} frameloop={inView ? "always" : "never"} />
       ) : (
         <GlobePlaceholder />
