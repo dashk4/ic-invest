@@ -101,11 +101,15 @@ export function FundsList({ funds }: { funds: FundCardData[] }) {
         // old (possibly still-hidden) instance and mount a fresh, unstyled
         // one instead of patching it in place.
         if (isMobile) {
+          // No .border-glow here: its ::before ring runs an infinite 3.5s
+          // CSS rotation at all times (not just on hover — hover only
+          // toggles its opacity), so it was animating on mobile regardless
+          // of the hover classes already stripped above.
           return (
             <Link
               key={f.sid}
               href={f.href}
-              className="border-glow group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 md:p-9"
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--c-line-strong)] bg-white/[0.03] p-8 md:p-9"
             >
               {content}
             </Link>
