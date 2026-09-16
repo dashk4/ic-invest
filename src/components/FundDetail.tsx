@@ -513,7 +513,7 @@ export function FundDetail({ fund }: { fund: FundDetailData }) {
               <div className="mt-8 space-y-6">
                 {paragraphs.map((p, i) => (
                   <Reveal key={i} delay={i * 0.06}>
-                    <p className={`${i === 0 ? "t-lead text-fg" : "t-body text-fg-muted"} max-w-prose text-pretty`}>{p}</p>
+                    <p className={`${i === 0 ? "t-lead text-fg" : "t-body text-fg-muted"} max-w-prose text-pretty text-justify`}>{p}</p>
                   </Reveal>
                 ))}
               </div>

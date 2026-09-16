@@ -1,4 +1,5 @@
 import { CMS_BASE } from "@/lib/config";
+import { cleanContentHtml } from "@/lib/api";
 
 const BASE_URL = CMS_BASE;
 
@@ -43,7 +44,7 @@ export async function getJobListings(locale: "mn" | "en" = "mn"): Promise<JobLis
         const contentHtml = block.match(/accordion-content content">([\s\S]*?)<div class="send-button">/)?.[1];
         const id = block.match(/cvupload\/(\d+)/)?.[1];
         if (!title || !contentHtml || !id) return null;
-        return { id, title, contentHtml };
+        return { id, title, contentHtml: cleanContentHtml(contentHtml) };
       })
       .filter((job): job is JobListing => job !== null);
   } catch {

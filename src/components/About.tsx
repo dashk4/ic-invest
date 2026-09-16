@@ -47,25 +47,16 @@ export function About() {
       <div className="container-page">
         <SectionHead
           eyebrow={pick(locale, "Бидний тухай", "About us")}
-          title={pick(
-            locale,
-            "Монголын хөрөнгийн зах зээлийн түүчээлэгч",
-            "Mongolia's capital market pioneer",
-          )}
+          title={pick(locale, INTRO_HEADING.mn, INTRO_HEADING.en)}
           titleClassName="!text-[clamp(1.75rem,3vw,2.75rem)]"
         />
 
-        <div className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="mt-16 grid gap-10 lg:grid-cols-12 lg:items-stretch lg:gap-12">
           <div className="lg:col-span-6">
-            <Reveal>
-              <h2 className="font-display max-w-2xl text-pretty text-[1.15rem] uppercase leading-snug tracking-wide text-fg md:text-[1.3rem]">
-                {pick(locale, INTRO_HEADING.mn, INTRO_HEADING.en)}
-              </h2>
-            </Reveal>
-            <div className="mt-6 space-y-4">
+            <div className="space-y-4">
               {INTRO_PARAGRAPHS.map((p, i) => (
                 <Reveal key={i} delay={0.05 + i * 0.05}>
-                  <p className="t-small text-pretty text-fg-muted">
+                  <p className="t-small text-pretty text-justify text-fg-muted">
                     {pick(locale, p.mn, p.en)}
                   </p>
                 </Reveal>
@@ -74,7 +65,7 @@ export function About() {
           </div>
 
           <Reveal delay={0.1} className="lg:col-span-6">
-            <div className="group relative aspect-[3/2] w-full overflow-hidden rounded-2xl border hairline bg-surface-sunken">
+            <div className="group relative min-h-[22rem] w-full overflow-hidden rounded-2xl border hairline bg-surface-sunken lg:h-full">
               <Image
                 src="/brand/ic-tower-clean.png"
                 alt="IC Tower"

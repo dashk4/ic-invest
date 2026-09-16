@@ -126,7 +126,7 @@ export function Contact() {
           </div>
 
           <Reveal delay={0.08} className="lg:col-span-8">
-          <form action={formAction} className="h-full rounded-[1.5rem] border border-[color:var(--c-line-strong)] bg-white/[0.04] p-6 md:p-7">
+          <form id="contact-form" action={formAction} className="h-full scroll-mt-28 rounded-[1.5rem] border border-[color:var(--c-line-strong)] bg-white/[0.04] p-6 md:p-7">
             <input type="hidden" name="locale" value={locale} />
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
               <div>

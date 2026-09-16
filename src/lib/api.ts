@@ -136,6 +136,17 @@ export const FUNDS = [
   },
 ] as const;
 
+/**
+ * CMS article/job HTML is riddled with &nbsp; entities in place of plain
+ * spaces (an artifact of pasting from Word/Google Docs). &nbsp; is
+ * non-breaking, so browsers can't wrap a line there — long runs of words end
+ * up glued into one unbreakable chunk, which with text-justify produces
+ * badly ragged, unevenly-spaced lines. Swap them for normal spaces first.
+ */
+export function cleanContentHtml(html: string): string {
+  return html.replace(/&nbsp;/g, " ").replace(/ /g, " ");
+}
+
 function stripHtml(html: string): string {
   return html
     .replace(/<[^>]*>/g, " ")

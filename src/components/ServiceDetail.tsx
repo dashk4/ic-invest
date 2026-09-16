@@ -67,7 +67,7 @@ export function ServiceDetail({
         <div className="mt-6 max-w-2xl space-y-4">
           {paragraphs.map((p, i) => (
             <Reveal key={i} delay={0.24 + i * 0.05}>
-              <p className="t-small text-pretty text-fg-muted">
+              <p className="t-small text-pretty text-justify text-fg-muted">
                 {pick(locale, p.mn, p.en)}
               </p>
             </Reveal>
@@ -76,7 +76,7 @@ export function ServiceDetail({
 
         {closing && (
           <Reveal delay={0.24 + paragraphs.length * 0.05}>
-            <p className="t-small mt-6 max-w-2xl text-pretty text-fg-muted">
+            <p className="t-small mt-6 max-w-2xl text-pretty text-justify text-fg-muted">
               {pick(locale, closing.mn, closing.en)}
             </p>
           </Reveal>
@@ -84,7 +84,7 @@ export function ServiceDetail({
 
         <Reveal delay={0.3 + paragraphs.length * 0.05} className="mt-10">
           <Link
-            href="/#contact"
+            href="/#contact-form"
             className="rounded-lg bg-accent px-7 py-3 text-[0.9rem] font-medium text-accent-contrast transition-all duration-500 hover:-translate-y-0.5 hover:brightness-110"
           >
             {pick(locale, buttonMn, buttonEn)}

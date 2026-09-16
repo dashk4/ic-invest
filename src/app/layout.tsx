@@ -30,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="mn"
+      data-theme="dark"
       suppressHydrationWarning
       className={`${manrope.variable} h-full antialiased`}
     >

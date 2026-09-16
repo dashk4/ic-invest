@@ -15,8 +15,8 @@ export function FundsHeading() {
         <p className="t-body max-w-sm text-pretty text-on-strong-muted">
           {pick(
             locale,
-            "Хөрөнгө оруулалтын зорилго, хугацаанд тохирох хөрөнгө оруулалтын санг сонгоно уу.",
-            "Choose the investment fund that fits your goals and time horizon."
+            "Өөрийн санхүүгийн зорилго, хөрөнгө оруулалтын хугацаа, эрсдэлийн түвшинд нийцсэн сангийн бүтээгдэхүүнтэй танилцаарай.",
+            "Explore fund products matched to your financial goals, investment horizon and risk tolerance."
           )}
         </p>
       }

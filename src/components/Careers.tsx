@@ -1,7 +1,15 @@
 import { getJobListings } from "@/lib/careers";
 import { CareersList } from "./CareersList";
 
+// Temporarily hidden per owner request: the CMS still lists an old
+// "Investment Manager" posting that is no longer an actual open role, and
+// there's no CMS-side way to distinguish "closed" from "open" postings.
+// Flip this back to false once a real opening exists.
+const HIDE_CAREERS = true;
+
 export async function Careers() {
+  if (HIDE_CAREERS) return null;
+
   const jobs = await getJobListings("mn");
 
   if (jobs.length === 0) return null;

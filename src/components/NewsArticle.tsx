@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLocale, pick } from "@/lib/locale";
-import type { NewsItem } from "@/lib/api";
+import { cleanContentHtml, type NewsItem } from "@/lib/api";
 
 const MN_MONTHS = [
   "1-р сар", "2-р сар", "3-р сар", "4-р сар", "5-р сар", "6-р сар",
@@ -61,7 +61,7 @@ export function NewsArticle({
 
       <div
         className="prose-news mt-10 max-w-none text-justify t-small text-fg [&_a]:text-accent [&_a]:underline [&_a]:decoration-accent/40 [&_a:hover]:decoration-accent [&_li]:mt-1 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_p+p]:mt-4 [&_strong]:font-semibold [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6"
-        dangerouslySetInnerHTML={{ __html: item.content }}
+        dangerouslySetInnerHTML={{ __html: cleanContentHtml(item.content) }}
       />
     </>
   );

@@ -182,12 +182,8 @@ export const NAV: NavEntry[] = [
     href: "/#contact",
     children: [
       { mn: "Санал хүсэлт", en: "Request", href: "/#contact", icon: MessageSquare },
-      {
-        mn: "Ажлын байр",
-        en: "Job offer",
-        href: "/careers",
-        icon: Briefcase,
-      },
+      // "Ажлын байр" (Job offer) temporarily hidden — see HIDE_CAREERS in
+      // Careers.tsx; no real opening is posted right now.
     ],
   },
 ];
