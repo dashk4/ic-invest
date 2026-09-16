@@ -6,16 +6,23 @@ import ParticleShape from "./ui/ParticleShape";
 import { Meteors } from "./ui/Meteors";
 import { BRAND_CHECKMARK_PATH, BRAND_CHECKMARK_VIEWBOX, BRAND_RED } from "@/lib/brandMark";
 import { useLocale, pick } from "@/lib/locale";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 export function Hero() {
   const { locale } = useLocale();
+  // The particle canvas runs an uncapped requestAnimationFrame loop (up to
+  // ~5200 particles plus shadowBlur glow) from the moment this section
+  // mounts, forever — on a phone that's exactly the "loads/runs too slowly"
+  // complaint, for a decorative mark. Same for the meteor streaks. Both are
+  // skipped outright on mobile rather than just de-animated.
+  const isMobile = useIsMobile();
 
   return (
     <section
       id="top"
       className="theme-fade relative flex min-h-svh flex-col justify-end overflow-hidden bg-surface-strong pt-32 text-on-strong"
     >
-      <Atmosphere />
+      <Atmosphere showMeteors={!isMobile} />
 
       <div className="container-page relative z-10 flex flex-1 flex-col justify-center pb-16 pt-6">
         <div className="grid grid-cols-1 items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
@@ -74,68 +81,70 @@ export function Hero() {
             </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex justify-center lg:col-span-4 lg:justify-end"
-          >
-            {/*
-              The brand's own checkmark swash (the "V" in InVesCore), isolated
-              from the logo file and rendered as a particle field that gathers
-              in on mount — same particle engine as reactbits' ParticleText,
-              forked to sample a filled SVG path instead of fillText. Housed in
-              a card matching the site's surface-card language (bordered,
-              shadowed, numbered badge) so it reads as a deliberate piece of
-              the page instead of a shape floating in empty space.
+          {!isMobile && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="flex justify-center lg:col-span-4 lg:justify-end"
+            >
+              {/*
+                The brand's own checkmark swash (the "V" in InVesCore), isolated
+                from the logo file and rendered as a particle field that gathers
+                in on mount — same particle engine as reactbits' ParticleText,
+                forked to sample a filled SVG path instead of fillText. Housed in
+                a card matching the site's surface-card language (bordered,
+                shadowed, numbered badge) so it reads as a deliberate piece of
+                the page instead of a shape floating in empty space.
 
-              trigger="mount": the initial gather always runs regardless of
-              this prop, but "hover" additionally restarts the full
-              scatter-to-gather animation on every pointerenter, which reads as
-              the mark "resetting" each time the cursor crossed it. Pointer
-              repel still works either way — that logic isn't gated by trigger.
-            */}
-            <div className="relative flex aspect-square w-full max-w-[19rem] flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-[color:var(--c-line-strong)] bg-white/[0.03] p-10 shadow-[0_30px_90px_-30px_rgb(0_0_0/0.6)]">
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full opacity-25 blur-3xl"
-                style={{ background: BRAND_RED }}
-              />
-              <span className="absolute left-6 top-6 z-10 eyebrow text-on-strong-subtle">IC</span>
-              <span className="absolute right-6 top-6 z-10 h-2 w-2 rounded-full" style={{ background: BRAND_RED }} />
-              <div className="relative z-0 h-[clamp(6.5rem,11vw,9rem)] w-[clamp(6.5rem,11vw,9rem)]">
-                <ParticleShape
-                  path={BRAND_CHECKMARK_PATH}
-                  viewBox={BRAND_CHECKMARK_VIEWBOX}
-                  color={BRAND_RED}
-                  highlightColor="#ff8a7a"
-                  trigger="mount"
-                  particleSize={2.4}
-                  density={2}
-                  scatter={170}
-                  scatterMode="random"
-                  scatterPadding={84}
-                  gatherDuration={1600}
-                  stagger={400}
-                  pointerRepel={40}
-                  repelRadius={100}
-                  idleDrift={0.5}
-                  glow
-                  label="IC"
+                trigger="mount": the initial gather always runs regardless of
+                this prop, but "hover" additionally restarts the full
+                scatter-to-gather animation on every pointerenter, which reads as
+                the mark "resetting" each time the cursor crossed it. Pointer
+                repel still works either way — that logic isn't gated by trigger.
+              */}
+              <div className="relative flex aspect-square w-full max-w-[19rem] flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-[color:var(--c-line-strong)] bg-white/[0.03] p-10 shadow-[0_30px_90px_-30px_rgb(0_0_0/0.6)]">
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full opacity-25 blur-3xl"
+                  style={{ background: BRAND_RED }}
                 />
+                <span className="absolute left-6 top-6 z-10 eyebrow text-on-strong-subtle">IC</span>
+                <span className="absolute right-6 top-6 z-10 h-2 w-2 rounded-full" style={{ background: BRAND_RED }} />
+                <div className="relative z-0 h-[clamp(6.5rem,11vw,9rem)] w-[clamp(6.5rem,11vw,9rem)]">
+                  <ParticleShape
+                    path={BRAND_CHECKMARK_PATH}
+                    viewBox={BRAND_CHECKMARK_VIEWBOX}
+                    color={BRAND_RED}
+                    highlightColor="#ff8a7a"
+                    trigger="mount"
+                    particleSize={2.4}
+                    density={2}
+                    scatter={170}
+                    scatterMode="random"
+                    scatterPadding={84}
+                    gatherDuration={1600}
+                    stagger={400}
+                    pointerRepel={40}
+                    repelRadius={100}
+                    idleDrift={0.5}
+                    glow
+                    label="IC"
+                  />
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function Atmosphere() {
+function Atmosphere({ showMeteors }: { showMeteors: boolean }) {
   return (
     <div className="grain pointer-events-none absolute inset-0 overflow-hidden">
-      <Meteors number={14} />
+      {showMeteors && <Meteors number={14} />}
       <div
         className="drift absolute -top-[20%] left-[45%] h-[70vh] w-[70vh] rounded-full opacity-[0.16] blur-[130px]"
         style={{ background: "var(--jade-400)" }}
