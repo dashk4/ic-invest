@@ -1,7 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Briefcase,
-  Compass,
   Eye,
   Gem,
   Landmark,
@@ -68,12 +67,8 @@ export const NAV: NavEntry[] = [
     en: "Services",
     href: "/services",
     children: [
-      {
-        mn: "Хөрөнгө оруулалтын зөвлөх үйлчилгээ",
-        en: "Investment Advisory Service",
-        href: "/services/investment-advisory",
-        icon: Compass,
-      },
+      // "Хөрөнгө оруулалтын зөвлөх үйлчилгээ" (Investment Advisory)
+      // temporarily hidden per owner request — not ready to show yet.
       {
         mn: "Үнэт цаас итгэмжлэн удирдах үйлчилгээ",
         en: "Securities Trust Management Service",

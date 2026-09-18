@@ -1,18 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Compass, Landmark } from "lucide-react";
+import { Landmark } from "lucide-react";
 import { SectionHead } from "./ui/SectionHead";
 import { RevealGroup, RevealItem } from "./ui/Reveal";
 import { useLocale, pick } from "@/lib/locale";
 
+// "Хөрөнгө оруулалтын зөвлөх үйлчилгээ" (Investment Advisory) temporarily
+// hidden per owner request — not ready to show yet.
 const SERVICES = [
-  {
-    slug: "investment-advisory",
-    icon: Compass,
-    mn: "Хөрөнгө оруулалтын зөвлөх үйлчилгээ",
-    en: "Investment Advisory Service",
-  },
   {
     slug: "securities-trust",
     icon: Landmark,
@@ -36,7 +32,7 @@ export function Services() {
           )}
         />
 
-        <RevealGroup className="mt-14 grid gap-4 sm:grid-cols-2">
+        <RevealGroup className="mt-14 grid max-w-md gap-4">
           {SERVICES.map((service) => {
             const Icon = service.icon;
             return (
