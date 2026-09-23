@@ -7,7 +7,9 @@ import { Footer } from "@/components/Footer";
 import { excerpt, getNewsById, uploadUrl } from "@/lib/api";
 import { NewsArticle } from "@/components/NewsArticle";
 
-export const revalidate = 3600;
+// Matches lib/api.ts's REVALIDATE_SECONDS — kept in sync manually since this
+// is a route segment config (must be a literal, can't import the constant).
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

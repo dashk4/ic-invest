@@ -1,7 +1,11 @@
 import { CMS_BASE } from "@/lib/config";
 
 const BASE = CMS_BASE;
-const REVALIDATE_SECONDS = 3600;
+// 5 min, not 1h: admin posts (Nexus) need to show up on the site without a
+// manual redeploy. A plain Vercel "Redeploy" doesn't reliably bust this —
+// it can reuse the previous deployment's Data Cache — so this is the actual
+// lever for freshness.
+const REVALIDATE_SECONDS = 300;
 
 export type NewsItem = {
   id: number;
