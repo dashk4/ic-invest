@@ -1,8 +1,46 @@
 "use server";
 
+import { Resend } from "resend";
 import { CMS_BASE } from "@/lib/config";
+import { contactNotificationEmail } from "@/lib/email";
 
 const BASE_URL = CMS_BASE;
+
+// Sandbox sender — works with zero DNS setup, but Resend only delivers it to
+// the account's own verified address (NOTIFY_EMAIL below). Move to a
+// verified @ic-invest.mn sender once that domain is added in Resend.
+const MAIL_FROM = "IC Asset Management <onboarding@resend.dev>";
+const NOTIFY_EMAIL = "ic.assetmn@gmail.com";
+
+/**
+ * Best-effort owner notification, run alongside the CMS submission below.
+ * Never throws and never affects what the visitor sees — a broken inbox
+ * shouldn't turn a successful submission into an error, and a missing API
+ * key (local dev without RESEND_API_KEY) shouldn't break the form either.
+ */
+async function notifyByEmail(fields: {
+  name: string;
+  phone: string;
+  feedback: string;
+  locale: "mn" | "en";
+}) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  try {
+    const resend = new Resend(apiKey);
+    const { subject, html, text } = contactNotificationEmail(fields);
+    await resend.emails.send({
+      from: MAIL_FROM,
+      to: NOTIFY_EMAIL,
+      subject,
+      html,
+      text,
+    });
+  } catch (error) {
+    console.error("Failed to send contact notification email:", error);
+  }
+}
 
 export type FeedbackState = {
   ok: boolean;
@@ -73,6 +111,12 @@ export async function submitFeedback(
           : "Нэр, утас болон санал хүсэлтээ бүрэн оруулна уу.",
     };
   }
+
+  // Fired alongside the CMS submission below, not gated on it succeeding —
+  // the owner should get notified even if storefeedback has a bad day.
+  // Awaited in `finally` so the function doesn't return (and the
+  // serverless invocation freeze) before the send completes.
+  const emailPromise = notifyByEmail({ name, phone, feedback, locale });
 
   try {
     const contactPage = await fetch(contactPageUrl, {
@@ -146,5 +190,7 @@ export async function submitFeedback(
           ? "Something went wrong while sending. Please try again."
           : "Илгээх үед алдаа гарлаа. Дахин оролдоно уу.",
     };
+  } finally {
+    await emailPromise;
   }
 }
